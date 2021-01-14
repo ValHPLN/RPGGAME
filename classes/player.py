@@ -1,6 +1,8 @@
 from constants import game_settings as gs, player_settings as ps
-import pygame as pg
 from constants.sprites import player_sprites
+# from constantes import tiles_settings as ts
+from classes import collision as col
+import pygame as pg
 image = player_sprites()
 
 class Player():
@@ -9,12 +11,12 @@ class Player():
         self.sprite = None #initialises PLayer
         self.free = True #is player busy
         #player hitbox (TODO: create collisions file)
-        #self.hitbox = col.Hitbox("Player")
-        #self.hitbox = col.Hitbox("object")
+        self.hitbox = col.Hitbox("Player")
+        self.hitbox = col.Hitbox("object")
         self.health = 10 #player health
         self.hurt = False #player hurt state
-        #self.hitbox.rect = pg.Rect((0,0),(25,20)) #creat rect on player feet for collisions
-        #self.hitbox.rect.center = gs.center_WIDTH, gs.center_HEIGHT
+        self.hitbox.rect = pg.Rect((0,0),(25,20)) #creat rect on player feet for collisions
+        self.hitbox.rect.center = gs.center_WIDTH, gs.center_HEIGHT
         self.x = x
         self.y = y
 

@@ -14,15 +14,15 @@ YELLOW = (255, 255, 0)
 FPS = 60
 player = None
 win = None #Window
-WIDTH = 1024
-HEIGHT = 768
+WIDTH = 1200
+HEIGHT = 800
 TITLE = "HETIC LIFE"
 BGCOLOR = DARKGREY #BACKGROUND COLOR
 TILESIZE = 32
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
-center_width = WIDTH/2
-center_height = HEIGHT/2
+center_WIDTH = WIDTH/2
+center_HEIGHT = HEIGHT/2
 
 map = None #variable for map
 clock = None
@@ -30,6 +30,3 @@ run = None
 
 # Initalises Pygame
 pg.init()
-
-
-

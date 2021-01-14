@@ -3,6 +3,7 @@ from functions import load
 from constants import sprites
 import pygame as pg
 from classes import player
+from classes import mapping
 
 
 def win_init():
@@ -18,7 +19,9 @@ def win_init():
 def init_game():
     #loading_screen()
     #load tileset
+    sprites.map_sprites()
     sprites.player_sprites()
+    gs.map = mapping.Map("MapHeticV2", (-50, -300), "hetic.ogg")  # Chargement de la map
     #setup map
     #load enemies
     gs.player = player.Player
@@ -41,9 +44,10 @@ def draw_player():
 
 def game_loop():
     # Game Loop
-    while gs.run:
-        gs.win.fill((gs.BGCOLOR)) #fills screen with background color
-        draw_grid()
+     while gs.run:
+    #    gs.win.fill((gs.BGCOLOR)) #fills screen with background color
+    #    draw_grid()
+        gs.map.afficher_arriere_plan()
         draw_player()
 
     # Events (if you press ESC or close window, leaves game)

@@ -1,6 +1,6 @@
 
 # Player movement speed
-vel = 5
+vel = 2
 move_left = False
 move_right = False
 move_up = False
