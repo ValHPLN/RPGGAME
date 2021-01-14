@@ -49,6 +49,7 @@ def game_loop():
     #    draw_grid()
         gs.map.afficher_arriere_plan()
         draw_player()
+        gs.map.afficher_premier_plan()
 
     # Events (if you press ESC or close window, leaves game)
         for event in pg.event.get():

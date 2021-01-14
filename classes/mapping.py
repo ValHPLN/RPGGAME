@@ -21,7 +21,11 @@ class Map:
             2: [],  # Matrice qui stockera le 1er plan
             3: [],  # Matrice qui stockera le plan spécial
             4: [],
-            5: []
+            5: [],
+            6: [],
+            7: [],
+            8: [],
+            9: []
         }
         self.charger_matrice()  # Chargement de la matrice, du fichier carte
         # Pour le nombre de colonnes et de lignes on utilise la matrice du fond
@@ -44,6 +48,13 @@ class Map:
         """
         gs.win.blit(self.arriere_plan, (self.x_camera,
                                           self.y_camera))  # Affiche l'arrière plan
+    def afficher_premier_plan(self):
+        """ Affiche la 4 eme couche de la map
+        Quatrième couche (3) = Premier plan devant le personnage
+        """
+        gs.win.blit(self.premier_plan, (self.x_camera,
+                                          self.y_camera))  # Affiche le premier plan
+
 
     def charger_matrice(self):
         """Charger les matrices
@@ -51,7 +62,7 @@ class Map:
         Permets de convertir un .csv en tableau/matrice.
         Permets de convertir plusieurs .csv en tableaux 3D
         """
-        for i in range(6):  # On a 4 calques, ici on parcours les calques
+        for i in range(10):  # On a 4 calques, ici on parcours les calques
             nom_fichier = "maps/" + self.nom + "_" + str(i) + ".csv"  # Nom du fichier
             #                                          # Ex: nom_0.csv
             f = open(nom_fichier, "r")    # Ouvrir le fichier
@@ -70,7 +81,7 @@ class Map:
         for groupe in ts.groupes:  # Je parcours les groupes de collision
             ts.groupes[groupe] = pg.sprite.Group()  # Je les réinitialise
 
-        for i in range(5):  # Je parcours les 3 premières couches de la map
+        for i in range(10):  # Je parcours les 3 premières couches de la map
             for y in range(self.y):  # Parcours les colonnes
                 for x in range(self.x):  # Je parcours les lignes
                     if self.matrices[i][y][x] in ts.tuiles:  # Si la tuile existe
@@ -88,12 +99,12 @@ class Map:
             Charge dans la variable self.premier_plan l'image de la dernière couche (3)
         """
 
-        for i in range(6):  # Je parcours les couches
+        for i in range(10):  # Je parcours les couches
             for y in range(self.y):  # Parcours les colonnes
                 for x in range(self.x):  # Je parcours les lignes
                     if self.matrices[i][y][x] in ts.tuiles:  # Si elle existe
                         tuile = ts.tuiles[self.matrices[i][y][x]]  # On extrait
-                        if i < 6:  # Si on parcours les couches 2, 1 et 0
+                        if i < 5:  # Si on parcours les couches 2, 1 et 0
                             self.arriere_plan.blit(tuile, (x*32, y*32))  # On colle les images sur l'arrière plan tuile par tuile
                         else:
                             self.premier_plan.blit(tuile, (x*32, y*32))  # On colle les images sur le premier plan tuile par tuile
