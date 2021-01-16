@@ -18,7 +18,7 @@ class Player():
         self.hitbox_object = col.Hitbox("object")
         self.health = 10 #player health
         self.hurt = False #player hurt state
-        self.hitbox.rect = pg.Rect((0,0),(25,20)) #creat rect on player feet for collisions
+        self.hitbox.rect = pg.Rect((0,0),(64,25)) #creat rect on player feet for collisions
         self.hitbox.rect.center = (gs.center_WIDTH, gs.center_HEIGHT+13)
         self.hitbox.mask = pg.Mask((25,20))
         self.hitbox.mask.fill()
