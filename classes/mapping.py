@@ -1,5 +1,6 @@
 from constants import game_settings as gs
 from constants import tiles_settings as ts
+from constants import collisions_settings as cs
 from classes import collision as col
 import pygame as pg
 
@@ -38,6 +39,7 @@ class Map:
         self.premier_plan = pg.Surface((self.x * 32, self.y * 32),
                                        pg.SRCALPHA)  # On crée une surface de la taille de la map
         # self.charger_hitboxs()  # Charger les collisions de la map (Hitboxs)
+        self.charger_hitboxs()  # Charger les collisions de la map (Hitboxs)
         self.charger_images()  # Charger l'arrière plan et le premier plan
         # self.vider_monstres()  # Supprimer les monstres de l'ancienne map (si il y en a)
         self.afficher_arriere_plan()
@@ -48,6 +50,8 @@ class Map:
         """
         gs.win.blit(self.arriere_plan, (self.x_camera,
                                           self.y_camera))  # Affiche l'arrière plan
+
+
     def afficher_premier_plan(self):
         """ Affiche la 4 eme couche de la map
         Quatrième couche (3) = Premier plan devant le personnage
@@ -55,6 +59,23 @@ class Map:
         gs.win.blit(self.premier_plan, (self.x_camera,
                                           self.y_camera))  # Affiche le premier plan
 
+    def bouger_hitbox(self, x, y):
+        """Déplace les hitboxs de collision
+        Permets de déplacer les hitboxs de collisions, utilisé lors du
+        Déplacement du personnage ou de la camera
+        """
+        # nouvelle_liste va écraser la liste des constantes de collision pour les tuiles
+        for hitbox in cs.groups["tuile"]:  # Je parcours le contenu du groupe
+            hitbox.rect.move_ip(x, y)  # Déplacer le rect.
+
+    def bouger(self, x, y):
+        """Déplacer la map
+        Déplace:
+        - Les 3 couches esthétiques de tuiles
+        - La 4 ème couche qui passe par-dessus le personnage
+        """
+        gs.map.x_camera += x  # Bouger la camera
+        gs.map.y_camera += y  # Bouger la camera
 
     def charger_matrice(self):
         """Charger les matrices
@@ -78,8 +99,8 @@ class Map:
         Permets de charger les rectangles de collision de la map
         (Peut génèrer des latences !)
         """
-        for groupe in ts.groupes:  # Je parcours les groupes de collision
-            ts.groupes[groupe] = pg.sprite.Group()  # Je les réinitialise
+        for groupe in cs.groups:  # Je parcours les groupes de collision
+            cs.groups[groupe] = pg.sprite.Group()  # Je les réinitialise
 
         for i in range(10):  # Je parcours les 3 premières couches de la map
             for y in range(self.y):  # Parcours les colonnes

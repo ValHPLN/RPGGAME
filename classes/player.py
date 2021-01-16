@@ -1,101 +1,120 @@
 from constants import game_settings as gs, player_settings as ps
-from constants.sprites import player_sprites
-# from constantes import tiles_settings as ts
+from constants import tiles_settings as ts
+from constants import collisions_settings as cs
 from classes import collision as col
 import pygame as pg
-image = player_sprites()
+
 
 class Player():
-    def __init__(self, x, y):
+    def __init__(self):
 
         self.sprite = None #initialises PLayer
         self.free = True #is player busy
-        #player hitbox (TODO: create collisions file)
-        self.hitbox = col.Hitbox("Player")
-        self.hitbox = col.Hitbox("object")
+        self.count = 0
+        self.frame = 0
+        self.direction = "down"
+        self.move = "base"
+        self.hitbox = col.Hitbox("player")
+        self.hitbox_object = col.Hitbox("object")
         self.health = 10 #player health
         self.hurt = False #player hurt state
         self.hitbox.rect = pg.Rect((0,0),(25,20)) #creat rect on player feet for collisions
-        self.hitbox.rect.center = gs.center_WIDTH, gs.center_HEIGHT
-        self.x = x
-        self.y = y
+        self.hitbox.rect.center = (gs.center_WIDTH, gs.center_HEIGHT+13)
+        self.hitbox.mask = pg.Mask((25,20))
+        self.hitbox.mask.fill()
+
+
+        # Créer un rectangle centré sur les jambes du personnage pour les collisions
+        self.hitbox_object.rect = pg.Rect((gs.center_WIDTH - 20, gs.center_HEIGHT + 10), (32, 22))
+        self.hitbox_object.rect.center = (gs.center_WIDTH - 4, gs.center_HEIGHT - 11)
+        # Créer et assigner le hitbox
+        self.hitbox_object.mask = pg.Mask((32, 22))
+        self.hitbox_object.mask.fill()  # Remplir le hitbox pour créer un bloc
 
 #charges sprites for the player
 #image 0=standing 1=down 2=up 3=left 4=right
 
     def player_controls(self):
-        global x
-        global y
-        global move_up
-        global move_left
-        global move_down
-        global move_right
-        global vel
         # Controls (Arrow keys or ZQSD)
         userInput = pg.key.get_pressed()
-        if userInput[pg.K_LEFT] or userInput[pg.K_q]:
-            ps.x -= ps.vel
-            ps.move_left = True
-            ps.move_right = False
-            ps.move_up = False
-            ps.move_down = False
-        elif userInput[pg.K_RIGHT] or userInput[pg.K_d]:
-            ps.x += ps.vel
-            ps.move_left = False
-            ps.move_right = True
-            ps.move_up = False
-            ps.move_down = False
-        elif userInput[pg.K_UP] or userInput[pg.K_z]:
-            ps.y -= ps.vel
-            ps.move_left = False
-            ps.move_right = False
-            ps.move_up = True
-            ps.move_down = False
-        elif userInput[pg.K_DOWN] or userInput[pg.K_s]:
-            ps.y += ps.vel
-            ps.move_left = False
-            ps.move_right = False
-            ps.move_up = False
-            ps.move_down = True
-        else:
-            ps.move_left = False
-            ps.move_right = False
-            ps.move_up = False
-            ps.move_down = False
-            ps.stepIndex = 0
+        if not self.free:
+            return
+        if self.hitbox.mask is None:
+            return
+        for key in ps.keys:  # Je parcours les touches enfoncées
+            if userInput[key]:  # Si la touche est définie dans constantes
+                key = ps.keys[key]  # touche = sa liste correspondante
 
-    def player_anim(self):
-        global stepIndex
-        global lastKey
-        global win
-        #player animation
-        if ps.stepIndex >= 36:
-            ps.stepIndex = 0
-        if ps.move_left:
-            gs.win.blit(image[3][ps.stepIndex//10], (ps.x, ps.y))
-            ps.stepIndex += 1
-            ps.lastKey = "Left"
-        elif ps.move_right:
-            gs.win.blit(image[4][ps.stepIndex//10], (ps.x ,ps.y))
-            ps.stepIndex += 1
-            ps.lastKey = "Right"
-        elif ps.move_down:
-            gs.win.blit(image[1][ps.stepIndex//10], (ps.x ,ps.y))
-            ps.stepIndex += 1
-            ps.lastKey = "Down"
-        elif ps.move_up:
-            gs.win.blit(image[2][ps.stepIndex//10], (ps.x ,ps.y))
-            ps.stepIndex += 1
-            ps.lastKey = "Up"
-        else:
-            # Displays the image corresponding to the direction the character is facing
-            if ps.lastKey is None or ps.lastKey == "Down":
-                gs.win.blit(image[0][0], (ps.x, ps.y))
-            if ps.lastKey == "Up":
-                gs.win.blit(image[0][3], (ps.x, ps.y))
-            if ps.lastKey == "Left":
-                gs.win.blit(image[0][1], (ps.x, ps.y))
-            if ps.lastKey == "Right":
-                gs.win.blit(image[0][2], (ps.x, ps.y))
+                if key[2] is not None:  # Si l'animation change la direction
+                    self.direction = key[2]  # Modif direction
+                if self.mouvement != key[3]:  # Si le mouvement change
+                    self.mouvement = key[3]  # Changer le mouvement du perso
+                    self.compteur = 0  # Recommencer les animations
+                    self.frame = 0  # Réinitialiser les frames
+                self.free = key[4]  # Changer disponibilité du perso
 
+                # Capturer les déplacements
+                x = key[0]  # Nombre de pixels en x
+                y = key[1]  # Nombre de pixels en x
+                # Déplacer le hitbox pour tester la position
+                gs.map.bouger_hitbox(x, y)
+                if self.hitbox.collision("tuile"):  # Si il y a collision:
+                    # Annuler le déplacement de la hitbox de la map
+                    gs.map.bouger_hitbox(-x, -y)
+                else:  # Sinon, si il y a pas collision
+                    gs.map.bouger(x, y)
+
+                break  # Casser la boucle: Touche trouvée. On évite les autres
+
+        else:  # Si la boucle n'est pas cassée: Aucune touche trouvée
+            self.mouvement = "base"  # On dit qu'il n'y a aucun mouvement
+            self.free = True  # Perso libre car pas de mouvement
+
+    def actualiser_frame(self):
+        # MISE A JOUR DES FRAMES EN FONCTION DES TICKS
+        # On vérifie si il y a un nombre de tick entre frame défini
+        if ps.timing[self.mouvement][0] is None:  # Si il y en a pas
+            self.compteur = 0
+            self.frame = 0
+        else:  # Si il y en a un
+            # Maintenant on incrémente le compteur des animations si besoin
+            if self.compteur < ps.timing[self.mouvement][0]:
+                self.compteur = self.compteur + 1
+                # Sinon si il est déjà à son max
+            else:
+                self.compteur = 0  # On le reset
+                # On incrémente la frame si besoin d'être incrémenté
+                if self.frame < ps.timing[self.mouvement][1]:
+                    self.frame = self.frame + 1
+                    # Sinon si elle est déjà a son max
+                else:
+                    self.frame = 0  # Reset
+                    self.libre = ps.timing[self.mouvement][2]  # Liberer perso
+                    if ps.timing[self.mouvement][3]:  # Si on veux revenir
+                        self.mouvement = "base"  # Sur base, on le fait
+
+    def actualiser_sprite(self):
+        """ Met à jour le sprite
+        Mise à jour du sprite en fonction de:
+            - La direction
+            - Le mouvement
+            - La frame
+        """
+        # CHARGEMENT DE L'IMAGE DU SPRITE
+        # Charger la liste de sprites relative a la direction et le mouvement
+        sprite = ps.animation[self.direction][self.mouvement]
+        self.sprite = sprite[self.frame]  # Prendre le sprite correspondant
+        cs.groups["player"] = [self.hitbox]
+
+    def update(self):
+        """Actualise les stats du personnage"""
+        self.actualiser_frame()  # Actualiser les frames
+        self.actualiser_sprite()  # Actualiser le sprite
+
+
+        # Je calcule la position de rendu du sprite afin qu'il soit bien centré
+        x_rendu = gs.center_WIDTH - ps.sprite_height / 2  # Le x de rendu
+        y_rendu = gs.center_HEIGHT - ps.sprite_width / 2  # Le y de rendu
+
+        gs.win.blit(self.sprite, (x_rendu, y_rendu))  # Affiche le sprite
 

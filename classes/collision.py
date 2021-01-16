@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pygame as pg
-from constants import tiles_settings as ts
+from constants import collisions_settings as cs
 
 
 class Hitbox(pg.sprite.Sprite):  # La classe Hitbox hérite de pg.sprite.Sprite CAD qu'elle inclut les caracteristiques de pg.sprite.Sprite
@@ -17,8 +17,8 @@ class Hitbox(pg.sprite.Sprite):  # La classe Hitbox hérite de pg.sprite.Sprite 
         # Ici "super()" fait référence a la classe mère (pg.sprite.Sprite ici)
         self.rect = rect    # Rectangle de la hitbox
         self.mask = mask    # "Mask" qui correspond au hitbox des collisions
-        ts.groupes["tout"].add(self)  # Ajouter a la liste de tout les hitboxs
-        ts.groupes[groupe].add(self)  # Ajouter a la liste correspondante
+        cs.groups["tout"].add(self)  # Ajouter a la liste de tout les hitboxs
+        cs.groups[groupe].add(self)  # Ajouter a la liste correspondante
 
     def collision(self, groupe="tout"):
         """Vérifie les collisions avec un groupe (tout par défaut)
@@ -29,5 +29,5 @@ class Hitbox(pg.sprite.Sprite):  # La classe Hitbox hérite de pg.sprite.Sprite 
         # De vérifier si il y a des collisions entre 1 hitbox et 1 groupe
         # De hitbox. pg.sprite.collide_mask signifie que l'on veut utiliser
         # les hitboxs
-        return pg.sprite.spritecollideany(self, ts.groupes[groupe],
+        return pg.sprite.spritecollideany(self, cs.groups[groupe],
                                           pg.sprite.collide_mask)

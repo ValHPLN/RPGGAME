@@ -12,8 +12,9 @@ YELLOW = (255, 255, 0)
 
 # Window settings
 FPS = 60
-player = None
+char = None
 win = None #Window
+map = None #variable for map
 WIDTH = 1200
 HEIGHT = 800
 TITLE = "HETIC LIFE"
@@ -24,7 +25,7 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 center_WIDTH = WIDTH/2
 center_HEIGHT = HEIGHT/2
 
-map = None #variable for map
+
 clock = None
 run = None
 

@@ -1,6 +1,5 @@
 from constants import game_settings as gs
 from functions import load
-from constants import sprites
 import pygame as pg
 from classes import player
 from classes import mapping
@@ -19,51 +18,43 @@ def win_init():
 def init_game():
     #loading_screen()
     #load tileset
-    sprites.map_sprites()
-    sprites.player_sprites()
+    load.load_tileset()
+    load.load_sprites()
     gs.map = mapping.Map("MapHeticV2", (-50, -300), "hetic.ogg")  # Chargement de la map
     #setup map
     #load enemies
-    gs.player = player.Player
+    gs.char = player.Player()
     game_loop() #starts game
-
-
-def draw_grid():
-
-    for x in range(0, gs.WIDTH, gs.TILESIZE):
-        pg.draw.line(gs.win,gs.LIGHTGREY,(x, 0), (x, gs.WIDTH))
-    for y in range(0, gs.HEIGHT, gs.TILESIZE):
-        pg.draw.line(gs.win,gs.LIGHTGREY,(0, y), (gs.WIDTH, y))
-
-
-def draw_player():
-    plClass = player.Player(0, 0)
-    plClass.player_anim()
-    plClass.player_controls()
 
 
 def game_loop():
     # Game Loop
      while gs.run:
-    #    gs.win.fill((gs.BGCOLOR)) #fills screen with background color
-    #    draw_grid()
+        gs.win.fill((gs.DARKGREY))
+        gs.char.player_controls() #links function to char variable
         gs.map.afficher_arriere_plan()
-        draw_player()
+        gs.char.update()
         gs.map.afficher_premier_plan()
 
-    # Events (if you press ESC or close window, leaves game)
+     # Events (if you press ESC or close window, leaves game)
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     gs.run = False
             elif event.type == pg.QUIT:
                 gs.run = False
+    #####TODO:insérer fonction teleportation (gère le changement de maps)
 
+        ###gérer mort perso avec def death():
+            ##if cp.char.health < 1
+            ### return death()
         #   runs game at FPS defined in gs (game_settings)
         gs.clock.tick(gs.FPS)
         # updates screen
         pg.display.update()
 
+
+#todo: def teleportation(): (gère changement de map)
 
 
 

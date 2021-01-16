@@ -2,12 +2,6 @@ import pygame as pg
 
 tuiles = {}
 
-groupes = {
-    "tuile": pg.sprite.Group(),     # Liste des hitboxs pour les tuiles
-    "Player": pg.sprite.Group(),
-    "object": pg.sprite.Group(),
-    "tout": pg.sprite.Group()
-}
 
 collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "215",
