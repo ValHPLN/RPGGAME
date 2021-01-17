@@ -3,7 +3,7 @@ from constants import game_settings as gs
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
-DISPLAYSURF = pygame.display.set_mode((0, 0))
+#/DISPLAYSURF = pygame.display.set_mode((0, 0))
 
 class TypeText():
     def __init__(self, x, y, text1, text2, text3):
@@ -43,14 +43,11 @@ class TypeText():
         self.line = self.line + 1
 
     def quit(self):
-        while True:
+        gs.speech = True
+        while gs.speech:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        transparent = (0, 0, 0, 0)
-                        #bubblePng = pygame.image.fill(bubblePng, transparent)
-                        # DISPLAYSURF.quit()
-                        # pygame.time.wait(300)
-                        pygame.quit()
-                        sys.exit()
+                    if event.key == pygame.K_r:
+                        gs.speech = False
+
 

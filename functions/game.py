@@ -1,11 +1,10 @@
 from constants import game_settings as gs
 from functions import load
-from functions import speech
 import pygame as pg
 from classes import player
 from classes import mapping
+from functions import speech
 
-width, height = 400, 300
 
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
@@ -125,6 +124,17 @@ def pause_menu():
         pg.display.update()
         gs.clock.tick(gs.FPS)
 
+def speech1():
+    talk = True
+    while talk:
+        Mleft = 400
+        MTop = 250
+        speech.TypeText(Mleft, MTop, 'Attaquer', ' ', 'Défendre')
+        if not gs.speech:
+            talk = False
+        gs.clock.tick(gs.FPS)
+        # updates screen
+        pg.display.update()
 
 def game_loop():
     # Game Loop
@@ -135,9 +145,6 @@ def game_loop():
         gs.char.update()
         gs.map.afficher_premier_plan()
 
-        Mleft = 400
-        MTop = 250
-        speech.TypeText(Mleft, MTop, 'Attaquer', '', 'Défendre')
 
      # Events (if you press ESC or close window, leaves game)
         for event in pg.event.get():
@@ -146,6 +153,8 @@ def game_loop():
                     pause_menu()
                 elif event.key == pg.K_i:
                     inventory_menu()
+                elif event.key == pg.K_s:
+                    speech1()
             elif event.type == pg.QUIT:
                 gs.run = False
 

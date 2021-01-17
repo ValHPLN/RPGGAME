@@ -13,7 +13,7 @@ class Player():
         self.count = 0
         self.frame = 0
         self.direction = "down"
-        self.move = "base"
+        self.mouvement = "base"
         self.hitbox = col.Hitbox("player")
         self.hitbox_object = col.Hitbox("object")
         self.health = 10 #player health
@@ -67,8 +67,9 @@ class Player():
                 break  # Casser la boucle: Touche trouvée. On évite les autres
 
         else:  # Si la boucle n'est pas cassée: Aucune touche trouvée
-            self.mouvement = "base"  # On dit qu'il n'y a aucun mouvement
-            self.free = True  # Perso libre car pas de mouvement
+            self.free = True
+            self.mouvement = "base"
+
 
     def actualiser_frame(self):
         # MISE A JOUR DES FRAMES EN FONCTION DES TICKS

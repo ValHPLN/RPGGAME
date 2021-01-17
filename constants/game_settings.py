@@ -14,6 +14,7 @@ YELLOW = (255, 255, 0)
 # Window settings
 font = pg.font.SysFont(None, 20)
 FPS = 60
+speech = None
 char = None
 win = None #Window
 map = None #variable for map
