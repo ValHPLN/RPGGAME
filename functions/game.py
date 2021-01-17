@@ -22,7 +22,7 @@ def init_game():
     #load tileset
     load.load_tileset()
     load.load_sprites()
-    gs.map = mapping.Map("MapHeticV2", (-50, -300), "hetic.ogg")  # Chargement de la map
+    gs.map = mapping.Map("MapHeticV2", (30, -720), "hetic.ogg")  # Chargement de la map
     #setup map
     #load enemies
     gs.char = player.Player()

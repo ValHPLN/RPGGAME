@@ -5,13 +5,6 @@ vel = 2
 run = True
 sprite_height = 64
 sprite_width = 64
-# Player position default
-x = 500
-y = 710
-# Counter for frames/animation
-stepIndex = 0
-# Saves last movement for correct display of Standing image
-lastKey = None
 sprite_still = "img/char/char_face_"
 sprite_move = "img/char/char_walk_"
 
