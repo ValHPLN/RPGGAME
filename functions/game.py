@@ -1,10 +1,10 @@
 from constants import game_settings as gs
+from constants import speech_settings as ss
 from functions import load
 import pygame as pg
 from classes import player
 from classes import mapping
 from functions import speech
-
 
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
@@ -129,7 +129,7 @@ def speech1():
     while talk:
         Mleft = 400
         MTop = 250
-        speech.TypeText(Mleft, MTop, 'Attaquer', ' ', 'Défendre')
+        speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["perso"])
         if not gs.speech:
             talk = False
         gs.clock.tick(gs.FPS)
