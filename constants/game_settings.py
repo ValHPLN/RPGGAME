@@ -1,5 +1,6 @@
 import pygame as pg
-
+pg.init()
+mx, my = pg.mouse.get_pos()
 
 # Colors
 WHITE = (255, 255, 255)
@@ -11,6 +12,7 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
 # Window settings
+font = pg.font.SysFont(None, 20)
 FPS = 60
 char = None
 win = None #Window
@@ -30,4 +32,4 @@ clock = None
 run = None
 
 # Initalises Pygame
-pg.init()
+

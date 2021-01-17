@@ -29,5 +29,4 @@ class Hitbox(pg.sprite.Sprite):  # La classe Hitbox hérite de pg.sprite.Sprite 
         # De vérifier si il y a des collisions entre 1 hitbox et 1 groupe
         # De hitbox. pg.sprite.collide_mask signifie que l'on veut utiliser
         # les hitboxs
-        return pg.sprite.spritecollideany(self, cs.groups[groupe],
-                                          pg.sprite.collide_mask)
+        return pg.sprite.spritecollideany(self, cs.groups[groupe], pg.sprite.collide_mask)
