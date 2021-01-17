@@ -55,6 +55,7 @@ collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "4295",
     "4311",
     "4324",
+    "4330",#chair
     "4340",
     "5058", #estrade
     "5072",
@@ -81,6 +82,7 @@ collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "6262",
     "6263",
     "7107",#transparent
+    "7109",#transparent
     "7138",
     "7137",
     "7139",
