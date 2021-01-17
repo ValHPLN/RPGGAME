@@ -1,9 +1,11 @@
 from constants import game_settings as gs
 from functions import load
+from functions import speech
 import pygame as pg
 from classes import player
 from classes import mapping
 
+width, height = 400, 300
 
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
@@ -132,6 +134,10 @@ def game_loop():
         gs.map.afficher_arriere_plan()
         gs.char.update()
         gs.map.afficher_premier_plan()
+
+        Mleft = 400
+        MTop = 250
+        speech.TypeText(Mleft, MTop, 'Attaquer', '', 'Défendre')
 
      # Events (if you press ESC or close window, leaves game)
         for event in pg.event.get():
