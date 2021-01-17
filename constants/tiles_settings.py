@@ -21,7 +21,6 @@ collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "1086",
     "1145",
     "1167",
-    "1177",
     "1216",
     "1218",
     "1231",
@@ -81,14 +80,18 @@ collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "6233",
     "6262",
     "6263",
+    "7107",#transparent
     "7138",
     "7137",
     "7139",
+    "7140",#wall
     "7142",
     "7145",
     "7153",
+    "7156",#wall
     "7158",
     "7169",
+    "7172",#wall
     "7177",
     "7225",
     "7257",
@@ -98,6 +101,8 @@ collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "7522",
     "7523",
     "7669",
+    "7680",
+    "7696",
     "7792",
     "7744",
     "7781"
