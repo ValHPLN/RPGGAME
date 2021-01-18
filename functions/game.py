@@ -129,7 +129,8 @@ def speech1():
     while talk:
         Mleft = 400
         MTop = 250
-        speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["perso"])
+        speech.TypeText(Mleft, MTop, ss.speechList["chomel"]["chomel"], 200)
+        #speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["machine"], 200)
         if not gs.speech:
             talk = False
         gs.clock.tick(gs.FPS)
