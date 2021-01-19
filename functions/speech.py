@@ -22,6 +22,7 @@ class TypeText():
         print(self.fontWidth, self.fontWrap)
         self.fontInter = self.fontSize + self.fontSize * 8 / 12 #interligne
         self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
+        self.textA = self.textA + "\n"
         self.fontType = 'img/Minecraftia-Regular.ttf'
         self.bubbleImg()
         self.splitText(self.textA)

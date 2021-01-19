@@ -88,10 +88,12 @@ collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "7139",
     "7140",#wall
     "7142",
+    "7146",
     "7145",
     "7153",
     "7156",#wall
     "7158",
+    "7162",
     "7169",
     "7172",#wall
     "7177",
