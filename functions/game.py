@@ -34,6 +34,53 @@ def draw_text(text, font, color, surface, x, y):
     textrect.center = (x,y)
     surface.blit(textobj,textrect)
 
+def new_player():
+    char_create = True
+    click = False
+    active = False
+    color_inactive = pg.Color('lightskyblue3')
+    color_active = pg.Color('dodgerblue2')
+    color = color_inactive
+
+    input_box = pg.Rect(gs.center_WIDTH,gs.center_HEIGHT, 100,100)
+    confirm = False
+    while char_create:
+        while not confirm:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
+                        if input_box.collidepoint(event.pos):
+                            active = not active
+                        else:
+                            active = False
+                        color = color_active if active else color_inactive
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_ESCAPE:
+                        char_create = False
+                        main_menu()
+                    if event.key == pg.K_RETURN:
+                        char_create = False
+                        game_loop()
+                        return gs.name
+                    elif event.key == pg.K_BACKSPACE:
+                        gs.name = gs.name[:-1]
+                    else:
+                        gs.name += event.unicode
+
+
+            gs.win.fill((gs.DARKGREY))
+            txt_surface = gs.font.render(gs.name, True, color)
+            width = max(200, txt_surface.get_width()+10)
+            input_box.w = width
+            gs.win.blit(txt_surface,(input_box.x+5, input_box.y+5))
+            pg.draw.rect(gs.win, color, input_box, 2)
+            draw_text("What's your name ?", gs.font, (gs.WHITE), gs.win, gs.center_HEIGHT, gs.center_WIDTH)
+            pg.display.update()
+            gs.clock.tick(gs.FPS)
+
 def main_menu():
     menu = True
     click = False
@@ -44,11 +91,11 @@ def main_menu():
 
         new_game = pg.Rect(gs.center_WIDTH-50,gs.center_HEIGHT-20, 100, 50)
         pg.draw.rect(gs.win, gs.WHITE, new_game)
-        draw_text('Play', gs.font, (gs.BLACK), gs.win, gs.center_WIDTH, gs.center_HEIGHT)
+        draw_text('New Game', gs.font, (gs.BLACK), gs.win, gs.center_WIDTH, gs.center_HEIGHT)
         if new_game.collidepoint((mx,my)):
             if click:
                 menu = False
-                game_loop()
+                new_player()
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -106,6 +153,7 @@ def pause_menu():
                 main_menu()
         inventory = pg.Rect(500, 600, 100, 50)
         pg.draw.rect(gs.win, gs.WHITE, inventory)
+        draw_text(gs.name, gs.font, (gs.GREEN), gs.win, 50, 25) ###########PRINTS NAME TEST
         if inventory.collidepoint((mx,my)):
             if click:
                 pause = False
@@ -129,7 +177,7 @@ def speech1():
     while talk:
         Mleft = 400
         MTop = 250
-        speech.TypeText(Mleft, MTop, ss.speechList["chomel"]["chomel"], 200)
+        speech.TypeText(Mleft, MTop, ss.speechList["chomel"]["perso"], 200)
         #speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["machine"], 200)
         if not gs.speech:
             talk = False
@@ -157,7 +205,7 @@ def game_loop():
                 elif event.key == pg.K_s:
                     speech1()
             elif event.type == pg.QUIT:
-                gs.run = False
+                pg.quit()
 
     #####TODO:insérer fonction teleportation (gère le changement de maps)
 

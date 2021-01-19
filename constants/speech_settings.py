@@ -1,4 +1,5 @@
 import pygame as pg
+from constants import game_settings as gs
 
 speechList = {
     "coffee": {
@@ -14,5 +15,10 @@ speechList = {
         ,
         "perso":
             "Jolie écharpe"
+        ,
+        "name":
+            "My name is {}".format(gs.name)
     }
 }
+
+#speechList["chomel"]["name"] = str(gs.name)
