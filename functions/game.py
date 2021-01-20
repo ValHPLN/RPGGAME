@@ -7,6 +7,7 @@ from classes import mapping
 from functions import speech
 import random
 
+
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
     # Game Icon (HETIC LOGO)
@@ -42,11 +43,12 @@ def new_player():
     char_create = True
     click = False
     active = False
-    color_inactive = pg.Color('lightskyblue3')
-    color_active = pg.Color('dodgerblue2')
+    color_inactive = pg.Color(gs.LIGHTGREY)
+    color_active = pg.Color(gs.GREEN)
     color = color_inactive
-
-    input_box = pg.Rect(gs.center_WIDTH,gs.center_HEIGHT, 100,100)
+    name_title = text_format("What's your name ?", gs.menuFont, 60, gs.GREEN)
+    name_title_rect = name_title.get_rect()
+    input_box = pg.Rect(gs.center_WIDTH - (name_title_rect[2] / 3.5),300, 10,30)
     confirm = False
     while char_create:
         while not confirm:
@@ -81,7 +83,7 @@ def new_player():
             input_box.w = width
             gs.win.blit(txt_surface,(input_box.x+5, input_box.y+5))
             pg.draw.rect(gs.win, color, input_box, 2)
-            draw_text("What's your name ?", gs.font, (gs.WHITE), gs.win, gs.center_HEIGHT, gs.center_WIDTH)
+            gs.win.blit(name_title, (gs.WIDTH / 2 - (name_title_rect[2] / 2), 150))
             pg.display.update()
             gs.clock.tick(gs.FPS)
 
