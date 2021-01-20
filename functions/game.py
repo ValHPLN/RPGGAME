@@ -186,25 +186,38 @@ def inventory_menu():
 def pause_menu():
     pause = True
     click = False
+    selected = None
     while pause:
+        #mmenu = pg.Surface((gs.WIDTH, gs.HEIGHT), pg.SRCALPHA)
+        #pg.draw.rect(mmenu, gs.BLACK, mmenu.get_rect(), 10)
+        #mmenu = mmenu.convert_alpha()
+        #mmenu.fill(gs.BLACK)
+        #mmenu.set_alpha(10)
+        #gs.win.blit(mmenu, (0, 0))
         mx, my = pg.mouse.get_pos()
-        mainmenu = pg.Rect(500, 500, 100, 50)
-        mmenu = pg.Surface((gs.WIDTH, gs.HEIGHT))
-        mmenu.set_alpha(10)
-        mmenu.fill(gs.BLACK)
-        gs.win.blit(mmenu,(0,0))
-        pg.draw.rect(gs.win, gs.WHITE, mainmenu)
-        if mainmenu.collidepoint((mx,my)):
-            if click:
-                pause = False
-                main_menu()
-        inventory = pg.Rect(500, 600, 100, 50)
-        pg.draw.rect(gs.win, gs.WHITE, inventory)
-        draw_text(gs.name, gs.font, (gs.GREEN), gs.win, 50, 25) ###########PRINTS NAME TEST
-        if inventory.collidepoint((mx,my)):
-            if click:
-                pause = False
-                inventory_menu()
+        pause_title = text_format("Pause", gs.menuFont, 60, gs.GREEN)
+        if selected == "Resume":
+            text_resume = text_format("Resume", gs.menuFont, 75, gs.WHITE)
+        else:
+            text_resume = text_format("Resume", gs.menuFont, 75, gs.BLACK)
+        if selected == "Main Menu":
+            text_menu = text_format("Main Menu", gs.menuFont, 75, gs.WHITE)
+        else:
+            text_menu = text_format("Main Menu", gs.menuFont, 75, gs.BLACK)
+
+
+        title_rect = pause_title.get_rect()
+        resume_rect = text_resume.get_rect()
+        menu_rect = text_menu.get_rect()
+        gs.win.blit(pause_title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
+        gs.win.blit(text_resume, (gs.WIDTH / 2 - (resume_rect[2] / 2), 300))
+        gs.win.blit(text_menu, (gs.WIDTH / 2 - (menu_rect[2] / 2), 360))
+        title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+        updateX = (gs.WIDTH / 2 - (resume_rect[2] / 2))
+        updateY1 = 300
+        updateY2 = 360
+        resume_rect.x, resume_rect.y = updateX, updateY1
+        menu_rect.x, menu_rect.y = updateX, updateY2
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -212,10 +225,25 @@ def pause_menu():
                     pause = False
             elif event.type == pg.QUIT:
                 pg.quit()
+                quit()
+            if resume_rect.collidepoint((mx, my)):
+                selected = "Resume"
+            elif menu_rect.collidepoint((mx, my)):
+                selected = "Main Menu"
+            else:
+                selected = None
+            if event.type == pg.MOUSEBUTTONUP:
+                if event.button == 1:
+                    click = False
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
-
+                    if click:
+                        if selected == "Resume":
+                            pause = False
+                        elif selected == "Main Menu":
+                            pause = False
+                            main_menu()
         pg.display.update()
         gs.clock.tick(gs.FPS)
 
