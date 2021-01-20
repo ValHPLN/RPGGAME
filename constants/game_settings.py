@@ -7,12 +7,13 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 DARKGREY = (40, 40, 40)
 LIGHTGREY = (100, 100, 100)
-GREEN = (0, 255, 0)
+GREEN = (41, 242, 148)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
 # Window settings
 font = pg.font.SysFont(None, 20)
+menuFont = "Retro.ttf"
 FPS = 60
 name = ""
 speech = None

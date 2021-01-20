@@ -17,7 +17,6 @@ def win_init():
     init_game()
 
 
-
 def init_game():
     #loading_screen()
     #load tileset
@@ -31,11 +30,13 @@ def init_game():
     gs.char = player.Player(randomPlayer)
     main_menu() # starts game
 
+
 def draw_text(text, font, color, surface, x, y):
     textobj = gs.font.render(text,1,color)
     textrect = textobj.get_rect()
     textrect.center = (x,y)
     surface.blit(textobj,textrect)
+
 
 def new_player():
     char_create = True
@@ -84,21 +85,45 @@ def new_player():
             pg.display.update()
             gs.clock.tick(gs.FPS)
 
+
+def text_format(message, textFont, textSize, textColor):
+    newFont=pg.font.Font(textFont, textSize)
+    newText=newFont.render(message, 0, textColor)
+
+    return newText
+
+
 def main_menu():
     menu = True
     click = False
+    selected = None
     while menu:
         gs.win.fill((gs.DARKGREY))
-        draw_text('main menu', gs.font, (gs.BLACK), gs.win, 50,25)
         mx, my = pg.mouse.get_pos()
+        title = text_format("HETIC LIFE", gs.menuFont, 90, gs.GREEN)
+        if selected == "start":
+            text_start = text_format("START", gs.menuFont, 75, gs.WHITE)
+        else:
+            text_start = text_format("START", gs.menuFont, 75, gs.BLACK)
+        if selected == "quit":
+            text_quit = text_format("QUIT", gs.menuFont, 75, gs.WHITE)
+        else:
+            text_quit = text_format("QUIT", gs.menuFont, 75, gs.BLACK)
 
-        new_game = pg.Rect(gs.center_WIDTH-50,gs.center_HEIGHT-20, 100, 50)
-        pg.draw.rect(gs.win, gs.WHITE, new_game)
-        draw_text('New Game', gs.font, (gs.BLACK), gs.win, gs.center_WIDTH, gs.center_HEIGHT)
-        if new_game.collidepoint((mx,my)):
-            if click:
-                menu = False
-                new_player()
+
+        title_rect = title.get_rect()
+        start_rect = text_start.get_rect()
+        quit_rect = text_quit.get_rect()
+        gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
+        gs.win.blit(text_start, (gs.WIDTH / 2 - (start_rect[2] / 2), 300))
+        gs.win.blit(text_quit, (gs.WIDTH / 2 - (quit_rect[2] / 2), 360))
+        title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+        updateX = (gs.WIDTH / 2 - (start_rect[2] / 2))
+        updateY1 = 300
+        updateY2 = 360
+        start_rect.x, start_rect.y = updateX, updateY1
+        quit_rect.x, quit_rect.y = updateX, updateY2
+
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -106,16 +131,32 @@ def main_menu():
                     menu = False
             elif event.type == pg.QUIT:
                 pg.quit()
-            if event.type == pg.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
+                quit()
+            if start_rect.collidepoint((mx, my)):
+                selected = "start"
+            elif quit_rect.collidepoint((mx, my)):
+                selected = "quit"
+            else:
+                selected = None
             if event.type == pg.MOUSEBUTTONUP:
                 if event.button == 1:
                     click = False
-
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+                    if click:
+                        if selected == "start":
+                            menu = False
+                            if gs.name == '':
+                                new_player()
+                            else:
+                                game_loop()
+                        elif selected == "quit":
+                            quit()
 
         pg.display.update()
         gs.clock.tick(gs.FPS)
+
 
 def inventory_menu():
     invent = True
@@ -138,6 +179,7 @@ def inventory_menu():
 
         pg.display.update()
         gs.clock.tick(gs.FPS)
+
 
 def pause_menu():
     pause = True
@@ -175,6 +217,7 @@ def pause_menu():
         pg.display.update()
         gs.clock.tick(gs.FPS)
 
+
 def speech1():
     talk = True
     while talk:
@@ -187,6 +230,7 @@ def speech1():
         gs.clock.tick(gs.FPS)
         # updates screen
         pg.display.update()
+
 
 def game_loop():
     # Game Loop
@@ -209,6 +253,7 @@ def game_loop():
                     speech1()
             elif event.type == pg.QUIT:
                 pg.quit()
+                quit()
 
     #####TODO:insérer fonction teleportation (gère le changement de maps)
 
@@ -221,7 +266,7 @@ def game_loop():
         pg.display.update()
 
 
-#todo: def teleportation(): (gère changement de map)
+# todo: def teleportation(): (gère changement de map)
 
 
 
