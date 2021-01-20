@@ -22,7 +22,7 @@ def load_tileset():
             id += 1  # J'incrémente les IDs
 
 
-def load_sprites():
+def load_sprites(): #PAS UTILISÉ
     """Charge les sprites
     Permets de charger les sprites des différents dictionnaires
     """

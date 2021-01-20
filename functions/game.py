@@ -5,6 +5,7 @@ import pygame as pg
 from classes import player
 from classes import mapping
 from functions import speech
+import random
 
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
@@ -21,11 +22,13 @@ def init_game():
     #loading_screen()
     #load tileset
     load.load_tileset()
-    load.load_sprites()
-    gs.map = mapping.Map("MapHeticV2", (30, -720), "hetic.ogg")  # Chargement de la map
+    #load.load_sprites2()
+    gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Chargement de la map
     #setup map
     #load enemies
-    gs.char = player.Player()
+    playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man", "Old_woman", "Pier", "Rob", "Roki", "Samuel", "Santa_claus",)
+    randomPlayer = playerList[random.randint(0, len(playerList))]
+    gs.char = player.Player(randomPlayer)
     main_menu() # starts game
 
 def draw_text(text, font, color, surface, x, y):

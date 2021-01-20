@@ -6,19 +6,20 @@ import pygame as pg
 
 
 class Player():
-    def __init__(self):
+    def __init__(self, randomPlayer):
 
+        self.randomPlayer = "img/char/New/" + randomPlayer + "_run_32x32.png"
         self.sprite = None #initialises PLayer
         self.free = True #is player busy
         self.count = 0
         self.frame = 0
-        self.direction = "down"
+        self.direction = "up"
         self.mouvement = "base"
         self.hitbox = col.Hitbox("player")
         self.hitbox_object = col.Hitbox("object")
         self.health = 10 #player health
         self.hurt = False #player hurt state
-        self.hitbox.rect = pg.Rect((0,0),(64,25)) #creat rect on player feet for collisions
+        self.hitbox.rect = pg.Rect((0,0),(56,0)) #creat rect on player feet for collisions
         self.hitbox.rect.center = (gs.center_WIDTH, gs.center_HEIGHT+13)
         self.hitbox.mask = pg.Mask((25,20))
         self.hitbox.mask.fill()
@@ -69,6 +70,7 @@ class Player():
         else:  # Si la boucle n'est pas cassée: Aucune touche trouvée
             self.free = True
             self.mouvement = "base"
+            self.frame = 3
 
 
     def actualiser_frame(self):
@@ -76,7 +78,7 @@ class Player():
         # On vérifie si il y a un nombre de tick entre frame défini
         if ps.timing[self.mouvement][0] is None:  # Si il y en a pas
             self.compteur = 0
-            self.frame = 0
+            self.frame = 5
         else:  # Si il y en a un
             # Maintenant on incrémente le compteur des animations si besoin
             if self.compteur < ps.timing[self.mouvement][0]:
@@ -101,10 +103,6 @@ class Player():
             - Le mouvement
             - La frame
         """
-        # CHARGEMENT DE L'IMAGE DU SPRITE
-        # Charger la liste de sprites relative a la direction et le mouvement
-        sprite = ps.animation[self.direction][self.mouvement]
-        self.sprite = sprite[self.frame]  # Prendre le sprite correspondant
         cs.groups["player"] = [self.hitbox]
 
     def update(self):
@@ -112,10 +110,23 @@ class Player():
         self.actualiser_frame()  # Actualiser les frames
         self.actualiser_sprite()  # Actualiser le sprite
 
-
         # Je calcule la position de rendu du sprite afin qu'il soit bien centré
         x_rendu = gs.center_WIDTH - ps.sprite_height / 2  # Le x de rendu
         y_rendu = gs.center_HEIGHT - ps.sprite_width / 2  # Le y de rendu
 
-        gs.win.blit(self.sprite, (x_rendu, y_rendu))  # Affiche le sprite
+        direction = ["right", "up", "left", "down"]
+        numero = [0, 1, 2, 3, 4, 5]
+
+        sprite_set = pg.image.load(self.randomPlayer)
+        sprites = []
+        for i in range(24):
+            sprites.append(sprite_set.subsurface([i * 32, 0, 32, 64]))
+
+        indexDirection = direction.index(self.direction)
+        indexNumero = numero.index(self.frame)
+        index = indexDirection * 6 + indexNumero
+
+        for i, s in enumerate(sprites):
+            if i == index:
+                gs.win.blit(s, (x_rendu, y_rendu))
 

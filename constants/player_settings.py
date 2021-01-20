@@ -26,11 +26,11 @@ timing = {
     # libre = Libérer le personnage après l'animation ? True = oui False = non
     # reset = revenir sur base après la fin de l'animation ? (Sinon on répète)
     "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-    "walk": [4, 8, True, False],
+    "walk": [4, 5, True, False],
     }
 
 ###################################################
-animation = {
+animation = { #PAS UTILISÉ
  "down": {
         "base": [
             sprite_still + "down.png"   # Base
