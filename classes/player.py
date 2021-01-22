@@ -62,6 +62,10 @@ class Player():
                 if self.hitbox.collision("tuile"):  # Si il y a collision:
                     # Annuler le déplacement de la hitbox de la map
                     gs.map.bouger_hitbox(-x, -y)
+                elif self.hitbox.collision("object"):  # Si il y a collision:
+                    # Annuler le déplacement de la hitbox de la map
+                    gs.map.bouger(x, y)
+                    print("contact")
                 else:  # Sinon, si il y a pas collision
                     gs.map.bouger(x, y)
 

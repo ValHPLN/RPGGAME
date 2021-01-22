@@ -2,6 +2,18 @@ import pygame as pg
 
 tuiles = {}
 
+objects2 = (  # Liste des blocs sur lesquels on ne peux pas aller
+    "1268"
+)
+
+objectsMem = {}
+
+
+objects = {
+  "1268": "Etiquette",
+  "1269": "Mustang",
+  "1270": "1964"
+}
 
 collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
     "215",

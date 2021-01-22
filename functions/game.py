@@ -29,7 +29,8 @@ def init_game():
     playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man", "Old_woman", "Pier", "Rob", "Roki", "Samuel", "Santa_claus",)
     randomPlayer = playerList[random.randint(0, len(playerList))]
     gs.char = player.Player(randomPlayer)
-    main_menu() # starts game
+    game_loop()
+    #main_menu() # starts game
 
 
 def draw_text(text, font, color, surface, x, y):
