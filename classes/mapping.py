@@ -2,6 +2,7 @@ from constants import game_settings as gs
 from constants import tiles_settings as ts
 from constants import collisions_settings as cs
 from classes import collision as col
+from classes import npcs as nonpc
 import pygame as pg
 
 class Map:
@@ -50,7 +51,6 @@ class Map:
         """
         gs.win.blit(self.arriere_plan, (self.x_camera,
                                           self.y_camera))  # Affiche l'arrière plan
-
 
     def afficher_premier_plan(self):
         """ Affiche la 4 eme couche de la map
@@ -108,14 +108,6 @@ class Map:
             for y in range(self.y):  # Parcours les colonnes
                 for x in range(self.x):  # Je parcours les lignes
                     if self.matrices[i][y][x] in ts.tuiles:  # Si la tuile existe
-                        if self.matrices[i][y][x] in ts.objects:  # Si on lui a assigné des collisions
-                            x_tuile = self.x_camera + x*32  # Position de la tuile (abscisses)
-                            y_tuile = self.y_camera + y*32  # Position de la tuile (ordonnée)
-                            tuile = ts.tuiles[self.matrices[i][y][x]]  # On extrait l'image
-                            objectsMem = ts.tuiles[self.matrices[i][y][x]]
-                            mask = pg.mask.from_surface(tuile)  # On fait le mask a partir de cette image
-                            rect = pg.Rect(x_tuile, y_tuile, 32, 32)  # On créé le rectangle associé a l'image
-                            col.Hitbox("object", rect, mask)  # Sauvegarder la liste (rect + mask)
                         if self.matrices[i][y][x] in ts.collisions:  # Si on lui a assigné des collisions
                             x_tuile = self.x_camera + x*32  # Position de la tuile (abscisses)
                             y_tuile = self.y_camera + y*32  # Position de la tuile (ordonnée)
@@ -123,6 +115,30 @@ class Map:
                             mask = pg.mask.from_surface(tuile)  # On fait le mask a partir de cette image
                             rect = pg.Rect(x_tuile, y_tuile, 32, 32)  # On créé le rectangle associé a l'image
                             col.Hitbox("tuile", rect, mask)  # Sauvegarder la liste (rect + mask)
+
+    def vider_monstres(self):
+        """ Supprime tout les monstres
+        Utilisé lors d'un changement de map
+        """
+        gs.entities_list = []
+
+    def load_npc(self):
+        """ Crée les monstres associés a une map
+        Créer des monstres d'une liste
+        """
+        liste_npcs = []
+
+        for type_npc in gs.level[self.nom]:
+            liste_npcs.append(type_npc)
+
+        for type_npc in liste_npcs:
+            for liste_parametre in gs.level[self.nom][type_npc]:
+                npcss = nonpc.Npc(type_npc, liste_parametre)
+                gs.entities_list.append(npcss)
+
+        for npc in gs.entities_list:
+            npc.deplacement()
+            npc.display()
 
 
     def charger_images(self):

@@ -8,8 +8,8 @@ sprite_width = 64
 sprite_still = "img/char/char_face_"
 sprite_move = "img/char/char_walk_"
 
-keys = {  # Les touches pour les déplacements
-    # [x, y, "direction", "mouvement", libre?]
+keys = {  # move keys
+    # [x, y, "direction", "mouvement", free?]
     # Nombre de pixels en x, nombre de pixels en y, direction, mouvement.
     # libre = Est-ce que le personnage est libre ? True/False
     pg.K_UP:    [0, vel, "up", "walk", True],

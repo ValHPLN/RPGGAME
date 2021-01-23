@@ -29,10 +29,17 @@ GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 center_WIDTH = WIDTH/2
 center_HEIGHT = HEIGHT/2
-
+entities_list = []
 
 clock = None
 run = None
 
-# Initalises Pygame
 
+# [position x,y],[sprite_size], "mouvement type",
+level = {
+    "MapHeticV2": {
+        "npc1" : [
+            [[500, 660], [64,64], "random"]
+        ]
+    }
+}

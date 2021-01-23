@@ -24,12 +24,11 @@ def init_game():
     load.load_tileset()
     #load.load_sprites2()
     gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Chargement de la map
-    #setup map
-    #load enemies
+    gs.map.load_npc()
     playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man", "Old_woman", "Pier", "Rob", "Roki", "Samuel", "Santa_claus",)
     randomPlayer = playerList[random.randint(0, len(playerList))]
     gs.char = player.Player(randomPlayer)
-    game_loop()
+    main_menu()
     #main_menu() # starts game
 
 
@@ -168,6 +167,10 @@ def inventory_menu():
     while invent:
         inventory_box = pg.Rect(50, 50, 1000, 500)
         pg.draw.rect(gs.win, gs.WHITE, inventory_box)
+        title = text_format("Inventory", gs.menuFont, 50, gs.GREEN)
+        title_rect = title.get_rect()
+        gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
+        title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
@@ -262,6 +265,11 @@ def speech1():
         # updates screen
         pg.display.update()
 
+def handle_npc():
+    for npc in gs.entities_list:
+        npc.deplacement()
+        npc.display()
+
 
 def game_loop():
     # Game Loop
@@ -269,6 +277,7 @@ def game_loop():
         gs.win.fill((gs.DARKGREY))
         gs.char.player_controls() #links function to char variable
         gs.map.afficher_arriere_plan()
+        handle_npc()
         gs.char.update()
         gs.map.afficher_premier_plan()
 

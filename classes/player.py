@@ -62,10 +62,6 @@ class Player():
                 if self.hitbox.collision("tuile"):  # Si il y a collision:
                     # Annuler le déplacement de la hitbox de la map
                     gs.map.bouger_hitbox(-x, -y)
-                elif self.hitbox.collision("object"):  # Si il y a collision:
-                    # Annuler le déplacement de la hitbox de la map
-                    gs.map.bouger(x, y)
-                    print("contact")
                 else:  # Sinon, si il y a pas collision
                     gs.map.bouger(x, y)
 
@@ -100,6 +96,7 @@ class Player():
                     if ps.timing[self.mouvement][3]:  # Si on veux revenir
                         self.mouvement = "base"  # Sur base, on le fait
 
+
     def actualiser_sprite(self):
         """ Met à jour le sprite
         Mise à jour du sprite en fonction de:
@@ -108,6 +105,7 @@ class Player():
             - La frame
         """
         cs.groups["player"] = [self.hitbox]
+
 
     def update(self):
         """Actualise les stats du personnage"""
@@ -133,4 +131,5 @@ class Player():
         for i, s in enumerate(sprites):
             if i == index:
                 gs.win.blit(s, (x_rendu, y_rendu))
+
 
