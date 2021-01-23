@@ -39,7 +39,7 @@ run = None
 level = {
     "MapHeticV2": {
         "npc1" : [
-            [[500, 660], [64,64], "random"]
+            [[500, 660], [64,64], "base"]
         ]
     }
 }

@@ -85,7 +85,7 @@ class Entity():
         else:
             self.position[0] = x - deplacement_x   #en x
             self.position[1] = y - deplacement_y #en y
-            self.mouvement = ""
+            self.mouvement = "base"
             self.direction = action
 
         self.bouger_hitbox((-deplacement_x, -deplacement_y))
