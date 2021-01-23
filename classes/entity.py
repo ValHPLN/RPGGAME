@@ -12,10 +12,10 @@ class Entity():
         self.pos_last_cam = [gs.map.x_camera, gs.map.y_camera]
         self.position = [gs.map.x_camera, gs.map.y_camera]
         self.id = id
-        self.taille=[1,1]
+        self.taille = [1, 1]
         self.count = 0
         self.action_count = 0
-        self.frame = 0
+        self.frame = 5
         self.sprite = None
         self.direction = "down"
         self.mouvement = "base"
@@ -44,9 +44,9 @@ class Entity():
     def bouger_hitbox(self, coord):
         """ Gere le mouvement de la hitbox
         """
-        self.hitbox.rect = self.sprite.get_rect(center=(self.position[0] + coord[0] + self.taille[0]/2,
+        self.hitbox.rect = self.sprite.get_rect(center=(self.position[0] + coord[0] + self.taille[0]/2 - 56,
                                                         self.position[1] + coord[1] + self.taille[1]/2))
-        self.hitbox.mask = pg.Mask((self.taille[0], self.taille[1]))
+        self.hitbox.mask = pg.Mask((25, 20))
         self.hitbox.mask.fill()  # Remplir le hitbox pour créer un bloc
 
     def deplacement(self):
@@ -103,8 +103,8 @@ class Entity():
         # Si le monstre est immobile, retour des conteurs à 0
         if mouvement[0] is None :
             self.compteur = 0
-            self.frame = 0
-            self.mouvement = "base"
+            self.frame = 5
+            self.mouvement = "walk"
         else:
             # Maintenant on incrémente le compteur des animations si besoin
             if self.compteur < mouvement[0]:
