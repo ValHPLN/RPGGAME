@@ -1,6 +1,6 @@
 import pygame as pg
 import random as rd
-from constants import game_settings as gs
+from constants import game_settings as gs, player_settings as ps
 from constants import entity_settings as es
 from constants import collisions_settings as cs
 from classes import collision as col
@@ -8,6 +8,7 @@ from classes import collision as col
 class Entity():
 
     def __init__(self, id=None):
+        self.chosenPnj = "img/char/New/Bouncer_run_32x32.png"
         self.pos_last_cam = [gs.map.x_camera, gs.map.y_camera]
         self.position = [gs.map.x_camera, gs.map.y_camera]
         self.id = id
@@ -103,6 +104,7 @@ class Entity():
         if mouvement[0] is None :
             self.compteur = 0
             self.frame = 0
+            self.mouvement = "base"
         else:
             # Maintenant on incrémente le compteur des animations si besoin
             if self.compteur < mouvement[0]:
@@ -144,4 +146,29 @@ class Entity():
         y = self.position[1]
 
         # Affiche le sprite
-        gs.win.blit(self.sprite, (x, y))
+        #gs.win.blit(self.sprite, (x, y))
+
+        #self.actualiser_frame()  # Actualiser les frames
+        #self.actualiser_sprite()  # Actualiser le sprite
+
+        # Je calcule la position de rendu du sprite afin qu'il soit bien centré
+        x_rendu = x - ps.sprite_height / 2  # Le x de rendu
+        y_rendu = y - ps.sprite_width / 2  # Le y de rendu
+
+        direction = ["right", "up", "left", "down"]
+        numero = [0, 1, 2, 3, 4, 5]
+
+        sprite_set = pg.image.load(self.chosenPnj)
+        sprites = []
+        for i in range(24):
+            sprites.append(sprite_set.subsurface([i * 32, 0, 32, 64]))
+
+        indexDirection = direction.index(self.direction)
+        indexNumero = numero.index(self.frame)
+        index = indexDirection * 6 + indexNumero
+
+        for i, s in enumerate(sprites):
+            if i == index:
+                gs.win.blit(s, (x_rendu, y_rendu))
+
+
