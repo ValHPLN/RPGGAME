@@ -25,8 +25,9 @@ def init_game():
     #load.load_sprites2()
     gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
-    playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man", "Old_woman", "Pier", "Rob", "Roki", "Samuel", "Santa_claus",)
+    playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man_Josh", "Old_woman_Jenny", "Pier", "Rob", "Roki", "Samuel", "Santa_claus")
     randomPlayer = playerList[random.randint(0, 20)]
+    print(randomPlayer)
     gs.char = player.Player(randomPlayer)
     main_menu()
     #main_menu() # starts game
