@@ -68,7 +68,7 @@ class Entity():
 
         # On bouge le hitbox a cette emplacement
         self.bouger_hitbox((deplacement_x, deplacement_y))
-        if not self.hitbox.collision("player"):  # S'il n'y a pas:
+        if not self.hitbox.collision("tuile"):  # S'il n'y a pas:
 
             # On actualise les positon
             self.position[0] = x   #en x

@@ -56,6 +56,7 @@ def new_player():
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     pg.quit()
+                    quit()
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         click = True
@@ -68,14 +69,16 @@ def new_player():
                     if event.key == pg.K_ESCAPE:
                         char_create = False
                         main_menu()
-                    if event.key == pg.K_RETURN:
-                        char_create = False
-                        game_loop()
-                        return gs.name
-                    elif event.key == pg.K_BACKSPACE:
-                        gs.name = gs.name[:-1]
-                    else:
-                        gs.name += event.unicode
+                    if active:
+                        if event.key == pg.K_RETURN:
+                            if gs.name != '':
+                                char_create = False
+                                game_loop()
+                                return gs.name
+                        elif event.key == pg.K_BACKSPACE:
+                            gs.name = gs.name[:-1]
+                        else:
+                            gs.name += event.unicode
 
 
             gs.win.fill((gs.DARKGREY))
@@ -193,12 +196,6 @@ def pause_menu():
     click = False
     selected = None
     while pause:
-        #mmenu = pg.Surface((gs.WIDTH, gs.HEIGHT), pg.SRCALPHA)
-        #pg.draw.rect(mmenu, gs.BLACK, mmenu.get_rect(), 10)
-        #mmenu = mmenu.convert_alpha()
-        #mmenu.fill(gs.BLACK)
-        #mmenu.set_alpha(10)
-        #gs.win.blit(mmenu, (0, 0))
         mx, my = pg.mouse.get_pos()
         pause_title = text_format("Pause", gs.menuFont, 60, gs.GREEN)
         if selected == "Resume":
