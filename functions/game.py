@@ -1,3 +1,5 @@
+from classes.inventory import Inventory
+from classes.inventory import Consumable
 from constants import game_settings as gs
 from constants import speech_settings as ss
 from functions import load
@@ -19,18 +21,15 @@ def win_init():
 
 
 def init_game():
-    #loading_screen()
-    #load tileset
     load.load_tileset()
-    #load.load_sprites2()
     gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
     playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man_Josh", "Old_woman_Jenny", "Pier", "Rob", "Roki", "Samuel", "Santa_claus")
     randomPlayer = playerList[random.randint(0, 20)]
     print(randomPlayer)
     gs.char = player.Player(randomPlayer)
+
     main_menu()
-    #main_menu() # starts game
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -169,12 +168,19 @@ def inventory_menu():
     click = False
     selected = None
     while invent:
+        inventory = Inventory(player, 10, 5, 2)  ##############################
+        hp_potion = Consumable('img/potionRed.png', 2, 30)  ###################
+        inventory.addItemInv(hp_potion)  ##########################
         inventory_box = pg.Rect(50, 50, 1000, 500)
         pg.draw.rect(gs.win, gs.WHITE, inventory_box)
         title = text_format("Inventory", gs.menuFont, 50, gs.GREEN)
         title_rect = title.get_rect()
         gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
         title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+        inventory.toggleInventory() #####################################
+
+
+
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
@@ -186,6 +192,16 @@ def inventory_menu():
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+                if inventory.display_inventory:
+                    mouse_pos = pg.mouse.get_pos()
+                    inventory.checkSlot(gs.win, mouse_pos)
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                if inventory.display_inventory:
+                    inventory.moveItem(gs.win)
+            if event.type == pg.MOUSEBUTTONUP and event.button == 1:
+                if inventory.display_inventory:
+                    inventory.placeItem(gs.win)
 
         pg.display.update()
         gs.clock.tick(gs.FPS)
@@ -262,6 +278,7 @@ def speech1():
         gs.clock.tick(gs.FPS)
         # updates screen
         pg.display.update()
+
 
 def handle_npc():
     for npc in gs.entities_list:
