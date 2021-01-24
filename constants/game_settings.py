@@ -35,14 +35,3 @@ clock = None
 run = None
 
 
-# [position x,y],[sprite_size], "mouvement type",
-level = {
-    "MapHeticV2": {
-        "npc1" : [
-            [[500, 660], [64,64], "base"]
-        ],
-        "npc2": [
-            [[400, 660], [64, 64], "base"]
-        ]
-    }
-}

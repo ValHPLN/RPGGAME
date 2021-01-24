@@ -1,8 +1,9 @@
 from constants import game_settings as gs
 from constants import tiles_settings as ts
 from constants import collisions_settings as cs
+from constants import entity_settings as es
 from classes import collision as col
-from classes import npcs as nonpc
+from classes import npcs
 import pygame as pg
 
 class Map:
@@ -126,15 +127,14 @@ class Map:
         """ Crée les monstres associés a une map
         Créer des monstres d'une liste
         """
+        liste_type = []
         liste_npcs = []
 
-        for type_npc in gs.level[self.nom]:
-            liste_npcs.append(type_npc)
-
-        for type_npc in liste_npcs:
-            for liste_parametre in gs.level[self.nom][type_npc]:
-                npcss = nonpc.Npc(type_npc, liste_parametre)
-                gs.entities_list.append(npcss)
+        for add_type in es.timings[self.nom]:
+            for add_id in es.timings[self.nom][add_type]:
+                for add_value in es.timings[self.nom][add_type][add_id]["init"]:
+                    npcss = npcs.Npc(add_type, add_id, add_value)
+                    gs.entities_list.append(npcss)
 
         for npc in gs.entities_list:
             npc.deplacement()

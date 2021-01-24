@@ -8,19 +8,47 @@ timings = { # Timings des animations
     # images = le nombre d'images de l'animation - 1 (0 compte comme une frame)
     # libre = Libérer le personnage après l'animation ? True = oui False = non
     # reset = revenir sur base après la fin de l'animation ? (Sinon on répète)
-    "npc" : {
-        "npc1" : {
-            "pathFile": "img/char/New/Bouncer_run_32x32.png",
-            "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-            "walk": [4, 5, True, False],
-            "pathChar": ["up", "left", "down", "right"]
+    "MapHeticV2": {
+        "npc": {
+            "npc1": {
+                "init":[[[500, 660], [64,64], "base"]],
+                "pathFile": "img/char/New/Bouncer_run_32x32.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [4, 5, True, False],
+                "pathChar": ["up", "left", "down", "right"]
+            },
+            "npc2": {
+                "init":[[[400, 660], [64,64], "base"]],
+                "pathFile": "img/char/New/Amelia_run_32x32.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [4, 5, True, False],
+                "pathChar": ["up", "right", "down", "left"]
+            },
         },
-        "npc2": {
-            "pathFile": "img/char/New/Amelia_run_32x32.png",
-            "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-            "walk": [4, 5, True, False],
-            "pathChar": ["up", "right", "down", "left"]
-        },
+        "obj": {
+            "coin": {
+                "init":[[[640, 720], [32, 32], "base"]],
+                "pathFile": "img/objects/coin.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": [None]
+            },
+            "coin2": {
+                "init": [[[700, 720], [32, 32], "base"]],
+                "pathFile": "img/objects/coin.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": [None]
+            },
+            "coin3": {
+                "init": [[[750, 720], [32, 32], "base"]],
+                "pathFile": "img/objects/coin.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": [None]
+            },
+        }
+    }
        #"chauve_souris" : {
 
        #    "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
@@ -41,7 +69,7 @@ timings = { # Timings des animations
        #    "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
        #    "marche": [8, 2, True, False]
        #}
-    }
+
 }
 action = {
     "up":    [0, -vitesse, "up", "walk", True],

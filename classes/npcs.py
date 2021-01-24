@@ -20,13 +20,14 @@ class Npc(ent.Entity):
                                                                  - zone (en cours)
     """
     nb_npc = 0
-    def __init__(self, npc_type, parametre):
+    def __init__(self,npc_type, npc_id, parametre):
         """
             * parametre =  [position, taille, type_deplacement, vie, attaque]
         """
         Npc.nb_npc +=1  # On augemente le nombre de monstre
-        npc = "npc_" + npc_type  # Préparation du nom du monstre pour l'initialisation
-        super(Npc, self).__init__(npc)  # Initialisation de la superclasse
+        #npc = "npc_" + npc_type  # Préparation du nom du monstre pour l'initialisation
+        #print(npc_type)
+        super(Npc, self).__init__(npc_type, npc_id, parametre)  # Initialisation de la superclasse
         # Mise en place des différents paramètres..
         x, y = parametre[0]  # Coordonnées relatives a la map
         x += gs.map.x_camera
