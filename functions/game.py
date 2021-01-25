@@ -9,6 +9,12 @@ from classes import mapping
 from functions import speech
 import random
 
+playerList = (
+"Adam", "Alex", "Amelia", "Bob", "Bouncer", "Conference_man",
+"Conference_woman", "Dan", "Edward", "Halloween_Kid_1", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man_Josh",
+"Old_woman_Jenny", "Pier", "Rob", "Roki", "Samuel", "Santa_claus")
+clickArrow = False
+compteur = 0
 
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
@@ -28,10 +34,7 @@ def init_game():
     load.load_tileset()
     gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
-    playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man_Josh", "Old_woman_Jenny", "Pier", "Rob", "Roki", "Samuel", "Santa_claus")
-    randomPlayer = playerList[random.randint(0, 20)]
-
-    print(randomPlayer)
+    randomPlayer = playerList[compteur]
     gs.char = player.Player(randomPlayer)
 
     main_menu()
@@ -45,9 +48,14 @@ def draw_text(text, font, color, surface, x, y):
 
 
 def new_player():
+    global compteur
+    compteur = 0
+    gs.win.fill((gs.DARKGREY))
+    choosePlayer(compteur)
     char_create = True
-    click = False
+    clickArrow = True
     active = False
+    selected = None
     color_inactive = pg.Color(gs.LIGHTGREY)
     color_active = pg.Color(gs.GREEN)
     color = color_inactive
@@ -55,15 +63,59 @@ def new_player():
     name_title_rect = name_title.get_rect()
     input_box = pg.Rect(gs.center_WIDTH - (name_title_rect[2] / 3.5),300, 10,30)
     confirm = False
+
+
+
     while char_create:
         while not confirm:
+            if selected == "leftA":
+                leftArrow = text_format("<", gs.menuFont, 75, gs.WHITE)
+            else:
+                leftArrow = text_format("<", gs.menuFont, 75, gs.BLACK)
+            if selected == "rightA":
+                rightArrow = text_format(">", gs.menuFont, 75, gs.WHITE)
+            else:
+                rightArrow = text_format(">", gs.menuFont, 75, gs.BLACK)
+
+            #gs.win.fill((gs.DARKGREY))
+            txt_surface = gs.font.render(gs.name, True, color)
+            width = max(200, txt_surface.get_width() + 10)
+            input_box.w = width
+            gs.win.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+            pg.draw.rect(gs.win, color, input_box, 2)
+            gs.win.blit(name_title, (gs.WIDTH / 2 - (name_title_rect[2] / 2), 150))
+            leftArrow_rect = leftArrow.get_rect()
+            rightArrow_rect = rightArrow.get_rect()
+            gs.win.blit(leftArrow, (gs.WIDTH / 2 - (leftArrow_rect[2] / 2) - 150, 400))
+            gs.win.blit(rightArrow, (gs.WIDTH / 2 - (rightArrow_rect[2] / 2) + 150, 400))
+            leftArrow_rect.x, leftArrow_rect.y = 450 - (leftArrow_rect[2] / 2), 400
+            rightArrow_rect.x, rightArrow_rect.y = 750 - (leftArrow_rect[2] / 2), 400
+
+            mx, my = pg.mouse.get_pos()
             for event in pg.event.get():
+                #print(mx, my)
+                if leftArrow_rect.collidepoint((mx, my)):
+                    selected = "leftA"
+                elif rightArrow_rect.collidepoint((mx, my)):
+                    selected = "rightA"
+                else:
+                    selected = None
                 if event.type == pg.QUIT:
                     pg.quit()
                     quit()
+                if event.type == pg.MOUSEBUTTONUP:
+                    if event.button == 1:
+                        clickArrow = None
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        click = True
+                        if selected == "leftA":
+                            gs.win.fill((gs.DARKGREY))
+                            compteur = compteur - 1
+                            choosePlayer(compteur)
+                        if selected == "rightA":
+                            gs.win.fill((gs.DARKGREY))
+                            compteur = compteur + 1
+                            choosePlayer(compteur)
                         if input_box.collidepoint(event.pos):
                             active = not active
                         else:
@@ -85,13 +137,8 @@ def new_player():
                             gs.name += event.unicode
 
 
-            gs.win.fill((gs.DARKGREY))
-            txt_surface = gs.font.render(gs.name, True, color)
-            width = max(200, txt_surface.get_width()+10)
-            input_box.w = width
-            gs.win.blit(txt_surface,(input_box.x+5, input_box.y+5))
-            pg.draw.rect(gs.win, color, input_box, 2)
-            gs.win.blit(name_title, (gs.WIDTH / 2 - (name_title_rect[2] / 2), 150))
+
+
             pg.display.update()
             gs.clock.tick(gs.FPS)
 
@@ -101,6 +148,28 @@ def text_format(message, textFont, textSize, textColor):
     newText=newFont.render(message, 0, textColor)
 
     return newText
+
+
+def choosePlayer(number):
+    global compteur
+    max = len(playerList)
+    if number < 0:
+        number = max - 1
+        compteur = number
+    if number > max - 1:
+        number = 0
+        compteur = number
+    print(compteur)
+
+    player1 = "img/char/New/" + playerList[number] + "_run_32x32.png"
+    sprite_set = pg.image.load(player1)
+    print(player1)
+    sprites = []
+    for i in range(24):
+        sprites.append(sprite_set.subsurface([i * 32, 0, 32, 64]))
+
+    for i, s in enumerate(sprites):
+        gs.win.blit(s, (580, 400))
 
 
 def main_menu():
@@ -291,8 +360,10 @@ def handle_npc():
 
 
 def game_loop():
+    randomPlayer = playerList[compteur]
+    gs.char = player.Player(randomPlayer)
     # Game Loop
-     while gs.run:
+    while gs.run:
         gs.win.fill((gs.DARKGREY))
         gs.char.player_controls() #links function to char variable
         gs.map.afficher_arriere_plan()

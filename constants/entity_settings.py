@@ -1,5 +1,5 @@
 
-vitesse = 2
+vitesse = 0.5
 
 
 timings = { # Timings des animations
@@ -15,7 +15,7 @@ timings = { # Timings des animations
                 "pathFile": "img/char/New/Bouncer_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [4, 5, True, False],
-                "pathChar": ["up", "left", "down", "right"]
+                "pathChar": ["up", "up", "left", "left", "down", "down", "right", "right"]
             },
             "npc2": {
                 "init":[[[400, 660], [64,64], "base"]],
