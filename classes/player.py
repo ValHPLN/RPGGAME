@@ -4,9 +4,14 @@ from constants import collisions_settings as cs
 from classes import collision as col
 import pygame as pg
 
+def text_format(message, textFont, textSize, textColor):
+    newFont = pg.font.Font(textFont, textSize)
+    newText = newFont.render(message, 0, textColor)
+    return newText
+
 
 class Player():
-    def __init__(self, randomPlayer):
+    def __init__(self, randomPlayer, hp):
 
         self.randomPlayer = "img/char/New/" + randomPlayer + "_run_32x32.png"
         self.sprite = None #initialises PLayer
@@ -17,7 +22,7 @@ class Player():
         self.mouvement = "base"
         self.hitbox = col.Hitbox("player")
         self.hitbox_object = col.Hitbox("object")
-        self.health = 10 #player health
+        self.health = hp #player health
         self.hurt = False #player hurt state
         self.hitbox.rect = pg.Rect((0,0),(56,0)) #creat rect on player feet for collisions
         self.hitbox.rect.center = (gs.center_WIDTH, gs.center_HEIGHT+13)
@@ -131,5 +136,24 @@ class Player():
         for i, s in enumerate(sprites):
             if i == index:
                 gs.win.blit(s, (x_rendu, y_rendu))
+
+    def interface(self):
+        """ Affiche les information (uniquement vie pour l'instant)
+        """
+        title = text_format("Stamina", gs.menuFont, 15, gs.GREEN)
+        title_rect = title.get_rect()
+        gs.win.blit(title, (gs.WIDTH / 4 - (title_rect[2] / 2), 80))
+        title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+        pg.draw.rect(gs.win, (105, 0, 0), pg.Rect(0, 0, self.health * 20, 10))
+        #police = pg.font.SysFont("arial", 10)
+        #texte = police.render("Vie", True, (255, 255, 255))
+        #cp.ecran.blit(texte, (0, -2))
+
+    #pg.draw.rect(gs.win, (105, 0, 0), pg.Rect(0, 0, self.health*20, 10))
+       #title = text_format("10", gs.menuFont, 90, gs.GREEN)
+       #gs.win.blit(title, (110, 110, 80))
+       #police = pg.font.SysFont("arial", 10)
+       #texte = police.render("Vie", True, (255, 255, 255))
+       #gs.win.blit(texte, (0, -2))
 
 

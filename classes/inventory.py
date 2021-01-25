@@ -1,6 +1,6 @@
 import pygame as pg
 from constants import game_settings as gs
-
+from classes.player import Player
 
 class Inventory:
     def __init__(self, player, totalSlots, cols, rows):
@@ -96,6 +96,7 @@ class Inventory:
             item.use(self, self.player)
 
 
+
 class InventorySlot:
     def __init__(self, x, y):
         self.x = x
@@ -108,7 +109,7 @@ class InventorySlot:
     def drawItems(self, screen):
         if self.item != None and not self.item.is_moving:
             self.image = pg.image.load(self.item.img).convert_alpha()
-            screen.blit(self.image, (self.x - 7, self.y - 7))
+            screen.blit(self.image, (self.x + 20, self.y + 20))
         if self.item != None and self.item.is_moving:
             mousepos1 = pg.mouse.get_pos()
             self.image = pg.image.load(self.item.img).convert_alpha()
@@ -123,8 +124,14 @@ class InventoryItem:
 
 
 class Consumable(InventoryItem):
-    def __init__(self, img, value):
+    def __init__(self, img, value, hp_gain=1):
         InventoryItem.__init__(self, img, value)
+        self.hp_gain = hp_gain
 
-    def use(self, inv):
+    def use(self, inv, target):
         inv.removeItemInv(self)
+        target.add_hp(self.hp_gain)
+
+
+
+

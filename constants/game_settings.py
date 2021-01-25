@@ -21,7 +21,7 @@ char = None
 win = None #Window
 map = None #variable for map
 WIDTH = 1200
-HEIGHT = 800
+HEIGHT = 780
 TITLE = "HETIC LIFE"
 BGCOLOR = DARKGREY #BACKGROUND COLOR
 TILESIZE = 32
@@ -34,5 +34,6 @@ entities_list = []
 change_char = True
 clock = None
 run = None
+base_hp = 10
 
 

@@ -36,8 +36,7 @@ def init_game():
     gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
     randomPlayer = playerList[compteur]
-    gs.char = player.Player(randomPlayer)
-
+    gs.char = player.Player(randomPlayer, gs.base_hp)
     main_menu()
 
 
@@ -363,10 +362,11 @@ def handle_npc():
 
 
 def game_loop():
+    print(dir(player))
     if gs.change_char:
         gs.change_char = False
         randomPlayer = playerList[compteur]
-        gs.char = player.Player(randomPlayer)
+        gs.char = player.Player(randomPlayer, gs.base_hp)
     # Game Loop
     while gs.run:
         gs.win.fill((gs.DARKGREY))
@@ -375,6 +375,8 @@ def game_loop():
         handle_npc()
         gs.char.update()
         gs.map.afficher_premier_plan()
+        gs.char.interface()
+
 
 
      # Events (if you press ESC or close window, leaves game)
