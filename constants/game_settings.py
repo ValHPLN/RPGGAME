@@ -31,7 +31,7 @@ GRIDHEIGHT = HEIGHT / TILESIZE
 center_WIDTH = WIDTH/2
 center_HEIGHT = HEIGHT/2
 entities_list = []
-
+change_char = True
 clock = None
 run = None
 

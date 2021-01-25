@@ -16,6 +16,7 @@ playerList = (
 clickArrow = False
 compteur = 0
 
+
 def win_init():
     pg.display.set_caption("HETIC LIFE") #window title
     # Game Icon (HETIC LOGO)
@@ -124,6 +125,7 @@ def new_player():
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
                         char_create = False
+                        active = False
                         main_menu()
                     if active:
                         if event.key == pg.K_RETURN:
@@ -248,13 +250,14 @@ def inventory_menu():
         inventory.draw(gs.win)
         title = text_format("Inventory", gs.menuFont, 50, gs.GREEN)
         title_rect = title.get_rect()
-        gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
+        gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 250))
         title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     invent = False
+                    inventory.toggleInventory()
                 if event.key == pg.K_i:
                     invent = False
                     inventory.toggleInventory()
@@ -360,8 +363,10 @@ def handle_npc():
 
 
 def game_loop():
-    randomPlayer = playerList[compteur]
-    gs.char = player.Player(randomPlayer)
+    if gs.change_char:
+        gs.change_char = False
+        randomPlayer = playerList[compteur]
+        gs.char = player.Player(randomPlayer)
     # Game Loop
     while gs.run:
         gs.win.fill((gs.DARKGREY))
