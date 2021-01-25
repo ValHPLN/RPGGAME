@@ -21,11 +21,16 @@ def win_init():
 
 
 def init_game():
+    global inventory
+    inventory = Inventory(player, 10, 5, 2)
+    hp_potion = Consumable('img/potionRed.png', 2)  ###################
+    inventory.addItemInv(hp_potion)
     load.load_tileset()
     gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
     playerList = ("Adam", "Alex", "Amelia", "Bob", "Bouncer", "Chef_Alex", "Chef_Lucy", "Chef_Molly", "Chef_Rob", "Conference_man", "Conference_woman", "Dan", "Edward", "Halloween_Kid", "kid_Abby", "kid_Oscar", "Lucy", "Molly", "Old_man_Josh", "Old_woman_Jenny", "Pier", "Rob", "Roki", "Samuel", "Santa_claus")
     randomPlayer = playerList[random.randint(0, 20)]
+
     print(randomPlayer)
     gs.char = player.Player(randomPlayer)
 
@@ -167,19 +172,15 @@ def inventory_menu():
     invent = True
     click = False
     selected = None
+    inventory.toggleInventory()
     while invent:
-        inventory = Inventory(player, 10, 5, 2)  ##############################
-        hp_potion = Consumable('img/potionRed.png', 2, 30)  ###################
-        inventory.addItemInv(hp_potion)  ##########################
-        inventory_box = pg.Rect(50, 50, 1000, 500)
+        inventory_box = pg.Rect(gs.center_WIDTH-300, gs.center_HEIGHT-200, 600, 400)
         pg.draw.rect(gs.win, gs.WHITE, inventory_box)
+        inventory.draw(gs.win)
         title = text_format("Inventory", gs.menuFont, 50, gs.GREEN)
         title_rect = title.get_rect()
         gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
         title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
-        inventory.toggleInventory() #####################################
-
-
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -187,8 +188,10 @@ def inventory_menu():
                     invent = False
                 if event.key == pg.K_i:
                     invent = False
+                    inventory.toggleInventory()
             elif event.type == pg.QUIT:
                 pg.quit()
+                quit()
             if event.type == pg.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
@@ -202,6 +205,7 @@ def inventory_menu():
             if event.type == pg.MOUSEBUTTONUP and event.button == 1:
                 if inventory.display_inventory:
                     inventory.placeItem(gs.win)
+
 
         pg.display.update()
         gs.clock.tick(gs.FPS)

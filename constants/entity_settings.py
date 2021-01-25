@@ -49,32 +49,11 @@ timings = { # Timings des animations
             },
         }
     }
-       #"chauve_souris" : {
-
-       #    "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-       #    "marche": [4, 2, True, False]
-       #},
-       #"oiseau" : {
-
-       #    "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-       #    "marche": [10, 2, True, False]
-       #},
-       #"chat" : {
-
-       #    "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-       #    "marche": [10, 2, True, False]
-       #},
-       #"poussin":  {
-
-       #    "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-       #    "marche": [8, 2, True, False]
-       #}
-
 }
+
 action = {
     "up":    [0, -vitesse, "up", "walk", True],
     "left":  [-vitesse, 0, "left", "walk", True],
     "down":  [0, vitesse, "down", "walk", True],
     "right": [vitesse, 0, "right", "walk", True],
-   # "attaque":     [0, 0, None, "attaque", False]
 }

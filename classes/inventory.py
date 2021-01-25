@@ -11,26 +11,34 @@ class Inventory:
         self.display_inventory = False
         self.player = player
         self.appendSlots()
-
-        #self.setSlotTypes()
+       # self.setSlotTypes()
 
         self.movingitem = None
         self.movingitemslot = None
 
+    #def setSlotTypes(self):
+    #    self.inventory_slots[0].slottype = ''
+    #    self.inventory_slots[1].slottype = ''
+    #    self.inventory_slots[2].slottype = ''
+    #    self.inventory_slots[3].slottype = ''
+    #    self.inventory_slots[4].slottype = ''
 
     def appendSlots(self):
         while len(self.inventory_slots) != self.totalSlots:
-            for x in range(gs.WIDTH // 2 - ((gs.TILESIZE + 2) * self.cols) // 2,
-                           gs.WIDTH // 2 + ((gs.TILESIZE + 2) * self.cols) // 2, gs.TILESIZE + 2):
-                for y in range(gs.HEIGHT, gs.HEIGHT + gs.TILESIZE * self.rows, gs.TILESIZE + 2):
+            for x in range(gs.WIDTH // 2 - ((gs.INVTILESIZE + 2) * self.cols) // 2, (gs.WIDTH // 2 + ((gs.INVTILESIZE + 2) * self.cols) // 2), gs.INVTILESIZE + 2):
+                print(gs.WIDTH // 2 - ((gs.INVTILESIZE + 2) * self.cols) // 2, (gs.WIDTH // 2 + ((gs.INVTILESIZE + 2) * self.cols) // 2)-100, gs.INVTILESIZE + 2)
+                for y in range(gs.HEIGHT, (gs.HEIGHT + gs.INVTILESIZE * self.rows), gs.INVTILESIZE + 2):
+                    print(gs.HEIGHT, (gs.HEIGHT + gs.INVTILESIZE * self.rows), gs.INVTILESIZE + 2)
+                    #print(x,y)
+
                     self.inventory_slots.append(InventorySlot(x, y))
 
-    def draw(self):
+    def draw(self, screen):
         if self.display_inventory:
             for slot in self.inventory_slots:
-                slot.draw(gs.win)
+                slot.draw(screen)
             for slot in self.inventory_slots:
-                slot.drawItems(gs.win)
+                slot.drawItems(screen)
 
     def toggleInventory(self):
         self.display_inventory = not self.display_inventory
@@ -54,19 +62,19 @@ class Inventory:
                 slot.item = None
                 break
 
-    def moveItem(self):
+    def moveItem(self, screen):
         mousepos = pg.mouse.get_pos()
         for slot in self.inventory_slots:
-            if slot.draw(gs.win).collidepoint(mousepos) and slot.item != None:
+            if slot.draw(screen).collidepoint(mousepos) and slot.item != None:
                 slot.item.is_moving = True
                 self.movingitem = slot.item
                 self.movingitemslot = slot
                 break
 
-    def placeItem(self):
+    def placeItem(self, screen):
         mousepos = pg.mouse.get_pos()
         for slot in self.inventory_slots:
-            if slot.draw(gs.win).collidepoint(mousepos) and self.movingitem != None:
+            if slot.draw(screen).collidepoint(mousepos) and self.movingitem != None:
                 if isinstance(slot, InventorySlot):
                     self.removeItemInv(self.movingitem)
                     self.addItemInv(self.movingitem, slot)
@@ -76,10 +84,10 @@ class Inventory:
             self.movingitem = None
             self.movingitemslot = None
 
-    def checkSlot(self, mousepos):
+    def checkSlot(self, screen, mousepos):
         for slot in self.inventory_slots:
             if isinstance(slot, InventorySlot):
-                if slot.draw(gs.win).collidepoint(mousepos):
+                if slot.draw(screen).collidepoint(mousepos):
                     if isinstance(slot.item, Consumable):
                         self.useItem(slot.item)
 
@@ -91,20 +99,21 @@ class Inventory:
 class InventorySlot:
     def __init__(self, x, y):
         self.x = x
-        self.y = y
+        self.y = y-400
         self.item = None
 
-    def draw(self):
-        return pg.draw.rect(gs.win, gs.LIGHTGREY, (self.x, self.y, gs.TILESIZE, gs.TILESIZE))
+    def draw(self, screen):
+        return pg.draw.rect(screen, gs.LIGHTGREY, (self.x, self.y, gs.INVTILESIZE, gs.INVTILESIZE))
 
-    def drawItems(self):
+    def drawItems(self, screen):
         if self.item != None and not self.item.is_moving:
             self.image = pg.image.load(self.item.img).convert_alpha()
-            gs.win.blit(self.image, (self.x - 7, self.y - 7))
+            screen.blit(self.image, (self.x - 7, self.y - 7))
         if self.item != None and self.item.is_moving:
             mousepos1 = pg.mouse.get_pos()
             self.image = pg.image.load(self.item.img).convert_alpha()
-            gs.win.blit(self.image, (mousepos1[0] - 20, mousepos1[1] - 20))
+            screen.blit(self.image, (mousepos1[0] - 20, mousepos1[1] - 20))
+
 
 class InventoryItem:
     def __init__(self, img, value):
@@ -112,13 +121,10 @@ class InventoryItem:
         self.value = value
         self.is_moving = False
 
-class Consumable(InventoryItem):
-    def __init__(self, img, value, hp_gain=0, prot_gain=0):
-        InventoryItem.__init__(self, img, value)
-        self.hp_gain = hp_gain
-        self.prot_gain = prot_gain
 
-    def use(self, inv, target):
+class Consumable(InventoryItem):
+    def __init__(self, img, value):
+        InventoryItem.__init__(self, img, value)
+
+    def use(self, inv):
         inv.removeItemInv(self)
-        target.addHp(self.hp_gain)
-        target.addProt(self.prot_gain)

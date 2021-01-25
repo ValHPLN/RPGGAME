@@ -4,6 +4,8 @@ from constants import game_settings as gs, player_settings as ps
 from constants import entity_settings as es
 from constants import collisions_settings as cs
 from classes import collision as col
+from classes.inventory import Inventory
+
 
 class Entity():
 
@@ -100,7 +102,7 @@ class Entity():
 
         if self.type == "npc":
             if not self.hitbox.collision("player"):  # S'il n'y a pas:
-                # On actualise les positon
+                # On actualise les position
                 self.position[0] = x   #en x
                 self.position[1] = y  #en y
             else:
@@ -113,7 +115,6 @@ class Entity():
 
         # On actualise la camera
         self.pos_last_cam = [gs.map.x_camera, gs.map.y_camera]
-
 
     def actualiser_frame(self):
         # charge attribut mouvement en cours
@@ -146,7 +147,6 @@ class Entity():
 
                     if mouvement[3]:  # Si on veux revenir
                         self.mouvement = "base"        # Sur base, on le fait
-
 
     def display(self):
         """ Procedure qui gere l'affichage de mon personnage

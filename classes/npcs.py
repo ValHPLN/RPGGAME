@@ -1,8 +1,3 @@
-# -*- coding: utf-8 -*-
-"""Objet monstre
-Créer des monstres, ennemis.
-Auteur : Dorian Voland
-"""
 import pygame as pg
 import random as rd
 
@@ -14,11 +9,7 @@ from classes import collision as col
 
 
 class Npc(ent.Entity):
-    """ Classe Monstre qui herite de Entite
-            redefini methode déplacement() ==> type_deplacement: - aleatoire
-                                                                 - base
-                                                                 - zone (en cours)
-    """
+
     nb_npc = 0
     def __init__(self,npc_type, npc_id, parametre):
         """
