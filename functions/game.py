@@ -1,13 +1,13 @@
 from classes.inventory import Inventory
-from classes.inventory import Consumable
 from constants import game_settings as gs
 from constants import speech_settings as ss
 from functions import load
 import pygame as pg
-from classes import player
+from classes import player, objects
 from classes import mapping
 from functions import speech
-import random
+
+inventory = Inventory(player, 10, 5, 2)
 
 playerList = (
 "Adam", "Alex", "Amelia", "Bob", "Bouncer", "Conference_man",
@@ -28,10 +28,7 @@ def win_init():
 
 
 def init_game():
-    global inventory
-    inventory = Inventory(player, 10, 5, 2)
-    hp_potion = Consumable('img/potionRed.png', 2)  ###################
-    inventory.addItemInv(hp_potion)
+    inventory.addItemInv(objects.hp_potion)
     load.load_tileset()
     gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
@@ -77,7 +74,8 @@ def new_player():
             else:
                 rightArrow = text_format(">", gs.menuFont, 75, gs.BLACK)
 
-            #gs.win.fill((gs.DARKGREY))
+            gs.win.fill((gs.DARKGREY))
+            choosePlayer(compteur)
             txt_surface = gs.font.render(gs.name, True, color)
             width = max(200, txt_surface.get_width() + 10)
             input_box.w = width
@@ -138,8 +136,6 @@ def new_player():
                             gs.name += event.unicode
 
 
-
-
             pg.display.update()
             gs.clock.tick(gs.FPS)
 
@@ -160,11 +156,9 @@ def choosePlayer(number):
     if number > max - 1:
         number = 0
         compteur = number
-    print(compteur)
 
     player1 = "img/char/New/" + playerList[number] + "_run_32x32.png"
     sprite_set = pg.image.load(player1)
-    print(player1)
     sprites = []
     for i in range(24):
         sprites.append(sprite_set.subsurface([i * 32, 0, 32, 64]))
@@ -277,7 +271,7 @@ def inventory_menu():
                 if inventory.display_inventory:
                     inventory.placeItem(gs.win)
 
-
+        interface()
         pg.display.update()
         gs.clock.tick(gs.FPS)
 
@@ -355,6 +349,16 @@ def speech1():
         pg.display.update()
 
 
+def interface():
+    """ Affiche les information (uniquement vie pour l'instant)
+    """
+    title = text_format("Stamina", gs.menuFont, 15, gs.GREEN)
+    title_rect = title.get_rect()
+    title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+    pg.draw.rect(gs.win, (gs.RED), pg.Rect(0, 0, gs.base_hp * 20, 10))
+    gs.win.blit(title, (0, -2))
+
+
 def handle_npc():
     for npc in gs.entities_list:
         npc.deplacement()
@@ -375,7 +379,7 @@ def game_loop():
         handle_npc()
         gs.char.update()
         gs.map.afficher_premier_plan()
-        gs.char.interface()
+        interface()
 
 
 

@@ -1,4 +1,3 @@
-import pygame as pg
 from constants import game_settings as gs
 
 speechList = {
@@ -21,4 +20,3 @@ speechList = {
     }
 }
 
-#speechList["chomel"]["name"] = str(gs.name)

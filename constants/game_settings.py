@@ -1,4 +1,5 @@
 import pygame as pg
+
 pg.init()
 mx, my = pg.mouse.get_pos()
 
@@ -34,6 +35,5 @@ entities_list = []
 change_char = True
 clock = None
 run = None
-base_hp = 10
-
+base_hp = 5
 

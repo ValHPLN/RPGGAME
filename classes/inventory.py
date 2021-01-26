@@ -1,6 +1,8 @@
 import pygame as pg
+
+from classes import player
 from constants import game_settings as gs
-from classes.player import Player
+
 
 class Inventory:
     def __init__(self, player, totalSlots, cols, rows):
@@ -11,25 +13,14 @@ class Inventory:
         self.display_inventory = False
         self.player = player
         self.appendSlots()
-       # self.setSlotTypes()
 
         self.movingitem = None
         self.movingitemslot = None
 
-    #def setSlotTypes(self):
-    #    self.inventory_slots[0].slottype = ''
-    #    self.inventory_slots[1].slottype = ''
-    #    self.inventory_slots[2].slottype = ''
-    #    self.inventory_slots[3].slottype = ''
-    #    self.inventory_slots[4].slottype = ''
-
     def appendSlots(self):
         while len(self.inventory_slots) != self.totalSlots:
             for x in range(gs.WIDTH // 2 - ((gs.INVTILESIZE + 2) * self.cols) // 2, (gs.WIDTH // 2 + ((gs.INVTILESIZE + 2) * self.cols) // 2), gs.INVTILESIZE + 2):
-                print(gs.WIDTH // 2 - ((gs.INVTILESIZE + 2) * self.cols) // 2, (gs.WIDTH // 2 + ((gs.INVTILESIZE + 2) * self.cols) // 2)-100, gs.INVTILESIZE + 2)
                 for y in range(gs.HEIGHT, (gs.HEIGHT + gs.INVTILESIZE * self.rows), gs.INVTILESIZE + 2):
-                    print(gs.HEIGHT, (gs.HEIGHT + gs.INVTILESIZE * self.rows), gs.INVTILESIZE + 2)
-                    #print(x,y)
 
                     self.inventory_slots.append(InventorySlot(x, y))
 
@@ -96,7 +87,6 @@ class Inventory:
             item.use(self, self.player)
 
 
-
 class InventorySlot:
     def __init__(self, x, y):
         self.x = x
@@ -124,13 +114,14 @@ class InventoryItem:
 
 
 class Consumable(InventoryItem):
-    def __init__(self, img, value, hp_gain=1):
+    def __init__(self, img, value, hp_gain=0):
         InventoryItem.__init__(self, img, value)
         self.hp_gain = hp_gain
 
     def use(self, inv, target):
         inv.removeItemInv(self)
-        target.add_hp(self.hp_gain)
+        gs.base_hp += 2
+        print(gs.base_hp)
 
 
 

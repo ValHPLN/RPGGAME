@@ -6,6 +6,5 @@ groups = {
     "player": pg.sprite.Group(),    # Liste des hitboxs pour les joueurs
     "Npc": pg.sprite.Group(),   # Liste des hitboxs pour les pnj
     "object": pg.sprite.Group(),     # Liste des hitboxs pour les objets
-    #"pnj": pg.sprite.Group(),       # Liste des hitboxs pour les personnages non joueurs
     "tout": pg.sprite.Group()       # Liste des hitboxs pour tout
 }

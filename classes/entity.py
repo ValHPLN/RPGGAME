@@ -3,8 +3,9 @@ import random as rd
 from constants import game_settings as gs, player_settings as ps
 from constants import entity_settings as es
 from constants import collisions_settings as cs
-from classes import collision as col
+from classes import collision as col, objects
 from classes.inventory import Inventory
+from functions import game
 
 
 class Entity():
@@ -97,6 +98,7 @@ class Entity():
             self.position[1] = y  # en y
             if self.hitbox.collision("player"):  # S'il n'y a pas:
                 print(self.id)
+                game.inventory.addItemInv(objects.hp_potion)
                 self.touch = True
 
 

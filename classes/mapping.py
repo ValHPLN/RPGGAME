@@ -140,7 +140,6 @@ class Map:
             npc.deplacement()
             npc.display()
 
-
     def charger_images(self):
         """ Charge dans la variable self.arriere_plan l'image superposée des 3 premieres couches (0, 1, 2)
             Charge dans la variable self.premier_plan l'image de la dernière couche (3)

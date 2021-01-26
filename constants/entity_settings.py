@@ -2,12 +2,20 @@
 vitesse = 0.5
 
 
-timings = { # Timings des animations
-    # [tick, images, libre, reset]
-    # tick = le nombre de tick pour changer une frame (Tick entre chaque frame)
-    # images = le nombre d'images de l'animation - 1 (0 compte comme une frame)
-    # libre = Libérer le personnage après l'animation ? True = oui False = non
-    # reset = revenir sur base après la fin de l'animation ? (Sinon on répète)
+timings = { # animation timings
+    # [tick, images, free, reset]
+    # tick = number of ticks between frames
+    # images = how many images per anim (don't forget 0)
+    # free = Free character after animation? True = yes False = no
+    # reset = come to "base" after anim, else animation repeats itself
+
+    ####################################
+    # Also gathers all NPCs and objects that can be picked up:
+        # Init = x, y, size, position
+        # pathfile = sprite
+        # base = animation if tick = None, no animation
+        # walk = timings (see above)
+        # pathchar = path taken by NpC
     "MapHeticV2": {
         "npc": {
             "npc1": {

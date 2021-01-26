@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pygame as pg
 from constants import collisions_settings as cs
 
@@ -6,12 +5,11 @@ from constants import collisions_settings as cs
 class Hitbox(pg.sprite.Sprite):  # La classe Hitbox hérite de pg.sprite.Sprite CAD qu'elle inclut les caracteristiques de pg.sprite.Sprite
 
     def __init__(self, groupe, rect=None, mask=None):
-        """Création de la hitbox de collision
-        Avec image, rectangle et hitbox correspondant
-        Initialisé à "None" par défaut.
-        Groupes possibles : "joueur", "block", "ennemi", "png"
-        Tout les hitboxs créés seront sauvegardés automatiquement dans
-        les listes du dictionnaire des constantes de collision
+        """Creates collision Hitbox,
+        with Img, Rect and Hitbox,
+        Default is None,
+        Groups : player, tuile, object, etc...
+        All hitboxs are saved in collisions_settings
         """
         super().__init__()  # Initialisation de pg.sprite.Sprite
         # Ici "super()" fait référence a la classe mère (pg.sprite.Sprite ici)
@@ -21,9 +19,10 @@ class Hitbox(pg.sprite.Sprite):  # La classe Hitbox hérite de pg.sprite.Sprite 
         cs.groups[groupe].add(self)  # Ajouter a la liste correspondante
 
     def collision(self, groupe="tout"):
-        """Vérifie les collisions avec un groupe (tout par défaut)
-        Retourne True si il y a collision
-        Retourne False si il n'y a pas de collisions
+        """Checks collisions with a group
+        Default is None
+        Returns True if collision
+        Returns False if there's no collision
         """
         # Retourne le boolean fourni par la fonction qui Permets
         # De vérifier si il y a des collisions entre 1 hitbox et 1 groupe
