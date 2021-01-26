@@ -98,7 +98,7 @@ class InventorySlot:
     def drawItems(self, screen):
         if self.item != None and not self.item.is_moving:
             self.image = pg.image.load(self.item.img).convert_alpha()
-            screen.blit(self.image, (self.x + 20, self.y + 20))
+            screen.blit(self.image, (self.x + 10, self.y + 10))
         if self.item != None and self.item.is_moving:
             mousepos1 = pg.mouse.get_pos()
             self.image = pg.image.load(self.item.img).convert_alpha()
@@ -121,6 +121,15 @@ class Consumable(InventoryItem):
         inv.removeItemInv(self)
         gs.base_hp += 2
         print(gs.base_hp)
+
+class Quest(InventoryItem):
+    def __init__(self, img, value, hp_gain=0):
+        InventoryItem.__init__(self, img, value)
+
+   #def use(self, inv, target):
+   #    inv.removeItemInv(self)
+   #    gs.base_hp += 2
+   #    print(gs.base_hp)
 
 
 

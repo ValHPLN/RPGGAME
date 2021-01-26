@@ -55,6 +55,20 @@ timings = { # animation timings
                 "walk": [None],
                 "pathChar": [None]
             },
+            "glasses":{
+                "init": [[[663, 463], [32, 32], "base"]],
+                "pathFile": "img/objects/glasses.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": [None]
+            },
+            "cable":{
+                "init": [[[863, 863], [32, 32], "base"]],
+                "pathFile": "img/objects/cable2.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": [None]
+            }
         }
     }
 }

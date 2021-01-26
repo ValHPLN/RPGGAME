@@ -98,7 +98,15 @@ class Entity():
             self.position[1] = y  # en y
             if self.hitbox.collision("player"):  # S'il n'y a pas:
                 print(self.id)
-                game.inventory.addItemInv(objects.hp_potion)
+                if self.id == "glasses":
+                    game.inventory.addItemInv(objects.glasses)
+                if self.id == "cable":
+                    game.inventory.addItemInv(objects.cable)
+                if self.id == "coin1" or "coin2" or "coin3":
+                    game.inventory.addItemInv(objects.hp_potion)
+
+                else:
+                    pass
                 self.touch = True
 
 

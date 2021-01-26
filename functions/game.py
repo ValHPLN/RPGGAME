@@ -366,7 +366,6 @@ def handle_npc():
 
 
 def game_loop():
-    print(dir(player))
     if gs.change_char:
         gs.change_char = False
         randomPlayer = playerList[compteur]
