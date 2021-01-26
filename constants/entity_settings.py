@@ -32,6 +32,13 @@ timings = { # animation timings
                 "walk": [4, 5, True, False],
                 "pathChar": ["up", "right", "down", "left"]
             },
+            "npc3" :{
+                "init":[[[400, 943], [64,64], "base"]],
+                "pathFile": "img/char/New/Old_woman_Jenny_run_32x32.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [4, 5, True, False],
+                "pathChar": ["right","right","right", "left","left","left"]
+            }
         },
         "obj": {
             "coin": {

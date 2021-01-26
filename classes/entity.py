@@ -5,12 +5,14 @@ from constants import entity_settings as es
 from constants import collisions_settings as cs
 from classes import collision as col, objects
 from classes.inventory import Inventory
+from constants.game_settings import speech
 from functions import game
 
 
 class Entity():
 
     def __init__(self, type=None, id=None, parametre=None):
+        self.game = None
         self.pos_last_cam = [gs.map.x_camera, gs.map.y_camera]
         self.position = [gs.map.x_camera, gs.map.y_camera]
         self.id = id
@@ -100,9 +102,9 @@ class Entity():
                 print(self.id)
                 if self.id == "glasses":
                     game.inventory.addItemInv(objects.glasses)
-                if self.id == "cable":
+                elif self.id == "cable":
                     game.inventory.addItemInv(objects.cable)
-                if self.id == "coin1" or "coin2" or "coin3":
+                elif self.id == "coin1" or "coin2" or "coin3":
                     game.inventory.addItemInv(objects.hp_potion)
 
                 else:
@@ -120,6 +122,10 @@ class Entity():
                 self.position[1] = y - deplacement_y #en y
                 self.mouvement = "base"
                 self.direction = action
+                print(self.id)
+                if self.id == "npc3":
+                   pass ### game.speech1()
+
 
         self.bouger_hitbox((-deplacement_x, -deplacement_y))
 
