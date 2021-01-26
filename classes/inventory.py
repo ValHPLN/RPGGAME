@@ -21,7 +21,6 @@ class Inventory:
         while len(self.inventory_slots) != self.totalSlots:
             for x in range(gs.WIDTH // 2 - ((gs.INVTILESIZE + 2) * self.cols) // 2, (gs.WIDTH // 2 + ((gs.INVTILESIZE + 2) * self.cols) // 2), gs.INVTILESIZE + 2):
                 for y in range(gs.HEIGHT, (gs.HEIGHT + gs.INVTILESIZE * self.rows), gs.INVTILESIZE + 2):
-
                     self.inventory_slots.append(InventorySlot(x, y))
 
     def draw(self, screen):

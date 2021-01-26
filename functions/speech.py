@@ -21,13 +21,155 @@ class TypeText():
         self.fontWrap = int((self.bubbleWidth - (2 * self.bubblePadding)) / self.fontWidth) #combien de lettres avant le retour à la ligne
         print(self.fontWidth, self.fontWrap)
         self.fontInter = self.fontSize + self.fontSize * 8 / 12 #interligne
-        self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
-        self.textA = self.textA + "\n"
         self.fontType = 'img/Minecraftia-Regular.ttf'
-        self.bubbleImg()
-        self.splitText(self.textA)
+        self.dico = {}
+        self.hoverRect = {}
+        self.megaDico = text1
+        self.dictionary = False
+        if type(text1) == dict:
+            self.dictionary = True
+            textDict = text1
+            text1 = text1["question"]
+            for i in range(1, len(textDict)):
+                self.dico["rep{0}".format(i-1)] = textDict["answer" + str(i)]
+                print("caca", self.dico)
+            self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
+            self.textA = self.textA + "\n"
+            self.textAbis = self.textA
+            self.bubbleImg()
+            self.drawDico()
+        else:
+            self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
+            self.textA = self.textA + "\n"
+            self.bubbleImg()
+            self.splitText(self.textA)
         #self.display_text_animation(self.textA)
         #self.quit()
+
+    def drawDico(self):
+        count = self.textAbis.count("\n")
+
+        for i in range(count): #boucle pour chaque ligne
+            try:
+                Index = self.textAbis.index("\n")
+            except ValueError:
+                Index = len(self.textAbis)
+            text = ''
+            for i in range(Index): #boucle pour chaque lettre de chaque ligne
+                text += self.textAbis[i]
+                font = pygame.font.Font(self.fontType, self.fontSize)
+                text_surface = font.render(text, True, self.color)
+                textSize = text_surface.get_size()
+                bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                bubbleRect = bubbleSurf.get_rect()
+                bubbleSurf.fill(WHITE)
+                bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
+                bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
+                gs.win.blit(bubbleSurf, bubbleRect)
+                pygame.display.update()
+                pygame.time.wait(self.delay)
+            self.line = self.line + 1
+            self.textAbis = self.textAbis[Index+1:]
+        #self.arrowImg()
+
+        #self.bubbleImg()
+        count = (count + 1) * self.fontInter
+        for x in range(len(self.dico)): #boucle pour chaque ligne
+            text = ''
+            for i in range(len(self.dico["rep" + str(x)])): #boucle pour chaque lettre de chaque ligne
+                text += self.dico["rep" + str(x)][i]
+                font = pygame.font.Font(self.fontType, self.fontSize)
+                text_surface = font.render(text, True, self.color)
+                textSize = text_surface.get_size()
+                #bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                #bubbleRect = bubbleSurf.get_rect()
+                #bubbleSurf.fill(WHITE)
+                #bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
+                #bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
+                #gs.win.blit(bubbleSurf, bubbleRect)
+                gs.win.blit(text_surface, (self.x, self.y + count))
+                pygame.display.update()
+                pygame.time.wait(self.delay)
+            count = count + self.fontInter
+
+        self.arrowImg()
+        self.hover()
+        #self.enter()
+        #self.bubbleImg()
+
+    def hover(self):
+        noHover = True
+        drawText = True
+        selected = None
+        change = False
+        arrow = " <-"
+        space = "       "
+        memSelected = None
+        printSelected = None
+        hoverDico = self.dico
+        while noHover:
+            while drawText:
+                count = self.textAbis.count("\n")
+                count = (count + 1) * self.fontInter
+                for x in range(len(self.dico)): #boucle pour chaque ligne
+                    self.hoverRect[x] = {}
+                    text = ''
+                    for i in range(len(self.dico["rep" + str(x)])): #boucle pour chaque lettre de chaque ligne
+                        text += hoverDico["rep" + str(x)][i]
+                        font = pygame.font.Font(self.fontType, self.fontSize)
+                        text_surface = font.render(text, True, self.color)
+                        textSize = text_surface.get_size()
+                        bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                        bubbleRect = bubbleSurf.get_rect()
+                        self.hoverRect[x][i] = bubbleRect
+                        bubbleSurf.fill(WHITE)
+                        bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
+                        bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter) + count)
+                        gs.win.blit(bubbleSurf, bubbleRect)
+                        #gs.win.blit(text_surface, (self.x, self.y + count))
+                        pygame.display.update()
+                        #pygame.time.wait(self.delay)
+                    count = count + self.fontInter
+                drawText = False
+
+            mx, my = pygame.mouse.get_pos()
+            for event in pygame.event.get():
+                # print(mx, my)
+                selected = None
+                for x in range(len(self.hoverRect)):
+                    for i in range(len(self.hoverRect[x])):
+                        rect = self.hoverRect[x][i]
+                        if rect.collidepoint((mx, my)):
+                            selected = x
+                            drawText = False
+
+                if event.type == pygame.KEYDOWN:
+                    if printSelected != None:
+                        if event.key == pygame.K_RETURN:
+                            print(self.megaDico["answer" + str(printSelected + 1)])
+                            noHover = False
+
+            if memSelected == selected:
+                change = False
+            else:
+                change = True
+            memSelected = selected
+
+            if selected is not None:
+                printSelected = selected
+                while change:
+                    for x in range(len(self.hoverRect)):
+                        if selected == x:
+                            hoverDico.update({"rep" + str(x): self.megaDico["answer" + str(x+1)] + arrow})
+                            drawText = True
+                        else:
+                            hoverDico.update({"rep" + str(x): self.megaDico["answer" + str(x+1)] + space})
+                            drawText = True
+                    change = False
+
+
+
+
 
     def bubbleImg(self): #importe et affiche la bulle
         bubblePng = pygame.image.load("img/SpeechBubble.png")
