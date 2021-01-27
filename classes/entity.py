@@ -34,8 +34,7 @@ class Entity():
         self.touch = False
 
     def bouger_hitbox(self, coord):
-        """ Gere le mouvement de la hitbox
-        """
+        #Handles hitbox
         if self.type != "npc":
             if not self.touch: #si l'objet n'est pas touché
                 self.hitbox.rect = pg.Rect((self.position[0] + coord[0] + self.taille[0] / 2 - 46,
@@ -52,9 +51,7 @@ class Entity():
         self.hitbox.mask.fill()  # Remplir le hitbox pour créer un bloc
 
     def deplacement(self):
-        """ Défini le mouvement de base
-        pour une entitée la fait tourner sur elle meme
-        """
+        #Defines NPC movement
         if self.hitbox.mask is None:  # Si le hitbox est pas défini
             return  # Quitter la fonction pour éviter un déplacement précoce
 
@@ -172,23 +169,16 @@ class Entity():
                         self.mouvement = "base"        # Sur base, on le fait
 
     def display(self):
-        """ Procedure qui gere l'affichage de mon personnage
-        Gère l'affichage des animations
-        """
-        #first_key = list(es.timings[self.map])[0]
-        #print(first_key)
-
+        #Displays NPC and handle animation
 
         self.actualiser_frame()
-        #self.actualiser_sprite()
         self.bouger_hitbox((0, 0))
         x = self.position[0]
         y = self.position[1]
 
-        # Je calcule la position de rendu du sprite afin qu'il soit bien centré
-        x_rendu = x - ps.sprite_height / 2  # Le x de rendu
-        y_rendu = y - ps.sprite_width / 2  # Le y de rendu
-
+        # Centers sprite
+        x_rendu = x - ps.sprite_height / 2  # X
+        y_rendu = y - ps.sprite_width / 2  # Y
         direction = ["right", "up", "left", "down"]
         numero = [0, 1, 2, 3, 4, 5]
 

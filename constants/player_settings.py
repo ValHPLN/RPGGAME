@@ -9,9 +9,8 @@ sprite_still = "img/char/char_face_"
 sprite_move = "img/char/char_walk_"
 
 keys = {  # move keys
-    # [x, y, "direction", "mouvement", free?]
-    # Nombre de pixels en x, nombre de pixels en y, direction, mouvement.
-    # libre = Est-ce que le personnage est libre ? True/False
+    # [x, y, "direction", "movement", free?]
+    # free = is char free ? True/False
     pg.K_UP:    [0, vel, "up", "walk", True],
     pg.K_LEFT:  [vel, 0, "left", "walk", True],
     pg.K_DOWN:  [0, -vel, "down", "walk", True],

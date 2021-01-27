@@ -23,6 +23,7 @@ def win_init():
     # Game Icon (HETIC LOGO)
     pg.display.set_icon(pg.image.load("img/game_icon.png"))
     gs.win = pg.display.set_mode((gs.WIDTH, gs.HEIGHT))
+    pg.mouse.set_cursor(*pg.cursors.diamond)
     gs.run = True
     gs.clock = pg.time.Clock()
     init_game()
@@ -31,7 +32,7 @@ def win_init():
 def init_game():
     inventory.addItemInv(objects.hp_potion)
     load.load_tileset()
-    gs.map = mapping.Map("MapHeticV2", (40, -280), "hetic.ogg")  # Chargement de la map
+    gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
     randomPlayer = playerList[compteur]
     gs.char = player.Player(randomPlayer, gs.base_hp)
@@ -62,8 +63,6 @@ def new_player():
     input_box = pg.Rect(gs.center_WIDTH - (name_title_rect[2] / 3.5),300, 10,30)
     confirm = False
 
-
-
     while char_create:
         while not confirm:
             if selected == "leftA":
@@ -74,6 +73,11 @@ def new_player():
                 rightArrow = text_format(">", gs.menuFont, 75, gs.WHITE)
             else:
                 rightArrow = text_format(">", gs.menuFont, 75, gs.BLACK)
+            if selected == "start":
+                text_start = text_format("START", gs.menuFont, 75, gs.WHITE)
+            else:
+                text_start = text_format("START", gs.menuFont, 75, gs.BLACK)
+
 
             gs.win.fill((gs.DARKGREY))
             choosePlayer(compteur)
@@ -89,11 +93,18 @@ def new_player():
             gs.win.blit(rightArrow, (gs.WIDTH / 2 - (rightArrow_rect[2] / 2) + 150, 400))
             leftArrow_rect.x, leftArrow_rect.y = 450 - (leftArrow_rect[2] / 2), 400
             rightArrow_rect.x, rightArrow_rect.y = 750 - (leftArrow_rect[2] / 2), 400
+            start_rect = text_start.get_rect()
+            gs.win.blit(text_start, (gs.WIDTH / 2 - (start_rect[2] / 2), 600))
+            updateX = (gs.WIDTH / 2 - (start_rect[2] / 2))
+            updateY1 = 600
+            start_rect.x, start_rect.y = updateX, updateY1
 
             mx, my = pg.mouse.get_pos()
             for event in pg.event.get():
                 #print(mx, my)
-                if leftArrow_rect.collidepoint((mx, my)):
+                if start_rect.collidepoint((mx, my)):
+                    selected = "start"
+                elif leftArrow_rect.collidepoint((mx, my)):
                     selected = "leftA"
                 elif rightArrow_rect.collidepoint((mx, my)):
                     selected = "rightA"
@@ -107,6 +118,11 @@ def new_player():
                         clickArrow = None
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if event.button == 1:
+                        if selected == "start":
+                            if gs.name != '':
+                                char_create = False
+                                game_loop()
+                                return gs.name
                         if selected == "leftA":
                             gs.win.fill((gs.DARKGREY))
                             compteur = compteur - 1
@@ -126,12 +142,7 @@ def new_player():
                         active = False
                         main_menu()
                     if active:
-                        if event.key == pg.K_RETURN:
-                            if gs.name != '':
-                                char_create = False
-                                game_loop()
-                                return gs.name
-                        elif event.key == pg.K_BACKSPACE:
+                        if event.key == pg.K_BACKSPACE:
                             gs.name = gs.name[:-1]
                         else:
                             gs.name += event.unicode
@@ -166,6 +177,58 @@ def choosePlayer(number):
 
     for i, s in enumerate(sprites):
         gs.win.blit(s, (580, 400))
+
+
+def controls():
+    ctrls= True
+    click = False
+    selected = None
+    while ctrls:
+        gs.win.fill((gs.DARKGREY))
+        mx, my = pg.mouse.get_pos()
+        title = text_format("CONTROLS", gs.menuFont, 90, gs.GREEN)
+        if selected == "start":
+            text_start = text_format("START", gs.menuFont, 75, gs.WHITE)
+        else:
+            text_start = text_format("START", gs.menuFont, 75, gs.BLACK)
+
+        title_rect = title.get_rect()
+        start_rect = text_start.get_rect()
+
+        gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
+        gs.win.blit(text_start, (gs.WIDTH / 2 - (start_rect[2] / 2), 600))
+        controlsimg = pg.image.load("img/controls2.png").convert_alpha()
+        gs.win.blit(controlsimg, (60, 120))
+
+        title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+        updateX = (gs.WIDTH / 2 - (start_rect[2] / 2))
+        updateY1 = 600
+        start_rect.x, start_rect.y = updateX, updateY1
+
+        for event in pg.event.get():
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_ESCAPE:
+                    menu = False
+            elif event.type == pg.QUIT:
+                pg.quit()
+                quit()
+            if start_rect.collidepoint((mx, my)):
+                selected = "start"
+            else:
+                selected = None
+            if event.type == pg.MOUSEBUTTONUP:
+                if event.button == 1:
+                    click = False
+            if event.type == pg.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+                    if click:
+                        if selected == "start":
+                            ctrls = False
+                            new_player()
+
+        pg.display.update()
+        gs.clock.tick(gs.FPS)
 
 
 def main_menu():
@@ -223,7 +286,7 @@ def main_menu():
                         if selected == "start":
                             menu = False
                             if gs.name == '':
-                                new_player()
+                                controls()
                             else:
                                 game_loop()
                         elif selected == "quit":
@@ -354,7 +417,7 @@ def speech1():
 def speech2(npcId, xPos, yPos):
     talk = True
     while talk:
-        handle_npc()
+        reset_display()
         Mleft = xPos
         MTop = yPos
         indexMem = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]

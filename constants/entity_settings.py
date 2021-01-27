@@ -20,27 +20,35 @@ timings = { # animation timings
         "npc": {
             "npc1": {
                 "speechMem": "0",
-                "init":[[[500, 660], [64,64], "base"]],
+                "init":[[[600, 660], [64,64], "base"]],
                 "pathFile": "img/char/New/Bouncer_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [4, 5, True, False],
-                "pathChar": ["up", "up", "left", "left", "down", "down", "right", "right"]
+                "pathChar": [ "left", "left","left", "left","left", "left", "right", "right","right", "right","right", "right"]
             },
             "npc2": {
-                "speechMem": "0",
-                "init":[[[400, 660], [64,64], "base"]],
+                "speechMem": "0", #[556, 1036
+                "init":[[[506, 1066], [64,64], "base"]],
                 "pathFile": "img/char/New/Amelia_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [4, 5, True, False],
-                "pathChar": ["up", "right", "down", "left"]
+                "pathChar": ["right", "left"]
             },
             "npc3":{
                 "speechMem": "0",
-                "init":[[[400, 943], [64,64], "base"]],
+                "init":[[[854, 1015], [64,64], "base"]],
                 "pathFile": "img/char/New/Old_woman_Jenny_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [4, 5, True, False],
-                "pathChar": ["right","right","right", "left","left","left"]
+                "pathChar": ["down", "down","down", "down","left","left", "up", "up", "up","up", "right", "right"]
+            },
+            "npc4":{
+                "speechMem": "0",
+                "init":[[[854, 1015], [64,64], "base"]],
+                "pathFile": "img/char/New/Rob_run_32x32.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [4, 5, True, False],
+                "pathChar": ["up"]
             }
         },
         "obj": {
@@ -73,7 +81,7 @@ timings = { # animation timings
                 "pathChar": [None]
             },
             "cable":{
-                "init": [[[863, 863], [32, 32], "base"]],
+                "init": [[[1153, 863], [32, 32], "base"]],
                 "pathFile": "img/objects/cable2.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [None],
@@ -88,4 +96,5 @@ action = {
     "left":  [-vitesse, 0, "left", "walk", True],
     "down":  [0, vitesse, "down", "walk", True],
     "right": [vitesse, 0, "right", "walk", True],
+    "still_up": [0, 0, "up", "walk", True]
 }

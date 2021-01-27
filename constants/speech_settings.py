@@ -8,51 +8,48 @@ speechList = {
         "perso":
             "This method returns a copy of the string with all occurrences of substring old replaced by new."
     },
-    "npc1": {
+    "npc3": {
         "0":
             "Salut ! Je crois avoir perdu mes lunettes et je ne peux pas travailler sans elles."
         ,
         "00": {
             "question": "Peux-tu m'aider à les retrouver ?",
-            "answer1": "Oui bien sûr",
-            "answer2": "Pas le temps :/"
+            "answer1": "Oui, bien sûr !",
+            "answer2": "Pas le temps ..."
         },
         "001":
-            "Merci, c'est gentil de m'aider :)"
+            "Merci, c'est gentil de m'aider !"
         ,
         "0010":
-            "Il serait temps d'aller les chercher"
+            "Il serait temps d'aller les chercher..."
         ,
         "002":
-            "Tant pis je me débrouillerai"
+            "Tant pis, je me débrouillerai."
         ,
     },
     "npc2": {
         "0":
-            "Salut 2 ! Je crois avoir perdu mes lunettes et je ne peux pas travailler sans elles."
-        ,
-        "00": {
-            "question": "Peux-tu m'aider à les retrouver ?2",
-            "answer1": "Oui bien sûr",
-            "answer2": "Pas le temps :/"
-        },
-        "001":
-            "Merci, c'est gentil de m'aider :)"
-        ,
-        "002":
-            "Tant pis je me débrouillerais"
-        ,
+            "Bienvenue à Hétic !"
+       # ,
+       # "00": {
+       #     "question": "Peux-tu m'aider à les retrouver ?2",
+       #     "answer1": "Oui bien sûr",
+       #     "answer2": "Pas le temps :/"
+       # },
+       # "001":
+       #     "Merci, c'est gentil de m'aider :)"
+       # ,
+       # "002":
+       #     "Tant pis je me débrouillerais"
+       # ,
     },
-    "npc3": {
-        "npcText":
-            "Tant qu’il existera, par le fait des ité humaine la destinée qui est divine ; tant quee prolétariat, la déchéance de la femme par la faim,"
-        ,
-        "perso": {
-            "question": "Jolie écharpe ?",
-            "answer1": "Raclette",
-            "answer2": "Moutarde"
-        },
-    },
+    "npc1": {
+        "0":
+            "As-tu déjà rencontré Mr. Chomel ? Tu vas voir, c'est un vrai passionné !"
+    ,
+        "00":
+            "Comme il le dit si bien: 'Si une école ne change pas la vie des gens, elle ne sert à rien !'"
+    }
 }
 
 

@@ -2,6 +2,7 @@ import pygame as pg
 
 from classes import player
 from constants import game_settings as gs
+from constants import player_settings as ps
 
 
 class Inventory:
@@ -117,19 +118,18 @@ class Consumable(InventoryItem):
         InventoryItem.__init__(self, img, value)
         self.hp_gain = hp_gain
 
+
     def use(self, inv, target):
         inv.removeItemInv(self)
         gs.base_hp += 2
+        ps.vel += 2
         print(gs.base_hp)
+        print(ps.vel)
 
 class Quest(InventoryItem):
     def __init__(self, img, value, hp_gain=0):
         InventoryItem.__init__(self, img, value)
 
-   #def use(self, inv, target):
-   #    inv.removeItemInv(self)
-   #    gs.base_hp += 2
-   #    print(gs.base_hp)
 
 
 
