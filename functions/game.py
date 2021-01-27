@@ -350,6 +350,7 @@ def speech1():
         gs.clock.tick(gs.FPS)
         pg.display.update()
 
+
 def speech2(npcId, xPos, yPos):
     talk = True
     while talk:
@@ -409,6 +410,7 @@ def game_loop():
 
 
 
+
      # Events (if you press ESC or close window, leaves game)
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -416,11 +418,11 @@ def game_loop():
                     pause_menu()
                 elif event.key == pg.K_i:
                     inventory_menu()
-                elif event.key == pg.K_e:
-                    gs.displayE = False
-                    reset_display()
-                    speech2(gs.npcId, gs.npcX, gs.npcY)
-                    gs.displayE = True
+                #if gs.displayE:
+               #if event.key == pg.K_e:
+               #    if gs.displayE:
+               #        reset_display()
+               #        speech2(gs.npcId, gs.npcX, gs.npcY)
             elif event.type == pg.QUIT:
                 pg.quit()
                 quit()

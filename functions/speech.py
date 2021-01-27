@@ -156,7 +156,7 @@ class TypeText():
 
                 if event.type == pg.KEYDOWN:
                     if printSelected != None:
-                        if event.key == pg.K_RETURN:
+                        if event.key == pg.K_e:
                             print(gs.npcId, str(printSelected + 1))
                             es.timings["MapHeticV2"]["npc"][gs.npcId]["speechMem"] = es.timings["MapHeticV2"]["npc"][gs.npcId]["speechMem"] + str(printSelected + 1)
                             noHover = False
@@ -260,7 +260,7 @@ class TypeText():
         while gs.speech:
             for event in pg.event.get():
                 if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_RETURN:
+                    if event.key == pg.K_e:
                         gs.speech = False
 
 
