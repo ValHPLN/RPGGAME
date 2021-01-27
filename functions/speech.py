@@ -10,18 +10,20 @@ from constants.game_settings import npcId
 from functions import game
 
 BLACK = (  0,   0,   0)
+BLUE = (64, 64, 100)
 WHITE = (255, 255, 255)
+CREAM = (235, 225, 246)
 
 class TypeText():
     def __init__(self, x, y, text1, width):
-        self.x = x
-        self.y = y
+        self.x = x + 40
+        self.y = y - 10
         self.bubbleWidth = width #210
         self.bubbleHeight = 140
         self.bubblePadding = 10
         self.line = 0
         self.delay = 5
-        self.color = (000, 000, 000)
+        self.color = (64, 64, 100)
         self.fontSize = 12
         self.fontWidth = self.fontSize * 4.5 / 7 #largeur moyenne haute d'une lettre
         self.fontWrap = int((self.bubbleWidth - (2 * self.bubblePadding)) / self.fontWidth) #combien de lettres avant le retour à la ligne
@@ -67,7 +69,7 @@ class TypeText():
                 textSize = text_surface.get_size()
                 bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                 bubbleRect = bubbleSurf.get_rect()
-                bubbleSurf.fill(WHITE)
+                bubbleSurf.fill(CREAM)
                 bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 gs.win.blit(bubbleSurf, bubbleRect)
@@ -89,7 +91,7 @@ class TypeText():
                 textSize = text_surface.get_size()
                 #bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                 #bubbleRect = bubbleSurf.get_rect()
-                #bubbleSurf.fill(WHITE)
+                #bubbleSurf.fill(CREAM)
                 #bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 #bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 #gs.win.blit(bubbleSurf, bubbleRect)
@@ -129,7 +131,7 @@ class TypeText():
                         bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                         bubbleRect = bubbleSurf.get_rect()
                         self.hoverRect[x][i] = bubbleRect
-                        bubbleSurf.fill(WHITE)
+                        bubbleSurf.fill(CREAM)
                         bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                         bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter) + count)
                         gs.win.blit(bubbleSurf, bubbleRect)
@@ -182,13 +184,13 @@ class TypeText():
 
     def bubbleImg(self): #importe et affiche la bulle
         bubblePng = pg.image.load("img/SpeechBubble.png")
-        bubblePng = pg.transform.scale(bubblePng, (self.bubbleWidth, self.bubbleHeight))  # 42 28
+        #bubblePng = pg.transform.scale(bubblePng, (self.bubbleWidth, self.bubbleHeight))  # 42 28
         gs.win.blit(bubblePng, (self.x - self.bubblePadding, self.y - self.bubblePadding))
 
     def arrowImg(self): #importe et affiche la touche entrer
         arrowPng = pg.image.load("img/arrow.png")
         #arrowPng = pg.transform.scale(arrowPng, (18, 15))  # 23 19
-        gs.win.blit(arrowPng, (self.x + self.bubbleWidth - 48, self.y + self.bubbleHeight - 58))
+        gs.win.blit(arrowPng, (self.x + self.bubbleWidth - 55, self.y + self.bubbleHeight - 45))
         gs.clock.tick(gs.FPS)
         pg.display.update()
 
@@ -238,7 +240,7 @@ class TypeText():
                 textSize = text_surface.get_size()
                 bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                 bubbleRect = bubbleSurf.get_rect()
-                bubbleSurf.fill(WHITE)
+                bubbleSurf.fill(CREAM)
                 bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 gs.win.blit(bubbleSurf, bubbleRect)
