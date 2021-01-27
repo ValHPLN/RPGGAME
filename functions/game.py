@@ -352,16 +352,22 @@ def speech1():
 
 def speech2(npcId, xPos, yPos):
     talk = True
-    print(npcId)
     while talk:
         handle_npc()
         Mleft = xPos
         MTop = yPos
-        pathSpeecNb = es.timings["MapHeticV2"]["npc"][npcId]["speechNb"]
-        print(pathSpeecNb)
-        speech.TypeText(Mleft, MTop, ss.speechList[npcId]["npcText" + str(pathSpeecNb)], 200)
+        indexMem = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
+        speech.TypeText(Mleft, MTop, ss.speechList[npcId][indexMem], 200)
         # ADD IF
-        es.timings["MapHeticV2"]["npc"][npcId]["speechNb"] = pathSpeecNb + 1
+        if indexMem == es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]: #determiner si c'est une question
+            es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] + "0"
+            memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
+            try:
+                print("no errors ",ss.speechList[gs.npcId][memPrint])
+            except KeyError:
+                es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = indexMem
+                memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
+                print("error back:", ss.speechList[gs.npcId][memPrint])
 
         #speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["machine"], 200)
         if not gs.speech:

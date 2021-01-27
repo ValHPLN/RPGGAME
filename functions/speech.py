@@ -46,6 +46,7 @@ class TypeText():
             self.bubbleImg()
             self.drawDico()
         else:
+            print("text1: ", text1)
             self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
             self.textA = self.textA + "\n"
             self.bubbleImg()
@@ -156,8 +157,8 @@ class TypeText():
                 if event.type == pg.KEYDOWN:
                     if printSelected != None:
                         if event.key == pg.K_RETURN:
-                            print(self.megaDico["answer" + str(printSelected + 1)])
-                            es.timings["MapHeticV2"]["npc"][npcId]["answer"] = printSelected + 1
+                            print(gs.npcId, str(printSelected + 1))
+                            es.timings["MapHeticV2"]["npc"][gs.npcId]["speechMem"] = es.timings["MapHeticV2"]["npc"][gs.npcId]["speechMem"] + str(printSelected + 1)
                             noHover = False
 
             if memSelected == selected:
