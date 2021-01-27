@@ -16,6 +16,10 @@ keys = {  # move keys
     pg.K_LEFT:  [vel, 0, "left", "walk", True],
     pg.K_DOWN:  [0, -vel, "down", "walk", True],
     pg.K_RIGHT: [-vel, 0, "right", "walk", True],
+    pg.K_z:    [0, vel, "up", "walk", True],
+    pg.K_q:  [vel, 0, "left", "walk", True],
+    pg.K_s:  [0, -vel, "down", "walk", True],
+    pg.K_d: [-vel, 0, "right", "walk", True],
     }
 
 ####################################################
