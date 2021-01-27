@@ -118,13 +118,26 @@ class Entity():
                 self.position[0] = x   #en x
                 self.position[1] = y  #en y
             else:
-                self.position[0] = x - deplacement_x   #en x
-                self.position[1] = y - deplacement_y #en y
-                self.mouvement = "base"
-                self.direction = action
-                print(self.id)
-                if self.id == "npc3":
-                   pass ### game.speech1()
+                if gs.displayE:
+                    self.position[0] = x - deplacement_x   #en x
+                    self.position[1] = y - deplacement_y #en y
+                    self.mouvement = "base"
+                    self.direction = action
+                    img = pg.image.load("img/keyE.png")
+                    gs.win.blit(img, (self.position[0] - 27, self.position[1] - 42))
+                    gs.npcId = self.id
+                    gs.npcX = (self.position[0] - 200)
+                    gs.npcY = (self.position[1] - 140)
+
+
+                #for event in pg.event.get():
+                #    if event.type == pg.KEYDOWN:
+                #        if event.key == pg.K_e:
+                #            game.speech2(self.id, (self.position[0] - 27), (self.position[1] - 120))
+                #    elif event.type == pg.QUIT:
+                #        pg.quit()
+                #        quit()
+
 
 
         self.bouger_hitbox((-deplacement_x, -deplacement_y))

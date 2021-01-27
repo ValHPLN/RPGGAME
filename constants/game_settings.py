@@ -37,3 +37,9 @@ clock = None
 run = None
 base_hp = 5
 
+
+displayE = True
+
+npcId = None
+npcX = None
+npcY = None

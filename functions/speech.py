@@ -1,7 +1,13 @@
-import pygame
+import time
+
+import pygame as pg
 from constants import game_settings as gs
+from constants import entity_settings as es
 from constants import speech_settings as ss
 import textwrap
+
+from constants.game_settings import npcId
+from functions import game
 
 BLACK = (  0,   0,   0)
 WHITE = (255, 255, 255)
@@ -14,7 +20,7 @@ class TypeText():
         self.bubbleHeight = 140
         self.bubblePadding = 10
         self.line = 0
-        self.delay = 20
+        self.delay = 5
         self.color = (000, 000, 000)
         self.fontSize = 12
         self.fontWidth = self.fontSize * 4.5 / 7 #largeur moyenne haute d'une lettre
@@ -32,7 +38,6 @@ class TypeText():
             text1 = text1["question"]
             for i in range(1, len(textDict)):
                 self.dico["rep{0}".format(i-1)] = textDict["answer" + str(i)]
-                print("caca", self.dico)
             self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
             self.textA = self.textA + "\n"
             self.textAbis = self.textA
@@ -57,17 +62,18 @@ class TypeText():
             text = ''
             for i in range(Index): #boucle pour chaque lettre de chaque ligne
                 text += self.textAbis[i]
-                font = pygame.font.Font(self.fontType, self.fontSize)
+                font = pg.font.Font(self.fontType, self.fontSize)
                 text_surface = font.render(text, True, self.color)
                 textSize = text_surface.get_size()
-                bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                 bubbleRect = bubbleSurf.get_rect()
                 bubbleSurf.fill(WHITE)
                 bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 gs.win.blit(bubbleSurf, bubbleRect)
-                pygame.display.update()
-                pygame.time.wait(self.delay)
+                gs.clock.tick(gs.FPS)
+                pg.display.update()
+                #pg.time.wait(self.delay)
             self.line = self.line + 1
             self.textAbis = self.textAbis[Index+1:]
         #self.arrowImg()
@@ -78,18 +84,19 @@ class TypeText():
             text = ''
             for i in range(len(self.dico["rep" + str(x)])): #boucle pour chaque lettre de chaque ligne
                 text += self.dico["rep" + str(x)][i]
-                font = pygame.font.Font(self.fontType, self.fontSize)
+                font = pg.font.Font(self.fontType, self.fontSize)
                 text_surface = font.render(text, True, self.color)
                 textSize = text_surface.get_size()
-                #bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                #bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                 #bubbleRect = bubbleSurf.get_rect()
                 #bubbleSurf.fill(WHITE)
                 #bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 #bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 #gs.win.blit(bubbleSurf, bubbleRect)
                 gs.win.blit(text_surface, (self.x, self.y + count))
-                pygame.display.update()
-                pygame.time.wait(self.delay)
+                gs.clock.tick(gs.FPS)
+                pg.display.update()
+                #pg.time.wait(self.delay)
             count = count + self.fontInter
 
         self.arrowImg()
@@ -116,10 +123,10 @@ class TypeText():
                     text = ''
                     for i in range(len(self.dico["rep" + str(x)])): #boucle pour chaque lettre de chaque ligne
                         text += hoverDico["rep" + str(x)][i]
-                        font = pygame.font.Font(self.fontType, self.fontSize)
+                        font = pg.font.Font(self.fontType, self.fontSize)
                         text_surface = font.render(text, True, self.color)
                         textSize = text_surface.get_size()
-                        bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                        bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                         bubbleRect = bubbleSurf.get_rect()
                         self.hoverRect[x][i] = bubbleRect
                         bubbleSurf.fill(WHITE)
@@ -127,13 +134,14 @@ class TypeText():
                         bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter) + count)
                         gs.win.blit(bubbleSurf, bubbleRect)
                         #gs.win.blit(text_surface, (self.x, self.y + count))
-                        pygame.display.update()
-                        #pygame.time.wait(self.delay)
+                        gs.clock.tick(gs.FPS)
+                        pg.display.update()
+                        #pg.time.wait(self.delay)
                     count = count + self.fontInter
                 drawText = False
 
-            mx, my = pygame.mouse.get_pos()
-            for event in pygame.event.get():
+            mx, my = pg.mouse.get_pos()
+            for event in pg.event.get():
                 # print(mx, my)
                 selected = None
                 for x in range(len(self.hoverRect)):
@@ -143,10 +151,11 @@ class TypeText():
                             selected = x
                             drawText = False
 
-                if event.type == pygame.KEYDOWN:
+                if event.type == pg.KEYDOWN:
                     if printSelected != None:
-                        if event.key == pygame.K_RETURN:
+                        if event.key == pg.K_RETURN:
                             print(self.megaDico["answer" + str(printSelected + 1)])
+                            es.timings["MapHeticV2"]["npc"][npcId]["answer"] = printSelected + 1
                             noHover = False
 
             if memSelected == selected:
@@ -172,15 +181,16 @@ class TypeText():
 
 
     def bubbleImg(self): #importe et affiche la bulle
-        bubblePng = pygame.image.load("img/SpeechBubble.png")
-        bubblePng = pygame.transform.scale(bubblePng, (self.bubbleWidth, self.bubbleHeight))  # 42 28
+        bubblePng = pg.image.load("img/SpeechBubble.png")
+        bubblePng = pg.transform.scale(bubblePng, (self.bubbleWidth, self.bubbleHeight))  # 42 28
         gs.win.blit(bubblePng, (self.x - self.bubblePadding, self.y - self.bubblePadding))
 
     def arrowImg(self): #importe et affiche la touche entrer
-        arrowPng = pygame.image.load("img/arrow.png")
-        #arrowPng = pygame.transform.scale(arrowPng, (18, 15))  # 23 19
+        arrowPng = pg.image.load("img/arrow.png")
+        #arrowPng = pg.transform.scale(arrowPng, (18, 15))  # 23 19
         gs.win.blit(arrowPng, (self.x + self.bubbleWidth - 48, self.y + self.bubbleHeight - 58))
-        pygame.display.update()
+        gs.clock.tick(gs.FPS)
+        pg.display.update()
 
     def splitText(self, Wrap): #détermine en combien de pages le texte sera découpé, en fonction de la hauteur de la bulle
         x = 1
@@ -223,17 +233,18 @@ class TypeText():
             text = ''
             for i in range(Index): #boucle pour chaque lettre de chaque ligne
                 text += Wrap[i]
-                font = pygame.font.Font(self.fontType, self.fontSize)
+                font = pg.font.Font(self.fontType, self.fontSize)
                 text_surface = font.render(text, True, self.color)
                 textSize = text_surface.get_size()
-                bubbleSurf = pygame.Surface((textSize[0] + 10, textSize[1]))
+                bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
                 bubbleRect = bubbleSurf.get_rect()
                 bubbleSurf.fill(WHITE)
                 bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 gs.win.blit(bubbleSurf, bubbleRect)
-                pygame.display.update()
-                pygame.time.wait(self.delay)
+                #pg.time.wait(self.delay)
+                gs.clock.tick(gs.FPS)
+                pg.display.update()
             self.line = self.line + 1
             Wrap = Wrap[Index+1:]
         self.arrowImg()
@@ -244,7 +255,9 @@ class TypeText():
     def enter(self):
         gs.speech = True
         while gs.speech:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.key == pg.K_RETURN:
                         gs.speech = False
+
+

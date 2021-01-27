@@ -19,6 +19,8 @@ timings = { # animation timings
     "MapHeticV2": {
         "npc": {
             "npc1": {
+                "answer": 0,
+                "speechNb": 1,
                 "init":[[[500, 660], [64,64], "base"]],
                 "pathFile": "img/char/New/Bouncer_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
@@ -26,6 +28,7 @@ timings = { # animation timings
                 "pathChar": ["up", "up", "left", "left", "down", "down", "right", "right"]
             },
             "npc2": {
+                "speechNb": 1,
                 "init":[[[400, 660], [64,64], "base"]],
                 "pathFile": "img/char/New/Amelia_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
@@ -33,6 +36,7 @@ timings = { # animation timings
                 "pathChar": ["up", "right", "down", "left"]
             },
             "npc3" :{
+                "speechNb": 1,
                 "init":[[[400, 943], [64,64], "base"]],
                 "pathFile": "img/char/New/Old_woman_Jenny_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation

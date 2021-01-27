@@ -1,6 +1,7 @@
 from classes.inventory import Inventory
 from constants import game_settings as gs
 from constants import speech_settings as ss
+from constants import entity_settings as es
 from functions import load
 import pygame as pg
 from classes import player, objects
@@ -240,11 +241,11 @@ def inventory_menu():
     while invent:
         inventory_box = pg.Rect(gs.center_WIDTH-300, gs.center_HEIGHT-200, 600, 400)
         pg.draw.rect(gs.win, gs.WHITE, inventory_box)
-        inventory.draw(gs.win)
         title = text_format("Inventory", gs.menuFont, 50, gs.GREEN)
         title_rect = title.get_rect()
         gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 250))
         title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
+        inventory.draw(gs.win)
 
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -338,14 +339,34 @@ def pause_menu():
 def speech1():
     talk = True
     while talk:
+        handle_npc()
         Mleft = 400
         MTop = 250
-        speech.TypeText(Mleft, MTop, ss.speechList["chomel"]["perso"], 200)
+        speech.TypeText(Mleft, MTop, ss.speechList["npc1"]["npcText"], 200)
+        #speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["machine"], 200)
+
+        if not gs.speech:
+            talk = False
+        gs.clock.tick(gs.FPS)
+        pg.display.update()
+
+def speech2(npcId, xPos, yPos):
+    talk = True
+    print(npcId)
+    while talk:
+        handle_npc()
+        Mleft = xPos
+        MTop = yPos
+        pathSpeecNb = es.timings["MapHeticV2"]["npc"][npcId]["speechNb"]
+        print(pathSpeecNb)
+        speech.TypeText(Mleft, MTop, ss.speechList[npcId]["npcText" + str(pathSpeecNb)], 200)
+        # ADD IF
+        es.timings["MapHeticV2"]["npc"][npcId]["speechNb"] = pathSpeecNb + 1
+
         #speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["machine"], 200)
         if not gs.speech:
             talk = False
         gs.clock.tick(gs.FPS)
-        # updates screen
         pg.display.update()
 
 
@@ -389,8 +410,11 @@ def game_loop():
                     pause_menu()
                 elif event.key == pg.K_i:
                     inventory_menu()
-                elif event.key == pg.K_s:
-                    speech1()
+                elif event.key == pg.K_e:
+                    gs.displayE = False
+                    reset_display()
+                    speech2(gs.npcId, gs.npcX, gs.npcY)
+                    gs.displayE = True
             elif event.type == pg.QUIT:
                 pg.quit()
                 quit()
@@ -410,3 +434,14 @@ def game_loop():
 
 
 
+def reset_display():
+    #gs.win.fill((gs.DARKGREY))
+    #gs.char.player_controls()
+    gs.map.afficher_arriere_plan()
+    handle_npc()
+    gs.char.update()
+    gs.map.afficher_premier_plan()
+    interface()
+
+    gs.clock.tick(gs.FPS)
+    pg.display.update()
