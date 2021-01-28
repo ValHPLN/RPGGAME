@@ -13,6 +13,7 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
 # Window settings
+music = None
 font = pg.font.SysFont(None, 20)
 menuFont = "Retro.ttf"
 FPS = 60

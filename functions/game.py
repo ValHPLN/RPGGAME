@@ -38,6 +38,14 @@ def init_game():
     gs.char = player.Player(randomPlayer, gs.base_hp)
     main_menu()
 
+def init_music():
+    pg.mixer.pre_init(44100, -16, 2, 1024)  # Réglages du mixeur pygame (fréquence (Hz), nombre de bits, channel, taille du buffer)
+    pg.mixer.init()  # Initialisation du mixeur audio pygame
+    pg.mixer.set_num_channels(8)
+    pg.mixer.Channel(1)
+    gs.music = pg.mixer.Sound("sound/lick.ogg")  # Récuperer la musique sous forme de variable
+    gs.music.play()#loops=-1)   # Jouer la musique (loops=-1 permet de la jouer en boucle indéfiniment)
+
 
 def draw_text(text, font, color, surface, x, y):
     textobj = gs.font.render(text,1,color)
@@ -235,6 +243,7 @@ def main_menu():
     menu = True
     click = False
     selected = None
+    init_music()
     while menu:
         gs.win.fill((gs.DARKGREY))
         mx, my = pg.mouse.get_pos()
@@ -429,6 +438,11 @@ def speech2(npcId, xPos, yPos):
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0025"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
+        if npcId == "npc5":
+            if gs.music is not None:  # Si une musique est jouée
+                gs.music.stop()
+            init_music()
+            pg.time.wait(200)
         reset_display()
         Mleft = xPos
         MTop = yPos

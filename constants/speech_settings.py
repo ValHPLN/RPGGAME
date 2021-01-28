@@ -36,18 +36,6 @@ speechList = {
     "npc2": {
         "0":
             "Bienvenue à Hétic !"
-       # ,
-       # "00": {
-       #     "question": "Peux-tu m'aider à les retrouver ?2",
-       #     "answer1": "Oui bien sûr",
-       #     "answer2": "Pas le temps :/"
-       # },
-       # "001":
-       #     "Merci, c'est gentil de m'aider :)"
-       # ,
-       # "002":
-       #     "Tant pis je me débrouillerais"
-       # ,
     },
     "npc1": {
         "0":
@@ -55,6 +43,17 @@ speechList = {
     ,
         "00":
             "Comme il le dit si bien: 'Si une école ne change pas la vie des gens, elle ne sert à rien !'"
+    },
+    "npc4":{
+      "0":
+            "Je suis en train de jouer à 'HETIC LIFE', tu connais ce jeu ?"
+    ,
+    "00":
+        "Il a été développé par 2 Héticiens: Robin et Valentin ! C'est dingue, non ?"
+    },
+    "npc5":{
+        "0":
+        "Quelle douce musique..."
     }
 }
 

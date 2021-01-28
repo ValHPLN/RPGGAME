@@ -34,9 +34,17 @@ timings = { # animation timings
                 "walk": [4, 5, True, False],
                 "pathChar": ["right", "left"]
             },
-            "npc3":{
+             "npc3":{
                 "speechMem": "0",
-                "init":[[[845, 970], [64,64], "base"]],
+                "init":[[[854, 1015], [64,64], "base"]],
+                "pathFile": "img/char/New/Old_woman_Jenny_run_32x32.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [4, 5, True, False],
+                "pathChar": ["down", "down","down", "down","left","left", "up", "up", "up","up", "right", "right"]
+            },
+            "npc5":{
+                "speechMem": "0",
+                "init":[[[835, 970], [64,64], "base"]],
                 "pathFile": "img/char/New/transparent.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [None],
@@ -45,11 +53,12 @@ timings = { # animation timings
             },
             "npc4":{
                 "speechMem": "0",
-                "init":[[[854, 1015], [64,64], "base"]],
+                "init":[[[224, 954], [64,64], "base"]],
                 "pathFile": "img/char/New/Rob_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-                "walk": [4, 5, True, False],
-                "pathChar": ["up"]
+                "walk": [None],
+                "pathChar": ["still"],
+                "stillOrientation": "left"
             }
         },
         "obj": {
