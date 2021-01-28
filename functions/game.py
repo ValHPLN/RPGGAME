@@ -49,8 +49,10 @@ def init_game():
 
 
 def play_music():
-    gs.music = pg.mixer.Sound("sound/voices/lick.ogg")  # Récuperer la musique sous forme de variable
-    gs.music.play()  # loops=-1)   # Jouer la musique (loops=-1 permet de la jouer en boucle indéfiniment)
+    gs.music = pg.mixer.music
+    gs.music.load("sound/elif.ogg")# Récuperer la musique sous forme de variable
+    gs.music.set_volume(0.5)
+    gs.music.play(loops=-1)   # Jouer la musique (loops=-1 permet de la jouer en boucle indéfiniment)
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -430,11 +432,15 @@ def speech1():
 
 
 def play_voice():
-    if gs.voice is not None:
-        gs.voice.stop()
-    gs.voice = pg.mixer.Sound("sound/voices/" + vs.voicedict[gs.npcId][gs.findStr] + ".ogg") # Gets voice file according to Npc ID and dialog ID
-    gs.voice.set_volume(0.2)
-    gs.voice.play()
+    voice = True
+    while voice:
+        if gs.voice is not None:
+            gs.voice.stop()
+        gs.voice = pg.mixer.Sound("sound/voices/" + vs.voicedict[gs.npcId][gs.findStr] + ".ogg") # Gets voice file according to Npc ID and dialog ID
+        gs.voice.set_volume(0.2)
+        gs.music.set_volume(0.1)
+        gs.voice.play()
+        voice = False
 
 
 def speech2(npcId, xPos, yPos):
@@ -472,6 +478,7 @@ def speech2(npcId, xPos, yPos):
 
         if not gs.speech:
             gs.talk = False
+            gs.music.set_volume(0.5)
         gs.talk = False
         gs.clock.tick(gs.FPS)
         pg.display.update()
