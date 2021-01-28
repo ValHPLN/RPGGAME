@@ -39,7 +39,10 @@ run = None
 base_hp = 5
 
 
-#displayE = False
+displayE2 = False
+OK1 = False
+OKwin = False
+OKnb = 0
 
 npcId = None
 npcX = None

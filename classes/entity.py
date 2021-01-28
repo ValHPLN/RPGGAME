@@ -111,7 +111,30 @@ class Entity():
 
 
         if self.type == "npc":
+            #print(gs.displayE2)
+            if gs.displayE2:
+                gs.OK1 = True
+                #print("1")
+            if gs.OK1 and gs.displayE2 is False:
+                gs.OKnb = gs.OKnb + 1
+                if gs.OKnb > 10:
+                    gs.displayE2 = False
+                    gs.OKnb = 0
+                    gs.OKwin = False
+            if gs.OKnb == 3 and gs.displayE2:
+                gs.OKnb = 0
+                gs.OKwin = True
+
+            if gs.OKwin:
+                for event in pg.event.get():
+                    if event.type == pg.KEYDOWN:
+                        if event.key == pg.K_e :
+                            game.reset_display()
+                            game.speech2(gs.npcId, gs.npcX, gs.npcY)
+                            gs.OK1 = False
+
             if self.hitbox.collision("player"):  # S'il y en a :
+                gs.displayE2 = True
                 self.position[0] = x - deplacement_x  # en x
                 self.position[1] = y - deplacement_y  # en y
                 self.mouvement = "base"
@@ -124,15 +147,12 @@ class Entity():
                 gs.npcId = self.id
                 gs.npcX = (self.position[0] - 200)
                 gs.npcY = (self.position[1] - 140)
-                for event in pg.event.get():
-                    if event.type == pg.KEYDOWN:
-                        if event.key == pg.K_e :
-                            game.reset_display()
-                            game.speech2(gs.npcId, gs.npcX, gs.npcY)
             else:
                 # On actualise les position
                 self.position[0] = x  # en x
                 self.position[1] = y  # en y
+                gs.displayE2 = False
+
 
 
         self.bouger_hitbox((-deplacement_x, -deplacement_y))
