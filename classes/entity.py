@@ -116,7 +116,7 @@ class Entity():
                 gs.OK1 = True
             if gs.displayE2:
                 gs.OKindex = gs.OKnb
-                print(gs.OKindex)
+                #print(gs.OKindex)
             if gs.OK1 and gs.displayE2 is False:
                 gs.OKnb = gs.OKnb + 1
                 if gs.OKnb > 10:
@@ -143,10 +143,10 @@ class Entity():
                 self.position[1] = y - deplacement_y  # en y
                 self.mouvement = "base"
                 self.direction = action
-                if self.direction == "still":
-                    img = pg.image.load("img/keyE_red.png")
-                else:
-                    img = pg.image.load("img/keyE.png")
+                #if self.direction == "still":
+                #    img = pg.image.load("img/keyE_red.png")
+                #else:
+                img = pg.image.load("img/keyE.png")
                 gs.win.blit(img, (self.position[0] - 27, self.position[1] - 42))
                 gs.npcId = self.id
                 gs.npcX = (self.position[0] - 200)

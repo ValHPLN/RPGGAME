@@ -461,6 +461,17 @@ def speech2(npcId, xPos, yPos):
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0025"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
+        if npcId == "npc6":
+            if gs.findStr.find('001', 0, 3) != -1:
+                if objects.coinNb == 1:
+                    es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
+                    inventory.removeItemInv(objects.coin)
+                    objects.coinNb = 0
+            elif gs.findStr.find('002', 0, 3) != -1:
+                if objects.coinNb == 1:
+                    es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
+                    inventory.removeItemInv(objects.coin)
+                    objects.coinNb = 0
         reset_display()
         Mleft = xPos
         MTop = yPos

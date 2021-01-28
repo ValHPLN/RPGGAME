@@ -42,15 +42,6 @@ timings = { # animation timings
                 "walk": [4, 5, True, False],
                 "pathChar": ["down", "down","down", "down","left","left", "up", "up", "up","up", "right", "right"]
             },
-            "npc5":{
-                "speechMem": "0",
-                "init":[[[835, 970], [64,64], "base"]],
-                "pathFile": "img/char/New/transparent.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-                "walk": [None],
-                "pathChar": ["still"],
-                "stillOrientation": "left"
-            },
             "npc4":{
                 "speechMem": "0",
                 "init":[[[224, 954], [64,64], "base"]],
@@ -59,6 +50,24 @@ timings = { # animation timings
                 "walk": [None],
                 "pathChar": ["still"],
                 "stillOrientation": "left"
+            },
+            "npc5": {
+                "speechMem": "0",
+                "init": [[[835, 970], [64, 64], "base"]],
+                "pathFile": "img/char/New/transparent.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": ["still"],
+                "stillOrientation": "left"
+            },
+            "npc6": {
+                "speechMem": "0",
+                "init": [[[580, 1000], [64, 64], "base"]],#220, 425
+                "pathFile": "img/char/New/Dan_run_32x32.png",
+                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "walk": [None],
+                "pathChar": ["still"],
+                "stillOrientation": "right"
             }
         },
         "obj": {
