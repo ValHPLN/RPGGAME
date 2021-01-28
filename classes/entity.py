@@ -114,16 +114,18 @@ class Entity():
             #print(gs.displayE2)
             if gs.displayE2:
                 gs.OK1 = True
-                #print("1")
+            #print(gs.OKnb, gs.displayE2)
             if gs.OK1 and gs.displayE2 is False:
                 gs.OKnb = gs.OKnb + 1
                 if gs.OKnb > 10:
                     gs.displayE2 = False
                     gs.OKnb = 0
                     gs.OKwin = False
-            if gs.OKnb == 3 and gs.displayE2:
+                    gs.OK1 = False
+            if gs.OKnb == 4 and gs.displayE2:
                 gs.OKnb = 0
                 gs.OKwin = True
+                #print("win")
 
             if gs.OKwin:
                 for event in pg.event.get():
