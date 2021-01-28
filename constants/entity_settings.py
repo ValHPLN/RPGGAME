@@ -36,11 +36,12 @@ timings = { # animation timings
             },
             "npc3":{
                 "speechMem": "0",
-                "init":[[[854, 1015], [64,64], "base"]],
-                "pathFile": "img/char/New/Old_woman_Jenny_run_32x32.png",
+                "init":[[[845, 970], [64,64], "base"]],
+                "pathFile": "img/char/New/transparent.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-                "walk": [4, 5, True, False],
-                "pathChar": ["down", "down","down", "down","left","left", "up", "up", "up","up", "right", "right"]
+                "walk": [None],
+                "pathChar": ["still"],
+                "stillOrientation": "left"
             },
             "npc4":{
                 "speechMem": "0",
@@ -96,5 +97,6 @@ action = {
     "left":  [-vitesse, 0, "left", "walk", True],
     "down":  [0, vitesse, "down", "walk", True],
     "right": [vitesse, 0, "right", "walk", True],
-    "still_up": [0, 0, "up", "walk", True]
+    "still_up": [0, 0, "up", "walk", True],
+    "still": [0, 0, "down", "base", True]
 }

@@ -434,7 +434,6 @@ def speech2(npcId, xPos, yPos):
         MTop = yPos
         indexMem = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
         speech.TypeText(Mleft, MTop, ss.speechList[npcId][indexMem], 200)
-        # ADD IF
         if indexMem == es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]: #determiner si c'est une question
             es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] + "0"
             memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]

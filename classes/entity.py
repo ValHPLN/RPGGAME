@@ -116,7 +116,10 @@ class Entity():
                 self.position[1] = y - deplacement_y  # en y
                 self.mouvement = "base"
                 self.direction = action
-                img = pg.image.load("img/keyE.png")
+                if self.direction == "still":
+                    img = pg.image.load("img/keyE_red.png")
+                else:
+                    img = pg.image.load("img/keyE.png")
                 gs.win.blit(img, (self.position[0] - 27, self.position[1] - 42))
                 gs.npcId = self.id
                 gs.npcX = (self.position[0] - 200)
@@ -197,7 +200,10 @@ class Entity():
             for i in range(24):
                 sprites.append(sprite_set.subsurface([i * 32, 0, 32, 64]))
 
-            indexDirection = direction.index(self.direction)
+            if self.direction == "still":
+                indexDirection = direction.index(es.timings[self.map][self.type][self.id]["stillOrientation"])
+            else:
+                indexDirection = direction.index(self.direction)
             indexNumero = numero.index(self.frame)
             index = indexDirection * 6 + indexNumero
 
