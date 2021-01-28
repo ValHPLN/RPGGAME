@@ -42,6 +42,7 @@ base_hp = 5
 displayE2 = False
 OK1 = False
 OKwin = False
+OKindex = None
 OKnb = 0
 
 npcId = None
