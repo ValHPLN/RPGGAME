@@ -418,14 +418,15 @@ def speech2(npcId, xPos, yPos):
     talk = True
     while talk:
         if npcId == "npc3":
-            print("npcOK")
             findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
-            print(findStr.find('001', 0, 3))
             if findStr.find('001', 0, 3) != -1:
-                print("001OK")
                 if objects.glassesNb == 1:
-                    print("glassesOK")
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
+                    inventory.removeItemInv(objects.glasses)
+                    objects.glassesNb = 0
+            elif findStr.find('002', 0, 3) != -1:
+                if objects.glassesNb == 1:
+                    es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0025"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
         reset_display()
