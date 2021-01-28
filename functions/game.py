@@ -1,5 +1,6 @@
 from classes.inventory import Inventory
 from constants import game_settings as gs
+from constants import voice_settings as vs
 from constants import speech_settings as ss
 from constants import entity_settings as es
 from functions import load
@@ -29,22 +30,27 @@ def win_init():
     init_game()
 
 
+def init_music():
+    pg.mixer.pre_init(44100, -16, 2, 1024)  # Réglages du mixeur pygame (fréquence (Hz), nombre de bits, channel, taille du buffer)
+    pg.mixer.init()  # Initialisation du mixeur audio pygame
+    pg.mixer.set_num_channels(8)
+    pg.mixer.Channel(1)
+
+
 def init_game():
     inventory.addItemInv(objects.hp_potion)
     load.load_tileset()
+    init_music()
     gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Chargement de la map
     gs.map.load_npc()
     randomPlayer = playerList[compteur]
     gs.char = player.Player(randomPlayer, gs.base_hp)
     main_menu()
 
-def init_music():
-    pg.mixer.pre_init(44100, -16, 2, 1024)  # Réglages du mixeur pygame (fréquence (Hz), nombre de bits, channel, taille du buffer)
-    pg.mixer.init()  # Initialisation du mixeur audio pygame
-    pg.mixer.set_num_channels(8)
-    pg.mixer.Channel(1)
-    gs.music = pg.mixer.Sound("sound/lick.ogg")  # Récuperer la musique sous forme de variable
-    gs.music.play()#loops=-1)   # Jouer la musique (loops=-1 permet de la jouer en boucle indéfiniment)
+
+def play_music():
+    gs.music = pg.mixer.Sound("sound/voices/lick.ogg")  # Récuperer la musique sous forme de variable
+    gs.music.play()  # loops=-1)   # Jouer la musique (loops=-1 permet de la jouer en boucle indéfiniment)
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -243,7 +249,7 @@ def main_menu():
     menu = True
     click = False
     selected = None
-    init_music()
+    play_music()
     while menu:
         gs.win.fill((gs.DARKGREY))
         mx, my = pg.mouse.get_pos()
@@ -423,26 +429,31 @@ def speech1():
         pg.display.update()
 
 
+def play_voice():
+    if gs.voice is not None:
+        gs.voice.stop()
+    gs.voice = pg.mixer.Sound("sound/voices/" + vs.voicedict[gs.npcId][gs.findStr] + ".ogg") # Gets voice file according to Npc ID and dialog ID
+    gs.voice.play()
+
+
 def speech2(npcId, xPos, yPos):
-    talk = True
-    while talk:
+    gs.talk = True
+
+    while gs.talk:
+        gs.findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
+        play_voice()
+
         if npcId == "npc3":
-            findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
-            if findStr.find('001', 0, 3) != -1:
+            if gs.findStr.find('001', 0, 3) != -1:
                 if objects.glassesNb == 1:
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
-            elif findStr.find('002', 0, 3) != -1:
+            elif gs.findStr.find('002', 0, 3) != -1:
                 if objects.glassesNb == 1:
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0025"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
-        if npcId == "npc5":
-            if gs.music is not None:  # Si une musique est jouée
-                gs.music.stop()
-            init_music()
-            pg.time.wait(200)
         reset_display()
         Mleft = xPos
         MTop = yPos
@@ -458,16 +469,16 @@ def speech2(npcId, xPos, yPos):
                 memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
                 print("error back:", ss.speechList[gs.npcId][memPrint])
 
-        #speech.TypeText(Mleft, MTop, ss.speechList["coffee"]["machine"], 200)
         if not gs.speech:
-            talk = False
+            gs.talk = False
+        gs.talk = False
         gs.clock.tick(gs.FPS)
         pg.display.update()
 
 
 def interface():
-    """ Affiche les information (uniquement vie pour l'instant)
-    """
+    #Displays health bar
+
     title = text_format("Stamina", gs.menuFont, 15, gs.GREEN)
     title_rect = title.get_rect()
     title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
@@ -487,6 +498,7 @@ def game_loop():
         randomPlayer = playerList[compteur]
         gs.playerSelect = randomPlayer
         gs.char = player.Player(randomPlayer, gs.base_hp)
+
     # Game Loop
     while gs.run:
         gs.win.fill((gs.DARKGREY))
@@ -507,11 +519,6 @@ def game_loop():
                     pause_menu()
                 elif event.key == pg.K_i:
                     inventory_menu()
-                #if gs.displayE:
-               #if event.key == pg.K_e:
-               #    if gs.displayE:
-               #        reset_display()
-               #        speech2(gs.npcId, gs.npcX, gs.npcY)
             elif event.type == pg.QUIT:
                 pg.quit()
                 quit()
@@ -527,13 +534,7 @@ def game_loop():
         pg.display.update()
 
 
-# todo: def teleportation(): (gère changement de map)
-
-
-
 def reset_display():
-    #gs.win.fill((gs.DARKGREY))
-    #gs.char.player_controls()
     gs.map.afficher_arriere_plan()
     handle_npc()
     gs.char.update()
@@ -542,3 +543,6 @@ def reset_display():
 
     gs.clock.tick(gs.FPS)
     pg.display.update()
+
+
+# todo: def teleportation(): (gère changement de map)

@@ -3,6 +3,7 @@ import pygame as pg
 pg.init()
 mx, my = pg.mouse.get_pos()
 
+
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -12,14 +13,11 @@ GREEN = (41, 242, 148)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 
+
 # Window settings
-music = None
 font = pg.font.SysFont(None, 20)
 menuFont = "Retro.ttf"
 FPS = 60
-name = ""
-speech = None
-char = None
 win = None #Window
 map = None #variable for map
 WIDTH = 1200
@@ -32,15 +30,29 @@ GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
 center_WIDTH = WIDTH/2
 center_HEIGHT = HEIGHT/2
-entities_list = []
-change_char = True
 clock = None
 run = None
-base_hp = 5
 
 
-#displayE = False
-
+# NPC constants
+entities_list = []
+speech = None
 npcId = None
 npcX = None
 npcY = None
+
+
+# Player constants
+name = ""
+base_hp = 5
+char = None
+change_char = True
+
+
+# Dialogs & Audio constants
+talk = False
+voice = None
+findStr = None
+music = None
+
+
