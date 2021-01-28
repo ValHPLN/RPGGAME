@@ -417,6 +417,17 @@ def speech1():
 def speech2(npcId, xPos, yPos):
     talk = True
     while talk:
+        if npcId == "npc3":
+            print("npcOK")
+            findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
+            print(findStr.find('001', 0, 3))
+            if findStr.find('001', 0, 3) != -1:
+                print("001OK")
+                if objects.glassesNb == 1:
+                    print("glassesOK")
+                    es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
+                    inventory.removeItemInv(objects.glasses)
+                    objects.glassesNb = 0
         reset_display()
         Mleft = xPos
         MTop = yPos
@@ -460,6 +471,7 @@ def game_loop():
     if gs.change_char:
         gs.change_char = False
         randomPlayer = playerList[compteur]
+        gs.playerSelect = randomPlayer
         gs.char = player.Player(randomPlayer, gs.base_hp)
     # Game Loop
     while gs.run:

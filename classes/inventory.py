@@ -123,6 +123,7 @@ class Consumable(InventoryItem):
         inv.removeItemInv(self)
         gs.base_hp += 2
         ps.vel += 2
+        print(gs.char)
         print(gs.base_hp)
         print(ps.vel)
 

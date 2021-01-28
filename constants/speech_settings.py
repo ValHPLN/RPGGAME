@@ -23,6 +23,9 @@ speechList = {
         "0010":
             "Il serait temps d'aller les chercher..."
         ,
+        "0015":
+            "Merci beaucoup j'y vois plus clair"
+        ,
         "002":
             "Tant pis, je me débrouillerai."
         ,

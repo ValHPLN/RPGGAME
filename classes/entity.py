@@ -98,6 +98,7 @@ class Entity():
             if self.hitbox.collision("player"):  # S'il n'y a pas:
                 print(self.id)
                 if self.id == "glasses":
+                    objects.glassesNb = 1
                     game.inventory.addItemInv(objects.glasses)
                 elif self.id == "cable":
                     game.inventory.addItemInv(objects.cable)
