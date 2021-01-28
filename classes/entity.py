@@ -116,7 +116,6 @@ class Entity():
                 gs.OK1 = True
             if gs.displayE2:
                 gs.OKindex = gs.OKnb
-                print(gs.OKindex)
             if gs.OK1 and gs.displayE2 is False:
                 gs.OKnb = gs.OKnb + 1
                 if gs.OKnb > 10:
