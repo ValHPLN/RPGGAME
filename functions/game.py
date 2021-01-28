@@ -433,7 +433,6 @@ def play_voice():
     if gs.voice is not None:
         gs.voice.stop()
     gs.voice = pg.mixer.Sound("sound/voices/" + vs.voicedict[gs.npcId][gs.findStr] + ".ogg") # Gets voice file according to Npc ID and dialog ID
-    gs.voice.set_volume(0.2)
     gs.voice.play()
 
 
