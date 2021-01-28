@@ -55,4 +55,11 @@ voice = None
 findStr = None
 music = None
 
+# collide variables
+displayE2 = False
+OKnb = None
+OKindex = None
+OKwin = None
+OK1 = 0
+
 
