@@ -19,15 +19,3 @@ def load_tileset():
             # J'ajoute au dictionnaire des tuiles
             ts.tuiles[str(id)] = img.subsurface(rectangle)
             id += 1  # J'incrémente les IDs
-
-
-def load_sprites(): #PAS UTILISÉ
-    ###
-    for direction in ps.animation:  # Parcours des directions
-        for mouvement in ps.animation[direction]:  # Parcours des mouvements
-            numero = 0  # Compteur utilisé dans le parcours des sprites
-            for sprite in ps.animation[direction][mouvement]:  # Parcourir images
-                if isinstance(sprite, str):  # Si le sprite est un txt
-                    img = pg.image.load(sprite).convert_alpha()  # Charger
-                    ps.animation[direction][mouvement][numero] = img  # Sauver
-                numero += 1  # Numéro du sprite actuel + 1 (Le compteur)
