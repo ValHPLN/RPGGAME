@@ -1,4 +1,4 @@
-from constants import game_settings as gs
+
 
 speechList = {
     "coffee": {

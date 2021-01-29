@@ -31,8 +31,8 @@ def win_init():
 
 
 def init_music():
-    pg.mixer.pre_init(44100, -16, 2, 1024)  # Réglages du mixeur pygame (fréquence (Hz), nombre de bits, channel, taille du buffer)
-    pg.mixer.init()  # Initialisation du mixeur audio pygame
+    pg.mixer.pre_init(44100, -16, 2, 1024)  # sets hps audio mixer
+    pg.mixer.init()  # init mixer
     pg.mixer.set_num_channels(8)
     pg.mixer.Channel(1)
 
@@ -40,7 +40,7 @@ def init_music():
 def init_game():
     load.load_tileset()
     init_music()
-    gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Chargement de la map
+    gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Loads map
     gs.map.load_npc()
     randomPlayer = playerList[compteur]
     gs.char = player.Player(randomPlayer, gs.base_hp)
@@ -49,9 +49,9 @@ def init_game():
 
 def play_music():
     gs.music = pg.mixer.music
-    gs.music.load("sound/elif.ogg")
-    gs.music.set_volume(0.5)
-    gs.music.play(loops=-1)
+    gs.music.load("sound/elif.ogg") # THAT'S MY SONG !! IT'S COOL RIGHT ? Do you feel the good ol' GameBoy nostalgia ? (I know I'm old af)
+    gs.music.set_volume(0.5) #sets up volume
+    gs.music.play(loops=-1) #loops song
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -60,8 +60,13 @@ def draw_text(text, font, color, surface, x, y):
     textrect.center = (x,y)
     surface.blit(textobj,textrect)
 
+################ ALL MENUS WORK KINDA THE SAME ###############
+#gets mouse position to know which text you're hovering
+# sets up variables to record clicking and currently selected text
+# changes color of the selected text when mouse hovering
+# and performs actions according to click
 
-def new_player():
+def new_player(): #creates a new player,
     global compteur
     compteur = 0
     gs.win.fill((gs.DARKGREY))
@@ -117,7 +122,7 @@ def new_player():
             mx, my = pg.mouse.get_pos()
             for event in pg.event.get():
                 #print(mx, my)
-                if start_rect.collidepoint((mx, my)):
+                if start_rect.collidepoint((mx, my)): #if collision with mouse cursor
                     selected = "start"
                 elif leftArrow_rect.collidepoint((mx, my)):
                     selected = "leftA"
@@ -141,7 +146,7 @@ def new_player():
                         if selected == "leftA":
                             gs.win.fill((gs.DARKGREY))
                             compteur = compteur - 1
-                            choosePlayer(compteur)
+                            choosePlayer(compteur) #changes selected player upon arrow clicking
                         if selected == "rightA":
                             gs.win.fill((gs.DARKGREY))
                             compteur = compteur + 1
@@ -150,13 +155,13 @@ def new_player():
                             active = not active
                         else:
                             active = False
-                        color = color_active if active else color_inactive
+                        color = color_active if active else color_inactive #changes color of text and box when active
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_ESCAPE:
                         char_create = False
                         active = False
                         main_menu()
-                    if active:
+                    if active: #input box mus be active to enter name
                         if event.key == pg.K_BACKSPACE:
                             gs.name = gs.name[:-1]
                         else:
@@ -167,14 +172,14 @@ def new_player():
             gs.clock.tick(gs.FPS)
 
 
-def text_format(message, textFont, textSize, textColor):
+def text_format(message, textFont, textSize, textColor): #function to set up text
     newFont=pg.font.Font(textFont, textSize)
     newText=newFont.render(message, 0, textColor)
 
     return newText
 
 
-def choosePlayer(number):
+def choosePlayer(number): #change player sprite in char creation menu
     global compteur
     max = len(playerList)
     if number < 0:
@@ -184,7 +189,7 @@ def choosePlayer(number):
         number = 0
         compteur = number
 
-    player1 = "img/char/New/" + playerList[number] + "_run_32x32.png"
+    player1 = "img/char/New/" + playerList[number] + "_run_32x32.png" #takes sprite from player list
     sprite_set = pg.image.load(player1)
     sprites = []
     for i in range(24):
@@ -194,7 +199,7 @@ def choosePlayer(number):
         gs.win.blit(s, (580, 400))
 
 
-def controls():
+def controls(): #controls menu
     ctrls= True
     click = False
     selected = None
@@ -212,7 +217,7 @@ def controls():
 
         gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 80))
         gs.win.blit(text_start, (gs.WIDTH / 2 - (start_rect[2] / 2), 600))
-        controlsimg = pg.image.load("img/controls2.png").convert_alpha()
+        controlsimg = pg.image.load("img/controls2.png").convert_alpha() #PNG of the controls
         gs.win.blit(controlsimg, (60, 120))
 
         title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
@@ -276,7 +281,7 @@ def main_menu():
         updateY1 = 300
         updateY2 = 360
         start_rect.x, start_rect.y = updateX, updateY1
-        quit_rect.x, quit_rect.y = updateX, updateY2
+        quit_rect.x, quit_rect.y = updateX, updateY2 #changes position of the clickable rect so it's right on the text
 
 
         for event in pg.event.get():
@@ -301,10 +306,10 @@ def main_menu():
                     if click:
                         if selected == "start":
                             menu = False
-                            if gs.name == '':
+                            if gs.name == '': #if no name is defined, shows controls, else, starts game
                                 controls()
                             else:
-                                game_loop()
+                                game_loop() # prevents player to go through char creation and controls if he already started the game once
                         elif selected == "quit":
                             quit()
 
@@ -415,7 +420,7 @@ def pause_menu():
         gs.clock.tick(gs.FPS)
 
 
-def speech1():
+def speech1(): #first iteration of our speech function, this one is unused because it was merely to test the speech bubbles
     talk = True
     while talk:
         handle_npc()
@@ -430,7 +435,7 @@ def speech1():
         pg.display.update()
 
 
-def play_voice():
+def play_voice(): #plays voice file according to npc id, and state of the dialog (different file for each npc and each speech line!)
     voice = True
     while voice:
         if gs.voice is not None:
@@ -440,6 +445,9 @@ def play_voice():
         gs.music.set_volume(0.1)
         gs.voice.play()
         voice = False
+        #npcId is taken from entity.py upon collision with Npc
+        # voice file is stored in voice_settings dict
+        # "findStr" allows us to know which line of dialog is active)
 
 
 def speech2(npcId, xPos, yPos):
@@ -447,28 +455,28 @@ def speech2(npcId, xPos, yPos):
 
 
     while gs.talk:
-        gs.findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
-        play_voice()
+        gs.findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] # = dictionnary in entity_settings with [current map][entity category][Id of the npc][speech line]
+        play_voice() #plays audio file when you talk to a npc
 
         if npcId == "npc2":
             if es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] == "00":
-                inventory.addItemInv(objects.hp_potion)
+                inventory.addItemInv(objects.hp_potion) #adds a coffee to inv when you talk to the woman for the second time, and each time afterwards
         if npcId == "npc3":
-            if gs.findStr.find('001', 0, 3) != -1:
-                if objects.glassesNb == 1:
+            if gs.findStr.find('001', 0, 3) != -1: # if state of the speech is "001" or more, check inventory for glasses
+                if objects.glassesNb == 1: #takes value from objects
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
-                    inventory.removeItemInv(objects.glasses)
+                    inventory.removeItemInv(objects.glasses) #removes glasses from inventory
                     objects.glassesNb = 0
-                    gs.help_count += 1
+                    gs.help_count += 1 #adds 1 to "Personnes aidées" in game.interface()
             elif gs.findStr.find('002', 0, 3) != -1:
-                if objects.glassesNb == 1:
+                if objects.glassesNb == 1: #same as above but that's if you said "No" when he asks for help, you can still return the quest if you have the item
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0025"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
                     gs.help_count += 1
         elif npcId == "npc6":
             if gs.findStr.find('001', 0, 3) != -1:
-                if objects.coinNb == 1:
+                if objects.coinNb == 1: #same method as above, but with a different npc and questline
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
                     inventory.removeItemInv(objects.coin)
                     objects.coinNb = 0
@@ -484,32 +492,33 @@ def speech2(npcId, xPos, yPos):
         MTop = yPos
         indexMem = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
         speech.TypeText(Mleft, MTop, ss.speechList[npcId][indexMem], 200)
-        if indexMem == es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]: #determiner si c'est une question
+        if indexMem == es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]: #first dialog
+            #increments dialog id every time you talk to the Npc
             es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] + "0"
             memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
             try:
                 print("no errors ",ss.speechList[gs.npcId][memPrint])
-            except KeyError:
+            except KeyError: #stop incrementing and goes back to earlier value if you reached end of dialogs dict
                 es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = indexMem
                 memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
                 print("error back:", ss.speechList[gs.npcId][memPrint])
 
-        if npcId != "npc2":
-            if gs.base_hp >= 4:
-                gs.base_hp -= 0.7
+        if npcId != "npc2": #everytime you talk to a NPC (except the first lady who gives you coffee (and heals you!!)
+            if gs.base_hp >= 4: #if you have more than 4 HP (you can't die from cafeine deficiency so ...)
+                gs.base_hp -= 0.7 #makes you lose HP
             else:
                 pass
 
         if not gs.speech:
             gs.talk = False
-            gs.music.set_volume(0.5)
+            gs.music.set_volume(0.5) #music volume back to normal after every end of dialog)
         gs.talk = False
         gs.clock.tick(gs.FPS)
         pg.display.update()
 
 
 def interface():
-    #Displays health bar
+    #Displays health bar and help counter
 
     title = text_format("Energie", gs.menuFont, 15, gs.GREEN)
     help = text_format("Personnes aidées : " + str(gs.help_count), gs.menuFont, 15, gs.GREEN)
@@ -549,7 +558,7 @@ def game_loop():
 
 
 
-     # Events (if you press ESC or close window, leaves game)
+     # Events (displays pause menu if you press ESC; leaves game when you close the window)
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
@@ -560,18 +569,16 @@ def game_loop():
                 pg.quit()
                 quit()
 
-    #####TODO:insérer fonction teleportation (gère le changement de maps)
+    #####TODO: créer fonction teleportation (gère le changement de maps)
+    ##### Hopefully we'll add another map sometimes in the future :)
 
-        ###gérer mort perso avec def death():
-            ##if cp.char.health < 1
-            ### return death()
         #   runs game at FPS defined in gs (game_settings)
         gs.clock.tick(gs.FPS)
         # updates screen
         pg.display.update()
 
 
-def reset_display():
+def reset_display(): #resets a few functions for a correct display (so we don't have previous frames still blit on the screen)
     gs.map.afficher_arriere_plan()
     handle_npc()
     gs.char.update()
@@ -580,6 +587,3 @@ def reset_display():
 
     gs.clock.tick(gs.FPS)
     pg.display.update()
-
-
-# todo: def teleportation(): (gère changement de map)

@@ -2,14 +2,11 @@ import pygame as pg
 import random as rd
 from constants import game_settings as gs, player_settings as ps
 from constants import entity_settings as es
-from constants import collisions_settings as cs
-from classes import collision as col, objects
-from classes.inventory import Inventory
-from constants.game_settings import speech
+from classes import objects
 from functions import game
 
 
-class Entity():
+class Entity(): #creates a class for all entities (NPC and objects will inherit it)
 
     def __init__(self, type=None, id=None, parametre=None):
         self.game = None
@@ -36,11 +33,11 @@ class Entity():
     def bouger_hitbox(self, coord):
         #Handles hitbox
         if self.type != "npc":
-            if not self.touch: #si l'objet n'est pas touché
+            if not self.touch: #if no collision with object
                 self.hitbox.rect = pg.Rect((self.position[0] + coord[0] + self.taille[0] / 2 - 46,
                                             self.position[1] + coord[1] + self.taille[1] / 2 - 45), (10, 10))
                 self.hitbox.mask = pg.Mask((10, 10))
-            else: #si l'objet est touché
+            else: # if collision
                 self.hitbox.rect = pg.Rect((0, 0), (0, 0))
                 self.hitbox.mask = pg.Mask((0, 0))
 
@@ -48,17 +45,16 @@ class Entity():
             self.hitbox.rect = pg.Rect((self.position[0] + coord[0] + self.taille[0]/2 - 56,
                                                             self.position[1] + coord[1] + self.taille[1]/2 - 10), (56, 32))
             self.hitbox.mask = pg.Mask((25, 20))
-        self.hitbox.mask.fill()  # Remplir le hitbox pour créer un bloc
+        self.hitbox.mask.fill()  # fills hitbox
 
     def deplacement(self):
         #Defines NPC movement
-        if self.hitbox.mask is None:  # Si le hitbox est pas défini
-            return  # Quitter la fonction pour éviter un déplacement précoce
-
-        if self.action_count >= len(es.timings[self.map][self.type][self.id]["pathChar"]): # On reinitialise le compteur d'action
+        if self.hitbox.mask is None:  # if there's no hitbox defined
+            return  # return
+        if self.action_count >= len(es.timings[self.map][self.type][self.id]["pathChar"]): # reinit action count
             self.action_count = 0
 
-        # Charge le type deplacement
+        #Loads movement according to map, entity type and id; "patchar" refers to trajectory
         #action = es.deplacement["base"][self.action_count]
         action = es.timings[self.map][self.type][self.id]["pathChar"][self.action_count]
         self.mouvement = "walk"
@@ -81,22 +77,23 @@ class Entity():
 
         if self.type == "npc":
             self.direction = action
-            #Donne la valeur des deplacement ex: + 4 px
+            # movement value in pixels
             deplacement_x = es.action[action][0]  # en x
             deplacement_y = es.action[action][1]  # en y
 
-        # Donne la position du prochain déplacement
+        # gets position of next movement
         x = self.position[0] + delta_x + deplacement_x
         y = self.position[1] + delta_y + deplacement_y
 
-        # On bouge le hitbox a cette emplacement
+        # moves hitbox to position
         self.bouger_hitbox((deplacement_x, deplacement_y))
 
-        if self.type != "npc":
-            self.position[0] = x  # en x
-            self.position[1] = y  # en y
-            if self.hitbox.collision("player"):  # S'il n'y a pas:
-                print(self.id)
+        if self.type != "npc": #if entity is NOT a npc (means: if it's an object)
+            self.position[0] = x  # x position
+            self.position[1] = y  # y position
+            if self.hitbox.collision("player"):  # if it collides with player
+                #print(self.id)
+                #Adds corresponding item to inventory
                 if self.id == "glasses":
                     objects.glassesNb = 1
                     game.inventory.addItemInv(objects.glasses)
@@ -112,8 +109,10 @@ class Entity():
                 self.touch = True
 
 
-        if self.type == "npc":
+        if self.type == "npc": # if entity is a NPC
             #print(gs.displayE2)
+
+            #This bloc is here to set up a var that enables speech with npcs
             if gs.displayE2:
                 gs.OK1 = True
             if gs.displayE2:
@@ -131,7 +130,7 @@ class Entity():
                 gs.OKwin = True
                 #print("win")
 
-            if gs.OKwin:
+            if gs.OKwin: #Key to talk to NPCs
                 for event in pg.event.get():
                     if event.type == pg.KEYDOWN:
                         if event.key == pg.K_e :
@@ -142,22 +141,19 @@ class Entity():
                         pg.quit()
                         quit()
 
-            if self.hitbox.collision("player"):  # S'il y en a :
+            if self.hitbox.collision("player"):  # if collison with NPC
                 gs.displayE2 = True
-                self.position[0] = x - deplacement_x  # en x
-                self.position[1] = y - deplacement_y  # en y
+                self.position[0] = x - deplacement_x  # gets x pos
+                self.position[1] = y - deplacement_y  # gets y pos
                 self.mouvement = "base"
                 self.direction = action
-                #if self.direction == "still":
-                #    img = pg.image.load("img/keyE_red.png")
-                #else:
                 img = pg.image.load("img/keyE.png")
-                gs.win.blit(img, (self.position[0] - 27, self.position[1] - 42))
-                gs.npcId = self.id
-                gs.npcX = (self.position[0] - 200)
+                gs.win.blit(img, (self.position[0] - 27, self.position[1] - 42)) #displays the "E" bubble
+                gs.npcId = self.id #saves id of the npc in Game settings (to display a different speech for each npc that you collide with)
+                gs.npcX = (self.position[0] - 200) #saves npc position so the bubble is always on top of the right npc
                 gs.npcY = (self.position[1] - 140)
             else:
-                # On actualise les position
+                # updates position and doesn't display "E" bubble
                 self.position[0] = x  # en x
                 self.position[1] = y  # en y
                 gs.displayE2 = False
@@ -166,40 +162,40 @@ class Entity():
 
         self.bouger_hitbox((-deplacement_x, -deplacement_y))
 
-        # On actualise la camera
+        # update camera
         self.pos_last_cam = [gs.map.x_camera, gs.map.y_camera]
 
     def actualiser_frame(self):
-        # charge attribut mouvement en cours
+        # Loads current movement
 
         mouvement = es.timings[self.map][self.type][self.id][self.mouvement]
 
-        # Si le monstre est immobile, retour des conteurs à 0
+        # if Npc is not moving
         if mouvement[0] is None :
             #self.compteur = 0
             #self.frame = 5
             self.mouvement = "walk"
         else:
-            # Maintenant on incrémente le compteur des animations si besoin
+            # if npc is moving, increments animations
             if self.compteur < mouvement[0]:
                 self.compteur = self.compteur + 1
             else :
-                # On incremente le compteur de frame si besoins
+                # increments frames
                 self.compteur = 0
                 if self.frame < mouvement[1]:
                     self.frame = self.frame + 1
                 else:
-                    # verifi si on libere l'entitée apres l'animation et reset frame
+                    # checks if entity is free afterwards
                     self.frame = 0
                     self.libre = mouvement[2]
-                    # une fois l'animation terminer, on efectue l'action suivante
+                    #if movement set to "random" - (but we didn't actually put anything random because that would result in messy collisions)
                     if self.type_deplacement == "aleatoire":
                         self.action_count = rd.randint(0,3)
                     else :
                         self.action_count +=1
 
-                    if mouvement[3]:  # Si on veux revenir
-                        self.mouvement = "base"        # Sur base, on le fait
+                    if mouvement[3]:  #back to base
+                        self.mouvement = "base"
 
     def display(self):
         #Displays NPC and handle animation

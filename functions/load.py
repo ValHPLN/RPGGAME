@@ -5,12 +5,11 @@ from constants import game_settings as gs
 from constants import collisions_settings as cs
 
 def load_tileset():
-    """Charger un tileset
-    Associe a chaque tuiles d'un tileset un ID, divise un tileset
-    en plusieurs lignes
-    Permets de bosser avec Tiled
-    """
-    # Charger l'image du tileset
+    #loads tileset
+    #gives an Id to each tile in tileset
+    #allows us to use Tiled
+
+    # Load Tileset
     img = pg.image.load("img/tilesets/Tileset_Full.png").convert_alpha()
     img_largeur, img_hauteur = img.get_size()  # Prendre les dimensions
     id = 0  # J'initialise les IDs
@@ -23,9 +22,7 @@ def load_tileset():
 
 
 def load_sprites(): #PAS UTILISÉ
-    """Charge les sprites
-    Permets de charger les sprites des différents dictionnaires
-    """
+    ###
     for direction in ps.animation:  # Parcours des directions
         for mouvement in ps.animation[direction]:  # Parcours des mouvements
             numero = 0  # Compteur utilisé dans le parcours des sprites

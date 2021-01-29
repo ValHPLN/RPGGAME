@@ -11,7 +11,8 @@ timings = { # animation timings
 
     ####################################
     # Also gathers all NPCs and objects that can be picked up:
-        # Init = x, y, size, position
+        # speechmem : state of dialog
+        # Init = x, y, size, movement
         # pathfile = sprite
         # base = animation if tick = None, no animation
         # walk = timings (see above)
@@ -22,7 +23,7 @@ timings = { # animation timings
                 "speechMem": "0",
                 "init":[[[600, 660], [64,64], "base"]],
                 "pathFile": "img/char/New/Bouncer_run_32x32.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [4, 5, True, False],
                 "pathChar": [ "left", "left","left", "left","left", "left", "right", "right","right", "right","right", "right"]
             },
@@ -30,7 +31,7 @@ timings = { # animation timings
                 "speechMem": "0", #[556, 1036
                 "init":[[[506, 1066], [64,64], "base"]],
                 "pathFile": "img/char/New/Amelia_run_32x32.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [4, 5, True, False],
                 "pathChar": ["right", "left"]
             },
@@ -38,7 +39,7 @@ timings = { # animation timings
                 "speechMem": "0",
                 "init":[[[854, 1015], [64,64], "base"]],
                 "pathFile": "img/char/New/Old_woman_Jenny_run_32x32.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [4, 5, True, False],
                 "pathChar": ["down", "down","down", "down","left","left", "up", "up", "up","up", "right", "right"]
             },
@@ -46,7 +47,7 @@ timings = { # animation timings
                 "speechMem": "0",
                 "init":[[[224, 954], [64,64], "base"]],
                 "pathFile": "img/char/New/Rob_run_32x32.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [None],
                 "pathChar": ["still"],
                 "stillOrientation": "left"
@@ -55,7 +56,7 @@ timings = { # animation timings
                 "speechMem": "0",
                 "init": [[[835, 970], [64, 64], "base"]],
                 "pathFile": "img/char/New/transparent.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [None],
                 "pathChar": ["still"],
                 "stillOrientation": "left"
@@ -64,7 +65,7 @@ timings = { # animation timings
                 "speechMem": "0",
                 "init": [[[220, 425], [64, 64], "base"]],#
                 "pathFile": "img/char/New/Dan_run_32x32.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],  # Si tick =
                 "walk": [None],
                 "pathChar": ["still"],
                 "stillOrientation": "right"
@@ -74,14 +75,14 @@ timings = { # animation timings
             "coin": {
                 "init":[[[1100, 630], [32, 32], "base"]],
                 "pathFile": "img/objects/coin.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [None],
                 "pathChar": [None]
             },
             "glasses":{
                 "init": [[[663, 463], [32, 32], "base"]],
                 "pathFile": "img/objects/glasses.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
+                "base": [None],
                 "walk": [None],
                 "pathChar": [None]
             },
@@ -96,7 +97,7 @@ timings = { # animation timings
     }
 }
 
-action = {
+action = { # [x, y, direction, movement, free]
     "up":    [0, -vitesse, "up", "walk", True],
     "left":  [-vitesse, 0, "left", "walk", True],
     "down":  [0, vitesse, "down", "walk", True],

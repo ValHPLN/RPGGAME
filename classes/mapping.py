@@ -10,19 +10,16 @@ class Map:
 
     def __init__(self, nom, camera=(0, 0), musique=None):
 
-        self.compteur = 0  # Variable du compteur d'animation initialisé à 0
-        x, y = camera  # On extrait les coordonnées de la tuple
-        self.nom = nom  # Définition du nom de la map
-        # On met -x et -y afin d'utiliser des coordonnées positives.
-        # En effet la map utilise un repère orthonormé standard partageant son 0 avec le repère pygame.
-        # Elle est donc très souvent négative.
-        self.x_camera = x  # Camera X (position de la camera en fonction de l'axe des abcysses)
-        self.y_camera = y  # Camera Y (position de la camera en fonction de l'ordonnée)
-        self.matrices = {  # Dictionnaire des matrices
-            0: [],  # Matrice qui stockera le fond
-            1: [],  # Matrice qui stockera le milieu
-            2: [],  # Matrice qui stockera le 1er plan
-            3: [],  # Matrice qui stockera le plan spécial
+        self.compteur = 0  #can be used for animated map tiles (we didn't have enough time for that)
+        x, y = camera  # get camera position in class parameters
+        self.nom = nom  # map name
+        self.x_camera = x  # Camera X
+        self.y_camera = y  # Camera Y
+        self.matrices = {  # Dict for all matrixes (layers)
+            0: [],
+            1: [],
+            2: [],
+            3: [],
             4: [],
             5: [],
             6: [],
@@ -30,103 +27,80 @@ class Map:
             8: [],
             9: []
         }
-        self.charger_matrice()  # Chargement de la matrice, du fichier carte
-        # Pour le nombre de colonnes et de lignes on utilise la matrice du fond
-        self.x = len(self.matrices[0][0])  # Variable contenant le nombre de colonnes
-        self.y = len(self.matrices[0])  # Variable contenant le nombre de lignes
-        # Variable contenant l'arrière plan de la map (pg.SCRALPHA permet de rendre la surface transparente)
+        self.charger_matrice()  # Loads matrix
+        # matrix 0 is used to split the map in rows and columns
+        self.x = len(self.matrices[0][0])  # columns var
+        self.y = len(self.matrices[0])  # rows var
+        # background (pg.SCRALPHA for transparency)
         self.arriere_plan = pg.Surface((self.x * 32, self.y * 32),
-                                       pg.SRCALPHA)  # On crée une surface de la taille de la map
-        # Variable contenant le premier plan de la map
+                                       pg.SRCALPHA)  # map sized surface
+        # foreground
         self.premier_plan = pg.Surface((self.x * 32, self.y * 32),
-                                       pg.SRCALPHA)  # On crée une surface de la taille de la map
-        # self.charger_hitboxs()  # Charger les collisions de la map (Hitboxs)
-        self.charger_hitboxs()  # Charger les collisions de la map (Hitboxs)
-        self.charger_images()  # Charger l'arrière plan et le premier plan
-        # self.vider_monstres()  # Supprimer les monstres de l'ancienne map (si il y en a)
+                                       pg.SRCALPHA)  # map sized surface
+
+        self.charger_hitboxs()  # loads hitboxes
+        self.charger_images()  # loads background/foreground
         self.afficher_arriere_plan()
 
     def afficher_arriere_plan(self):
-        """ Affiche les 3 premières couches de la map
-        3 premières couches (0,1,2) = Arrière plan
-        """
+        #displays background layers
         gs.win.blit(self.arriere_plan, (self.x_camera,
-                                          self.y_camera))  # Affiche l'arrière plan
+                                          self.y_camera))
 
     def afficher_premier_plan(self):
-        """ Affiche la 4 eme couche de la map
-        Quatrième couche (3) = Premier plan devant le personnage
-        """
+        #displays foreground layers
         gs.win.blit(self.premier_plan, (self.x_camera,
-                                          self.y_camera))  # Affiche le premier plan
+                                          self.y_camera))
 
     def bouger_hitbox(self, x, y):
-        """Déplace les hitboxs de collision
-        Permets de déplacer les hitboxs de collisions, utilisé lors du
-        Déplacement du personnage ou de la camera
-        """
+        #moves collision hitbox, when player/camera moves
         # nouvelle_liste va écraser la liste des constantes de collision pour les tuiles
-        for hitbox in cs.groups["tuile"]:  # Je parcours le contenu du groupe
-            hitbox.rect.move_ip(x, y)  # Déplacer le rect.
-        for hitbox in cs.groups["object"]:  # Je parcours le contenu du groupe
-            hitbox.rect.move_ip(x, y)  # Déplacer le rect.
+        for hitbox in cs.groups["tuile"]:  # goes through group
+            hitbox.rect.move_ip(x, y)  # moves rect
+        for hitbox in cs.groups["object"]:  # goes through group
+            hitbox.rect.move_ip(x, y)  # moves rect
 
     def bouger(self, x, y):
-        """Déplacer la map
-        Déplace:
-        - Les 3 couches esthétiques de tuiles
-        - La 4 ème couche qui passe par-dessus le personnage
-        """
-        gs.map.x_camera += x  # Bouger la camera
-        gs.map.y_camera += y  # Bouger la camera
+        #moves tiles as the camera moves
+        gs.map.x_camera += x
+        gs.map.y_camera += y
 
     def charger_matrice(self):
-        """Charger les matrices
-        Lire le fichier de la carte et stocker les tuiles dans une matrice
-        Permets de convertir un .csv en tableau/matrice.
-        Permets de convertir plusieurs .csv en tableaux 3D
-        """
-        for i in range(10):  # On a 4 calques, ici on parcours les calques
-            nom_fichier = "maps/" + self.nom + "_" + str(i) + ".csv"  # Nom du fichier
-            #                                          # Ex: nom_0.csv
-            f = open(nom_fichier, "r")    # Ouvrir le fichier
-            for ligne in f.readlines():   # Je regarde chaque lignes
-                ligne = ligne.replace("\n", "")  # Je supprime les \n
-                ligne = ligne.split(",")  # On convertis la ligne en liste
-                if ligne != []:  # Si la ligne en liste n'est pas nulle
-                    self.matrices[i].append(ligne)  # On ajoute la liste
-            f.close()  # Fermer fichier
+        #loads matrixes and allows game to use .csv files
+        for i in range(10):  # goes through all layers
+            nom_fichier = "maps/" + self.nom + "_" + str(i) + ".csv"  # filename
+            #                                          # Ex: MapHeticV2_0.csv
+            f = open(nom_fichier, "r")    # opens file
+            for ligne in f.readlines():   # for loop to check every line
+                ligne = ligne.replace("\n", "")  # deletes line break
+                ligne = ligne.split(",")  # changes line to list
+                if ligne != []:
+                    self.matrices[i].append(ligne)  # adds list to matrixes
+            f.close()
 
     def charger_hitboxs(self):
-        """ Crée les rectangles de collisions de la map
-        Permets de charger les rectangles de collision de la map
-        (Peut génèrer des latences !)
-        """
-        for groupe in cs.groups:  # Je parcours les groupes de collision
-            cs.groups[groupe] = pg.sprite.Group()  # Je les réinitialise
+        #creates hitboxes for map tiles
+        for groupe in cs.groups:  # goes through all groups
+            cs.groups[groupe] = pg.sprite.Group()  # reinit groups
 
-        for i in range(10):  # Je parcours les 3 premières couches de la map
-            for y in range(self.y):  # Parcours les colonnes
-                for x in range(self.x):  # Je parcours les lignes
-                    if self.matrices[i][y][x] in ts.tuiles:  # Si la tuile existe
-                        if self.matrices[i][y][x] in ts.collisions:  # Si on lui a assigné des collisions
-                            x_tuile = self.x_camera + x*32  # Position de la tuile (abscisses)
-                            y_tuile = self.y_camera + y*32  # Position de la tuile (ordonnée)
-                            tuile = ts.tuiles[self.matrices[i][y][x]]  # On extrait l'image
-                            mask = pg.mask.from_surface(tuile)  # On fait le mask a partir de cette image
-                            rect = pg.Rect(x_tuile, y_tuile, 32, 32)  # On créé le rectangle associé a l'image
-                            col.Hitbox("tuile", rect, mask)  # Sauvegarder la liste (rect + mask)
+        for i in range(10):  #goes through matrixes
+            for y in range(self.y):  # columns
+                for x in range(self.x):  # rows
+                    if self.matrices[i][y][x] in ts.tuiles:  # if tile exists in tile settings
+                        if self.matrices[i][y][x] in ts.collisions:  # if collisions
+                            x_tuile = self.x_camera + x*32  # X pos
+                            y_tuile = self.y_camera + y*32  # Y pos
+                            tuile = ts.tuiles[self.matrices[i][y][x]]  # Get img
+                            mask = pg.mask.from_surface(tuile)  # creates mask
+                            rect = pg.Rect(x_tuile, y_tuile, 32, 32)  # gets rect from img
+                            col.Hitbox("tuile", rect, mask)  # saves list
 
     def vider_monstres(self):
-        """ Supprime tout les monstres
-        Utilisé lors d'un changement de map
-        """
+        #clears all entities from the map when we change it (we didn't have the chance to created another map so it's unused for now)
         gs.entities_list = []
 
     def load_npc(self):
-        """ Crée les monstres associés a une map
-        Créer des monstres d'une liste
-        """
+        #Loads npcs
         liste_type = []
         liste_npcs = []
 
@@ -141,16 +115,14 @@ class Map:
             npc.display()
 
     def charger_images(self):
-        """ Charge dans la variable self.arriere_plan l'image superposée des 3 premieres couches (0, 1, 2)
-            Charge dans la variable self.premier_plan l'image de la dernière couche (3)
-        """
+        #loads layers in background and foreground vars
 
         for i in range(10):  # Je parcours les couches
             for y in range(self.y):  # Parcours les colonnes
                 for x in range(self.x):  # Je parcours les lignes
                     if self.matrices[i][y][x] in ts.tuiles:  # Si elle existe
-                        tuile = ts.tuiles[self.matrices[i][y][x]]  # On extrait
-                        if i < 5:  # Si on parcours les couches 2, 1 et 0
-                            self.arriere_plan.blit(tuile, (x*32, y*32))  # On colle les images sur l'arrière plan tuile par tuile
+                        tuile = ts.tuiles[self.matrices[i][y][x]]  # Gets tile from dict
+                        if i < 5:  # Goes through layers
+                            self.arriere_plan.blit(tuile, (x*32, y*32))  # blits every tile on the background
                         else:
-                            self.premier_plan.blit(tuile, (x*32, y*32))  # On colle les images sur le premier plan tuile par tuile
+                            self.premier_plan.blit(tuile, (x*32, y*32))  # blits every tile on the foreground

@@ -1,10 +1,12 @@
 import pygame as pg
 
+#all lists for hitboxes
+
 groups = {
-    "tuile": pg.sprite.Group(),     # Liste des hitboxs pour les tuiles
-    "entity": pg.sprite.Group(),   # Liste des hitboxs pour les entiees
-    "player": pg.sprite.Group(),    # Liste des hitboxs pour les joueurs
-    "Npc": pg.sprite.Group(),   # Liste des hitboxs pour les pnj
-    "object": pg.sprite.Group(),     # Liste des hitboxs pour les objets
-    "tout": pg.sprite.Group()       # Liste des hitboxs pour tout
+    "tuile": pg.sprite.Group(),
+    "entity": pg.sprite.Group(),
+    "player": pg.sprite.Group(),
+    "Npc": pg.sprite.Group(),
+    "object": pg.sprite.Group(),
+    "tout": pg.sprite.Group()
 }

@@ -1,8 +1,6 @@
-import pygame as pg
-
 tuiles = {}
 
-collisions = (  # Liste des blocs sur lesquels on ne peux pas aller
+collisions = (  # tiles with collisions
     "215",
     "216",
     "217",

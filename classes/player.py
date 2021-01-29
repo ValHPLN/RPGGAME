@@ -1,5 +1,4 @@
 from constants import game_settings as gs, player_settings as ps
-from constants import tiles_settings as ts
 from constants import collisions_settings as cs
 from classes import collision as col
 import pygame as pg
@@ -33,9 +32,8 @@ class Player():
         #creat rect on player feet for collisions
         self.hitbox_object.rect = pg.Rect((gs.center_WIDTH - 20, gs.center_HEIGHT + 10), (32, 22))
         self.hitbox_object.rect.center = (gs.center_WIDTH - 4, gs.center_HEIGHT - 11)
-        # Créer et assigner le hitbox
         self.hitbox_object.mask = pg.Mask((32, 22))
-        self.hitbox_object.mask.fill()  # Remplir le hitbox pour créer un bloc
+        self.hitbox_object.mask.fill()  # fills hitbox
 
 
     def player_controls(self):
@@ -45,80 +43,76 @@ class Player():
             return
         if self.hitbox.mask is None:
             return
-        for key in ps.keys:  # Je parcours les touches enfoncées
-            if userInput[key]:  # Si la touche est définie dans constantes
-                key = ps.keys[key]  # touche = sa liste correspondante
+        for key in ps.keys:  # Gets Keys
+            if userInput[key]:
+                key = ps.keys[key]
 
-                if key[2] is not None:  # Si l'animation change la direction
-                    self.direction = key[2]  # Modif direction
-                if self.mouvement != key[3]:  # Si le mouvement change
+                # ([0]: X, [1]: Y ,[2]: direction ,[3] movement ,[4] state of player)
+                if key[2] is not None:   #if animation changes direction:
+                    self.direction = key[2]  # changes direction of the player
+                if self.mouvement != key[3]:  # if the movement changes
                     self.mouvement = key[3]  # Changer le mouvement du perso
-                    self.compteur = 0  # Recommencer les animations
-                    self.frame = 0  # Réinitialiser les frames
-                self.free = key[4]  # Changer disponibilité du perso
+                    self.compteur = 0  # start animation all over again
+                    self.frame = 0  # reinit frames
+                self.free = key[4]  # change state (free : true/false)
 
-                # Capturer les déplacements
-                x = key[0]  # Nombre de pixels en x
-                y = key[1]  # Nombre de pixels en x
-                # Déplacer le hitbox pour tester la position
+                # gets movement in pixels
+                x = key[0]  # number of x pixels
+                y = key[1]  # number of y pixels
+                # moves hitbox
                 gs.map.bouger_hitbox(x, y)
-                if self.hitbox.collision("tuile"):  # Si il y a collision:
-                    # Annuler le déplacement de la hitbox de la map
+                if self.hitbox.collision("tuile"):  # if player collides with tiles dict (this dict defines the tiles where the player can't walk)
+                    # then cancel movement
                     gs.map.bouger_hitbox(-x, -y)
-                else:  # Sinon, si il y a pas collision
+                else:  # if no collision, player can move
                     gs.map.bouger(x, y)
 
 
-                break  # Casser la boucle: Touche trouvée. On évite les autres
+                break
 
-        else:  # Si la boucle n'est pas cassée: Aucune touche trouvée
+        else:  # if no userinput, puts player at rest on base position
             self.free = True
             self.mouvement = "base"
             self.frame = 3
 
 
     def actualiser_frame(self):
-        # MISE A JOUR DES FRAMES EN FONCTION DES TICKS
-        # On vérifie si il y a un nombre de tick entre frame défini
-        if ps.timing[self.mouvement][0] is None:  # Si il y en a pas
+        # Updates animation frames with ticks
+        # Checks how many frames there are between each tick
+        if ps.timing[self.mouvement][0] is None:  # if None
             self.compteur = 0
             self.frame = 5
-        else:  # Si il y en a un
-            # Maintenant on incrémente le compteur des animations si besoin
+        else:  # if there are
+            # increments animation counter
             if self.compteur < ps.timing[self.mouvement][0]:
                 self.compteur = self.compteur + 1
-                # Sinon si il est déjà à son max
+                # if it reaches max
             else:
-                self.compteur = 0  # On le reset
-                # On incrémente la frame si besoin d'être incrémenté
+                self.compteur = 0  # reset
+                # increments frames
                 if self.frame < ps.timing[self.mouvement][1]:
                     self.frame = self.frame + 1
-                    # Sinon si elle est déjà a son max
+                    # if max
                 else:
                     self.frame = 0  # Reset
-                    self.libre = ps.timing[self.mouvement][2]  # Liberer perso
-                    if ps.timing[self.mouvement][3]:  # Si on veux revenir
-                        self.mouvement = "base"  # Sur base, on le fait
+                    self.libre = ps.timing[self.mouvement][2]  # free char
+                    if ps.timing[self.mouvement][3]:
+                        self.mouvement = "base"  # back to "base"
 
 
     def actualiser_sprite(self):
-        """ Met à jour le sprite
-        Mise à jour du sprite en fonction de:
-            - La direction
-            - Le mouvement
-            - La frame
-        """
+        #updates frame according to direction, movement, frame
         cs.groups["player"] = [self.hitbox]
 
 
     def update(self):
-        """Actualise les stats du personnage"""
-        self.actualiser_frame()  # Actualiser les frames
-        self.actualiser_sprite()  # Actualiser le sprite
+      #updates player sprites and settings
+        self.actualiser_frame()
+        self.actualiser_sprite()
 
-        # Je calcule la position de rendu du sprite afin qu'il soit bien centré
-        x_rendu = gs.center_WIDTH - ps.sprite_height / 2  # Le x de rendu
-        y_rendu = gs.center_HEIGHT - ps.sprite_width / 2  # Le y de rendu
+        # centers sprite
+        x_rendu = gs.center_WIDTH - ps.sprite_height / 2
+        y_rendu = gs.center_HEIGHT - ps.sprite_width / 2
 
         direction = ["right", "up", "left", "down"]
         numero = [0, 1, 2, 3, 4, 5]
