@@ -66,7 +66,7 @@ class Entity(): #creates a class for all entities (NPC and objects will inherit 
 
         self.direction = action
 
-        #Calcul du delta de la camera entre deux frame
+        #Calculation of the camera delta between two frames
         delta_x = gs.map.x_camera - self.pos_last_cam[0] # Delta camera x
         delta_y = gs.map.y_camera - self.pos_last_cam[1] # Delta camera y
 
@@ -219,7 +219,7 @@ class Entity(): #creates a class for all entities (NPC and objects will inherit 
             gs.win.blit(img, (x_rendu, y_rendu))
             self.mouvement = "base"
 
-        if self.type == "npc":
+        if self.type == "npc":  # decompose the sprite into subsurface
             sprite_set = pg.image.load(chosenPnj)
             sprites = []
             for i in range(24):
@@ -230,10 +230,10 @@ class Entity(): #creates a class for all entities (NPC and objects will inherit 
             else:
                 indexDirection = direction.index(self.direction)
             indexNumero = numero.index(self.frame)
-            index = indexDirection * 6 + indexNumero
+            index = indexDirection * 6 + indexNumero    # get the number of the character in the sprite we want to display
 
             for i, s in enumerate(sprites):
                 if i == index:
-                    gs.win.blit(s, (x_rendu, y_rendu))
+                    gs.win.blit(s, (x_rendu, y_rendu))  # render the character
 
 

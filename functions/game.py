@@ -445,7 +445,7 @@ def play_voice(): #plays voice file according to npc id, and state of the dialog
         gs.music.set_volume(0.1)
         gs.voice.play()
         voice = False
-        #npcId is taken from entity.py upon collision with Npc
+        # npcId is taken from entity.py upon collision with Npc
         # voice file is stored in voice_settings dict
         # "findStr" allows us to know which line of dialog is active)
 
@@ -492,7 +492,10 @@ def speech2(npcId, xPos, yPos):
         MTop = yPos
         indexMem = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
         speech.TypeText(Mleft, MTop, ss.speechList[npcId][indexMem], 200)
-        if indexMem == es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]: #first dialog
+
+        # determines if the displayed sentence is information, or a question
+        # because if it is a question, the value will have already been modified
+        if indexMem == es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]:
             #increments dialog id every time you talk to the Npc
             es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] + "0"
             memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
@@ -569,7 +572,7 @@ def game_loop():
                 pg.quit()
                 quit()
 
-    #####TODO: créer fonction teleportation (gère le changement de maps)
+    #####TODO: create teleportation function (manages the change of maps)
     ##### Hopefully we'll add another map sometimes in the future :)
 
         #   runs game at FPS defined in gs (game_settings)

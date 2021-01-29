@@ -1,12 +1,19 @@
 
 
 speechList = {
-    "coffee": {
-        "npcText":
-            "Veuillez insérer des pièces dans la fente correspondante"
+    "npc1": {
+        "0":
+            "As-tu déjà rencontré Mr. Chomel ? Tu vas voir, c'est un vrai passionné !"
         ,
-        "perso":
-            "This method returns a copy of the string with all occurrences of substring old replaced by new."
+        "00":
+            "Comme il le dit si bien: 'Si une école ne change pas la vie des gens, elle ne sert à rien !'"
+    },
+    "npc2": {
+        "0":
+            "Bonjour, et bienvenue à Hétic !"
+    ,
+        "00":
+            "Tu as l'air épuisé, prends-donc ce café !"
     },
     "npc3": {
         "0":
@@ -32,20 +39,6 @@ speechList = {
         "0025":
             "Ah tu as quand même décidé de m'aider ! C'est gentil, merci."
         ,
-    },
-    "npc2": {
-        "0":
-            "Bonjour, et bienvenue à Hétic !"
-    ,
-        "00":
-            "Tu as l'air épuisé, prends-donc ce café !"
-    },
-    "npc1": {
-        "0":
-            "As-tu déjà rencontré Mr. Chomel ? Tu vas voir, c'est un vrai passionné !"
-        ,
-        "00":
-            "Comme il le dit si bien: 'Si une école ne change pas la vie des gens, elle ne sert à rien !'"
     },
     "npc4": {
         "0":

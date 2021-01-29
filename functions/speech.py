@@ -18,23 +18,23 @@ class TypeText():
     def __init__(self, x, y, text1, width):
         self.x = x + 40
         self.y = y - 10
-        self.bubbleWidth = width #210
+        self.bubbleWidth = width    # Normally the rest of the code should adapt to this width. It's responsive
         self.bubbleHeight = 140
         self.bubblePadding = 10
         self.line = 0
         self.delay = 5
         self.color = (64, 64, 100)
         self.fontSize = 12
-        self.fontWidth = self.fontSize * 4.5 / 7 #largeur moyenne haute d'une lettre
-        self.fontWrap = int((self.bubbleWidth - (2 * self.bubblePadding)) / self.fontWidth) #combien de lettres avant le retour à la ligne
+        self.fontWidth = self.fontSize * 4.5 / 7    # medium high letter width
+        self.fontWrap = int((self.bubbleWidth - (2 * self.bubblePadding)) / self.fontWidth) #how many letters before the newline
         print(self.fontWidth, self.fontWrap)
-        self.fontInter = self.fontSize + self.fontSize * 8 / 12 #interligne
+        self.fontInter = self.fontSize + self.fontSize * 8 / 12 # line spacing
         self.fontType = 'img/Minecraftia-Regular.ttf'
         self.dico = {}
         self.hoverRect = {}
         self.megaDico = text1
         self.dictionary = False
-        if type(text1) == dict:
+        if type(text1) == dict:     # if the sentence is a question
             self.dictionary = True
             textDict = text1
             text1 = text1["question"]
@@ -45,7 +45,7 @@ class TypeText():
             self.textAbis = self.textA
             self.bubbleImg()
             self.drawDico()
-        else:
+        else:      # if the sentence is information
             print("text1: ", text1)
             self.textA = "\n".join(textwrap.wrap(text1, self.fontWrap))
             self.textA = self.textA + "\n"
@@ -54,16 +54,16 @@ class TypeText():
         #self.display_text_animation(self.textA)
         #self.quit()
 
-    def drawDico(self):
+    def drawDico(self): # prepare text for display if that's a question
         count = self.textAbis.count("\n")
 
-        for i in range(count): #boucle pour chaque ligne
+        for i in range(count):  # loop for each row of the question
             try:
                 Index = self.textAbis.index("\n")
             except ValueError:
                 Index = len(self.textAbis)
             text = ''
-            for i in range(Index): #boucle pour chaque lettre de chaque ligne
+            for i in range(Index):      # loop for each letter in each row
                 text += self.textAbis[i]
                 font = pg.font.Font(self.fontType, self.fontSize)
                 text_surface = font.render(text, True, self.color)
@@ -76,30 +76,19 @@ class TypeText():
                 gs.win.blit(bubbleSurf, bubbleRect)
                 gs.clock.tick(gs.FPS)
                 pg.display.update()
-                #pg.time.wait(self.delay)
             self.line = self.line + 1
             self.textAbis = self.textAbis[Index+1:]
-        #self.arrowImg()
 
-        #self.bubbleImg()
         count = (count + 1) * self.fontInter
-        for x in range(len(self.dico)): #boucle pour chaque ligne
+        for x in range(len(self.dico)):     # loop for each row of the answer
             text = ''
-            for i in range(len(self.dico["rep" + str(x)])): #boucle pour chaque lettre de chaque ligne
+            for i in range(len(self.dico["rep" + str(x)])):     # loop for each letter in each row
                 text += self.dico["rep" + str(x)][i]
                 font = pg.font.Font(self.fontType, self.fontSize)
                 text_surface = font.render(text, True, self.color)
-                textSize = text_surface.get_size()
-                #bubbleSurf = pg.Surface((textSize[0] + 10, textSize[1]))
-                #bubbleRect = bubbleSurf.get_rect()
-                #bubbleSurf.fill(CREAM)
-                #bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
-                #bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
-                #gs.win.blit(bubbleSurf, bubbleRect)
                 gs.win.blit(text_surface, (self.x, self.y + count))
                 gs.clock.tick(gs.FPS)
                 pg.display.update()
-                #pg.time.wait(self.delay)
             count = count + self.fontInter
 
         self.arrowImg()
@@ -107,7 +96,7 @@ class TypeText():
         #self.enter()
         #self.bubbleImg()
 
-    def hover(self):
+    def hover(self):  # response selection by the player
         noHover = True
         drawText = True
         selected = None
@@ -121,10 +110,10 @@ class TypeText():
             while drawText:
                 count = self.textAbis.count("\n")
                 count = (count + 1) * self.fontInter
-                for x in range(len(self.dico)): #boucle pour chaque ligne
+                for x in range(len(self.dico)):     # loop for each row
                     self.hoverRect[x] = {}
                     text = ''
-                    for i in range(len(self.dico["rep" + str(x)])): #boucle pour chaque lettre de chaque ligne
+                    for i in range(len(self.dico["rep" + str(x)])):     # loop for each letter of each row
                         text += hoverDico["rep" + str(x)][i]
                         font = pg.font.Font(self.fontType, self.fontSize)
                         text_surface = font.render(text, True, self.color)
@@ -136,10 +125,8 @@ class TypeText():
                         bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                         bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter) + count)
                         gs.win.blit(bubbleSurf, bubbleRect)
-                        #gs.win.blit(text_surface, (self.x, self.y + count))
                         gs.clock.tick(gs.FPS)
                         pg.display.update()
-                        #pg.time.wait(self.delay)
                     count = count + self.fontInter
                 drawText = False
 
@@ -174,7 +161,7 @@ class TypeText():
                 change = True
             memSelected = selected
 
-            if selected is not None:
+            if selected is not None:       # display of the arrow next to the selection hovered
                 printSelected = selected
                 while change:
                     for x in range(len(self.hoverRect)):
@@ -187,61 +174,58 @@ class TypeText():
                     change = False
 
 
-
-
-
-    def bubbleImg(self): #importe et affiche la bulle
+    def bubbleImg(self):    # import and display the bubble
         bubblePng = pg.image.load("img/SpeechBubble.png")
         #bubblePng = pg.transform.scale(bubblePng, (self.bubbleWidth, self.bubbleHeight))  # 42 28
         gs.win.blit(bubblePng, (self.x - self.bubblePadding, self.y - self.bubblePadding))
 
-    def arrowImg(self): #importe et affiche la touche entrer
+    def arrowImg(self): # import and display the enter key
         arrowPng = pg.image.load("img/arrow.png")
         #arrowPng = pg.transform.scale(arrowPng, (18, 15))  # 23 19
         gs.win.blit(arrowPng, (self.x + self.bubbleWidth - 55, self.y + self.bubbleHeight - 45))
         gs.clock.tick(gs.FPS)
         pg.display.update()
 
-    def splitText(self, Wrap): #détermine en combien de pages le texte sera découpé, en fonction de la hauteur de la bulle
+    def splitText(self, Wrap): # determines how many pages the text will be split into, based on the height of the bubble
         x = 1
-        while x * self.fontInter < self.bubbleHeight: #compte combien de lignes rentrent dans une bulle
+        while x * self.fontInter < self.bubbleHeight: # count how many lines fit in a bubble
             x = x + 1
-        limiteHeight = x - 1 #nombre maximal de lignes pour tenir dans une seule bulle
+        limiteHeight = x - 1  # maximum number of lines to fit in a single bubble
         count = Wrap.count("\n")
         super = True
         while super:
-            if count > limiteHeight: #si le texte depasse de cette longeur maximale
+            if count > limiteHeight: # if the text exceeds this maximum length
                 i = 0
                 Index = 1
                 add = 0
-                while i < limiteHeight - 1:  # trouve l'endroit ou couper la str
+                while i < limiteHeight - 1:  # find the place to cut the str
                     i = i + 1
                     add = Wrap.index("\n", Index)
                     Index = add + 3
                 wrap1 = Wrap[:add]
-                self.display_text_animation(wrap1) #envoie un bout de str a la fontion pour l'afficher
-                Wrap = Wrap[add:] #supprime de la str le bout qui a été envoyé
-                count = Wrap.count("\n") #recompte le nombre de lignes restantes
+                self.display_text_animation(wrap1) # send a piece of str to the function to display it
+                Wrap = Wrap[add:] # delete from str the end that was sent
+                count = Wrap.count("\n") # recount the number of lines remaining
 
             else:
                 wrap1 = Wrap
-                self.display_text_animation(wrap1) #envoie le dernier bout de str à la fonction pour l'afficher
+                self.display_text_animation(wrap1) # send the last bit of str to the function to display it
                 super = False
 
     def display_text_animation(self, Wrap):
 
-        if Wrap.find("\n", 0, 2) == 0: #supprime le retour à la ligne si il y en a un au début
+        if Wrap.find("\n", 0, 2) == 0: # suppress the newline if there is one at the beginning
             Wrap = Wrap[1:]
 
         count = Wrap.count("\n")
 
-        for i in range(count): #boucle pour chaque ligne
+        for i in range(count): # loop for each row
             try:
                 Index = Wrap.index("\n")
             except ValueError:
                 Index = len(Wrap)
             text = ''
-            for i in range(Index): #boucle pour chaque lettre de chaque ligne
+            for i in range(Index): # loop for each letter of each row
                 text += Wrap[i]
                 font = pg.font.Font(self.fontType, self.fontSize)
                 text_surface = font.render(text, True, self.color)
@@ -252,7 +236,6 @@ class TypeText():
                 bubbleSurf.blit(text_surface, text_surface.get_rect(topleft=bubbleRect.topleft))
                 bubbleRect.topleft = (self.x, self.y + (self.line * self.fontInter))
                 gs.win.blit(bubbleSurf, bubbleRect)
-                #pg.time.wait(self.delay)
                 gs.clock.tick(gs.FPS)
                 pg.display.update()
             self.line = self.line + 1

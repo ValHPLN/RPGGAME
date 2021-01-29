@@ -2,20 +2,14 @@
 vitesse = 0.5
 
 
-timings = { # animation timings
-    # [tick, images, free, reset]
-    # tick = number of ticks between frames
-    # images = how many images per anim (don't forget 0)
-    # free = Free character after animation? True = yes False = no
-    # reset = come to "base" after anim, else animation repeats itself
-
+timings = { # animation settings
     ####################################
     # Also gathers all NPCs and objects that can be picked up:
         # speechmem : state of dialog
         # Init = x, y, size, movement
         # pathfile = sprite
         # base = animation if tick = None, no animation
-        # walk = timings (see above)
+        # walk = tick, images, free, reset
         # pathchar = path taken by NpC
     "MapHeticV2": {
         "npc": {
