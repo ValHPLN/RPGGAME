@@ -35,7 +35,10 @@ speechList = {
     },
     "npc2": {
         "0":
-            "Bienvenue à Hétic !"
+            "Bonjour, et bienvenue à Hétic !"
+    ,
+        "00":
+            "Tu as l'air épuisé, prends-donc ce café !"
     },
     "npc1": {
         "0":
@@ -57,7 +60,7 @@ speechList = {
     },
     "npc6": {
         "0":
-            "Salut, j'ai entendu qu'on pouvais jouer à Hetic Life sur ses machines, on m'en a dit le plus grand bien. Malheureusement je n'ai pas de jeton... "
+            "Moi aussi je veux jouer à Hetic Life... Malheureusement, je n'ai pas de jeton... "
         ,
         "00": {
             "question": "En aurais tu pour moi ?",

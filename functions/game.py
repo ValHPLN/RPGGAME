@@ -38,7 +38,6 @@ def init_music():
 
 
 def init_game():
-    inventory.addItemInv(objects.hp_potion)
     load.load_tileset()
     init_music()
     gs.map = mapping.Map("MapHeticV2", (40, -720), "hetic.ogg")  # Chargement de la map
@@ -50,9 +49,9 @@ def init_game():
 
 def play_music():
     gs.music = pg.mixer.music
-    gs.music.load("sound/elif.ogg")# Récuperer la musique sous forme de variable
+    gs.music.load("sound/elif.ogg")
     gs.music.set_volume(0.5)
-    gs.music.play(loops=-1)   # Jouer la musique (loops=-1 permet de la jouer en boucle indéfiniment)
+    gs.music.play(loops=-1)
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -74,7 +73,7 @@ def new_player():
     color_inactive = pg.Color(gs.LIGHTGREY)
     color_active = pg.Color(gs.GREEN)
     color = color_inactive
-    name_title = text_format("What's your name ?", gs.menuFont, 60, gs.GREEN)
+    name_title = text_format("Entre ton pseudo", gs.menuFont, 60, gs.GREEN)
     name_title_rect = name_title.get_rect()
     input_box = pg.Rect(gs.center_WIDTH - (name_title_rect[2] / 3.5),300, 10,30)
     confirm = False
@@ -90,9 +89,9 @@ def new_player():
             else:
                 rightArrow = text_format(">", gs.menuFont, 75, gs.BLACK)
             if selected == "start":
-                text_start = text_format("START", gs.menuFont, 75, gs.WHITE)
+                text_start = text_format("JOUER", gs.menuFont, 75, gs.WHITE)
             else:
-                text_start = text_format("START", gs.menuFont, 75, gs.BLACK)
+                text_start = text_format("JOUER", gs.menuFont, 75, gs.BLACK)
 
 
             gs.win.fill((gs.DARKGREY))
@@ -202,11 +201,11 @@ def controls():
     while ctrls:
         gs.win.fill((gs.DARKGREY))
         mx, my = pg.mouse.get_pos()
-        title = text_format("CONTROLS", gs.menuFont, 90, gs.GREEN)
+        title = text_format("TOUCHES", gs.menuFont, 90, gs.GREEN)
         if selected == "start":
-            text_start = text_format("START", gs.menuFont, 75, gs.WHITE)
+            text_start = text_format("OK", gs.menuFont, 75, gs.WHITE)
         else:
-            text_start = text_format("START", gs.menuFont, 75, gs.BLACK)
+            text_start = text_format("OK", gs.menuFont, 75, gs.BLACK)
 
         title_rect = title.get_rect()
         start_rect = text_start.get_rect()
@@ -257,13 +256,13 @@ def main_menu():
         mx, my = pg.mouse.get_pos()
         title = text_format("HETIC LIFE", gs.menuFont, 90, gs.GREEN)
         if selected == "start":
-            text_start = text_format("START", gs.menuFont, 75, gs.WHITE)
+            text_start = text_format("JOUER", gs.menuFont, 75, gs.WHITE)
         else:
-            text_start = text_format("START", gs.menuFont, 75, gs.BLACK)
+            text_start = text_format("JOUER", gs.menuFont, 75, gs.BLACK)
         if selected == "quit":
-            text_quit = text_format("QUIT", gs.menuFont, 75, gs.WHITE)
+            text_quit = text_format("QUITTER", gs.menuFont, 75, gs.WHITE)
         else:
-            text_quit = text_format("QUIT", gs.menuFont, 75, gs.BLACK)
+            text_quit = text_format("QUITTER", gs.menuFont, 75, gs.BLACK)
 
 
         title_rect = title.get_rect()
@@ -321,7 +320,7 @@ def inventory_menu():
     while invent:
         inventory_box = pg.Rect(gs.center_WIDTH-300, gs.center_HEIGHT-200, 600, 400)
         pg.draw.rect(gs.win, gs.WHITE, inventory_box)
-        title = text_format("Inventory", gs.menuFont, 50, gs.GREEN)
+        title = text_format("Inventaire", gs.menuFont, 50, gs.GREEN)
         title_rect = title.get_rect()
         gs.win.blit(title, (gs.WIDTH / 2 - (title_rect[2] / 2), 250))
         title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
@@ -365,13 +364,13 @@ def pause_menu():
         mx, my = pg.mouse.get_pos()
         pause_title = text_format("Pause", gs.menuFont, 60, gs.GREEN)
         if selected == "Resume":
-            text_resume = text_format("Resume", gs.menuFont, 75, gs.WHITE)
+            text_resume = text_format("Reprendre", gs.menuFont, 75, gs.WHITE)
         else:
-            text_resume = text_format("Resume", gs.menuFont, 75, gs.BLACK)
+            text_resume = text_format("Reprendre", gs.menuFont, 75, gs.BLACK)
         if selected == "Main Menu":
-            text_menu = text_format("Main Menu", gs.menuFont, 75, gs.WHITE)
+            text_menu = text_format("Menu Principal", gs.menuFont, 75, gs.WHITE)
         else:
-            text_menu = text_format("Main Menu", gs.menuFont, 75, gs.BLACK)
+            text_menu = text_format("Menu Principal", gs.menuFont, 75, gs.BLACK)
 
 
         title_rect = pause_title.get_rect()
@@ -446,32 +445,40 @@ def play_voice():
 def speech2(npcId, xPos, yPos):
     gs.talk = True
 
+
     while gs.talk:
         gs.findStr = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
         play_voice()
 
+        if npcId == "npc2":
+            if es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] == "00":
+                inventory.addItemInv(objects.hp_potion)
         if npcId == "npc3":
             if gs.findStr.find('001', 0, 3) != -1:
                 if objects.glassesNb == 1:
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
+                    gs.help_count += 1
             elif gs.findStr.find('002', 0, 3) != -1:
                 if objects.glassesNb == 1:
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0025"
                     inventory.removeItemInv(objects.glasses)
                     objects.glassesNb = 0
-        if npcId == "npc6":
+                    gs.help_count += 1
+        elif npcId == "npc6":
             if gs.findStr.find('001', 0, 3) != -1:
                 if objects.coinNb == 1:
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
                     inventory.removeItemInv(objects.coin)
                     objects.coinNb = 0
+                    gs.help_count += 1
             elif gs.findStr.find('002', 0, 3) != -1:
                 if objects.coinNb == 1:
                     es.timings["MapHeticV2"]["npc"][npcId]["speechMem"] = "0015"
                     inventory.removeItemInv(objects.coin)
                     objects.coinNb = 0
+                    gs.help_count += 1
         reset_display()
         Mleft = xPos
         MTop = yPos
@@ -487,6 +494,12 @@ def speech2(npcId, xPos, yPos):
                 memPrint = es.timings["MapHeticV2"]["npc"][npcId]["speechMem"]
                 print("error back:", ss.speechList[gs.npcId][memPrint])
 
+        if npcId != "npc2":
+            if gs.base_hp >= 4:
+                gs.base_hp -= 0.7
+            else:
+                pass
+
         if not gs.speech:
             gs.talk = False
             gs.music.set_volume(0.5)
@@ -498,11 +511,16 @@ def speech2(npcId, xPos, yPos):
 def interface():
     #Displays health bar
 
-    title = text_format("Stamina", gs.menuFont, 15, gs.GREEN)
+    title = text_format("Energie", gs.menuFont, 15, gs.GREEN)
+    help = text_format("Personnes aidées : " + str(gs.help_count), gs.menuFont, 15, gs.GREEN)
     title_rect = title.get_rect()
     title_rect.x = gs.WIDTH / 2 - (title_rect[2] / 2)
-    pg.draw.rect(gs.win, (gs.RED), pg.Rect(0, 0, gs.base_hp * 20, 10))
-    gs.win.blit(title, (0, -2))
+    pg.draw.rect(gs.win, (gs.RED), pg.Rect(20, 20, gs.base_hp * 5, 10))
+    gs.win.blit(title, (20, 18))
+    gs.win.blit(help, (20, 36))
+    if gs.base_hp <= 5:
+        title = text_format("Besoin urgent de café !", gs.menuFont, 30, gs.RED)
+        gs.win.blit(title, (20, 54))
 
 
 def handle_npc():

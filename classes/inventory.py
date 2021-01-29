@@ -121,11 +121,8 @@ class Consumable(InventoryItem):
 
     def use(self, inv, target):
         inv.removeItemInv(self)
-        gs.base_hp += 2
-        ps.vel += 2
-        print(gs.char)
-        print(gs.base_hp)
-        print(ps.vel)
+        if gs.base_hp < 25:
+            gs.base_hp = gs.max_hp
 
 class Quest(InventoryItem):
     def __init__(self, img, value, hp_gain=0):

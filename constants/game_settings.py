@@ -44,9 +44,11 @@ npcY = None
 
 # Player constants
 name = ""
-base_hp = 5
+base_hp = 15
+max_hp = 25
 char = None
 change_char = True
+help_count = 0
 
 
 # Dialogs & Audio constants

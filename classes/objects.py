@@ -8,3 +8,4 @@ coin = Quest('img/objects/coin.png', 2)
 
 glassesNb = 0
 coinNb = 0
+cableNb = 0

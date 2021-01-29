@@ -18,8 +18,8 @@ class TypeText():
     def __init__(self, x, y, text1, width):
         self.x = x + 40
         self.y = y - 10
-        self.bubbleWidth = width - 20 #210
-        self.bubbleHeight = 150
+        self.bubbleWidth = width #210
+        self.bubbleHeight = 140
         self.bubblePadding = 10
         self.line = 0
         self.delay = 5

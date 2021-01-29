@@ -101,9 +101,11 @@ class Entity():
                     objects.glassesNb = 1
                     game.inventory.addItemInv(objects.glasses)
                 elif self.id == "cable":
+                    objects.cableNb = 1
                     game.inventory.addItemInv(objects.cable)
-                elif self.id == "coin1" or "coin2" or "coin3":
-                    game.inventory.addItemInv(objects.hp_potion)
+                elif self.id == "coin":
+                    objects.coinNb = 1
+                    game.inventory.addItemInv(objects.coin)
 
                 else:
                     pass
@@ -136,6 +138,9 @@ class Entity():
                             game.reset_display()
                             game.speech2(gs.npcId, gs.npcX, gs.npcY)
                             gs.OK1 = False
+                    elif event.type == pg.QUIT:
+                        pg.quit()
+                        quit()
 
             if self.hitbox.collision("player"):  # S'il y en a :
                 gs.displayE2 = True

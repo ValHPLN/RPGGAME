@@ -62,7 +62,7 @@ timings = { # animation timings
             },
             "npc6": {
                 "speechMem": "0",
-                "init": [[[580, 1000], [64, 64], "base"]],#220, 425
+                "init": [[[220, 425], [64, 64], "base"]],#
                 "pathFile": "img/char/New/Dan_run_32x32.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [None],
@@ -72,21 +72,7 @@ timings = { # animation timings
         },
         "obj": {
             "coin": {
-                "init":[[[640, 720], [32, 32], "base"]],
-                "pathFile": "img/objects/coin.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-                "walk": [None],
-                "pathChar": [None]
-            },
-            "coin2": {
-                "init": [[[700, 720], [32, 32], "base"]],
-                "pathFile": "img/objects/coin.png",
-                "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
-                "walk": [None],
-                "pathChar": [None]
-            },
-            "coin3": {
-                "init": [[[750, 720], [32, 32], "base"]],
+                "init":[[[1100, 630], [32, 32], "base"]],
                 "pathFile": "img/objects/coin.png",
                 "base": [None],  # Si tick = None, alors il y a aucun attribut d'animation
                 "walk": [None],

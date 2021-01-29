@@ -68,6 +68,7 @@ class Player():
                 else:  # Sinon, si il y a pas collision
                     gs.map.bouger(x, y)
 
+
                 break  # Casser la boucle: Touche trouvée. On évite les autres
 
         else:  # Si la boucle n'est pas cassée: Aucune touche trouvée
